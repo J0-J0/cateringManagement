@@ -1,0 +1,15 @@
+#нд╪Ч#
+.classpath
+.project
+
+src/Test.java
+WebContent/wulala.jsp
+
+*.MF
+*.jar
+
+#д©б╪#
+.settings/
+build/
+WebContent/bootstrap3/
+WebContent/images/
