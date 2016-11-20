@@ -33,42 +33,33 @@
 </style>
 
 <script type="text/javascript">
-function verify(){
-	var status = document.getElementById("status").value;
-	/**
-	 * view1代表登录注册按钮，view2代表我的主页，
-	 *  view3代表警告框，view4代表警告框里的文字
-	 */
-	 
-	if(status == "null"){
-		var view4 = document.getElementById("view4");
-		view4.innerHTML = "用户民或密码不能为空！";
+$(document).ready(function(){
+	// 模态框登录按钮设置点击事件
+	$("#login").click(function(){
+		$("#userLoginForm").submit();
+	});
+	
+	
+	// 警告框、登录注册按钮、我的主页按钮 
+	if($("#status").val() == "null"){
+		$("#view4").html("用户民或密码不能为空！");
 		
-	}else if(status == "failed"){
-		var view4 = document.getElementById("view4");
-		view4.innerHTML = "用户民或密码错误！";
+	}else if($("#status").val() == "failed"){
+		$("#view4").html("用户民或密码错误！");
 		
-	}else if(status == "success"){
+	}else if($("#status").val() == "success"){
 		
 		// 关闭警告框 
-		var view3 = document.getElementById("view3");
-		view3.style.display = "none";
+		$("#view3").css("display", "none");
 		// 关闭登录按钮
-		var view1 = document.getElementById("view1");
-		view1.style.display = "none";
+		$("#view1").css("display", "none");
 		// 开启我的主页按钮
-		var view2 = document.getElementById("view2");
-		view2.style.display = "";
+		$("#view2").css("display", "block");
 	}
-}
-
-function verifyUser(){
-	var form = document.getElementById("modalForm");
-	form.submit();
-}
+});
 </script>
 </head>
-<body onload="verify()">
+<body>
 <input type="text"  id="status" style = "display: none;" value="${status }" />
 <div class="container">
 	<div class="row clearfix">
@@ -142,6 +133,7 @@ function verifyUser(){
 				</div>
 		</div>
 	</div>
+	
 
 	<!-- 具体内容 -->
 	<div class="container" style = "margin-top: 30px;">
@@ -247,8 +239,9 @@ function verifyUser(){
 					<h4 class="modal-title" id="myModalLabel" align="center">进去吃饭</h4>
 				</div>
 				<div class="modal-body">
+				
 					<!-- 模态框表单 -->
-					<form class="form-horizontal" role="form" id="modalForm" method="post"
+					<form class="form-horizontal" role="form" id="userLoginForm" method="post"
 						action="${pageContext.request.contextPath }/userLogin">
 						<div class="form-group">
 							<div class="col-sm-10" style="margin: auto auto auto 25px;">
@@ -278,7 +271,7 @@ function verifyUser(){
 
 						<div class="col-md-4">
 							<button type="button" class="btn btn-default"
-								onclick="verifyUser()" data-dismiss="modal">登录</button>
+								id="login"	 data-dismiss="modal">登录</button>
 						</div>
 						<div class="col-md-3"></div>
 						<div class="col-md-4">

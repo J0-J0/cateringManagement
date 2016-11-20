@@ -84,6 +84,7 @@
 		<!-- /.navbar-collapse -->
 	</div>
 	<!-- /.container-fluid --> </nav>
+	
 
 	<div class="container" style="margin: 80px;">
 		<div class="row clearfix">
@@ -289,7 +290,7 @@
 			
       <div class="modal-footer">
         <button type="button" class="btn btn-danger btn-lg btn-block" 
-        				data-dismiss="modal" onclick="updateUser()">
+        				data-dismiss="modal">
         	确认修改个人信息
         </button>
       </div>
@@ -300,9 +301,10 @@
 
 </body>
 <script type="text/javascript">
-	function updateUser() {
-		var form = document.getElementById("updateUserForm");
-		form.submit();
-	}
+	$(document).ready(function(){
+		$("button.btn-block").click(function(){
+			$("#updateUserForm").submit();
+		});
+	});
 </script>
 </html>

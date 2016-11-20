@@ -23,18 +23,6 @@
 <link rel="shortcut icon"
 	href="${pageContext.request.contextPath}/images/title.ico">
 
-<script type="text/javascript">
-
-function confirmSubmit(){
-	var flag = confirm("确认之后不可更改，侬想好了？");
-	if(flag){
-		var registerForm = document.getElementById("registerForm");
-		registerForm.submit();
-	}
-}
-
-</script>
-
 </head>
 <body>
 
@@ -120,7 +108,7 @@ function confirmSubmit(){
 				
 					<div class="form-group">
 						<div class="col-sm-offset-2 col-sm-10">
-							<button type="button" class="btn btn-danger btn-lg btn-block" onclick="confirmSubmit()">确认
+							<button type="button" class="btn btn-danger btn-lg btn-block">确认
 							</button>
 						</div>
 					</div>
@@ -134,4 +122,16 @@ function confirmSubmit(){
 	</div>
 
 </body>
+<script type="text/javascript">
+
+$(document).ready(function(){
+	$("button.btn-block").click(function(){
+		var flag = confirm("确认之后不可更改，侬想好了？");
+		if(flag){
+			$("#registerForm").submit();
+		}
+	});
+});
+
+</script>
 </html>

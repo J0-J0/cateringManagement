@@ -16,7 +16,7 @@
 <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
 <script
 	src="${pageContext.request.contextPath }/bootstrap3/js/bootstrap.min.js"></script>
-<title>Insert title here</title>
+
 </head>
 <body>
 	<div class="panel panel-default" style="width:80%; margin-left: 100px;" >
@@ -86,10 +86,4 @@
 		</div>
 	</div>
 </body>
-<script type="text/javascript">
-	function updateFood() {
-		var form = document.getElementById("updateFoodForm");
-		form.submit();
-	}
-</script>
 </html>

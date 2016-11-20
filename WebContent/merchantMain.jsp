@@ -210,7 +210,7 @@
 			
       <div class="modal-footer">
         <button type="button" class="btn btn-danger btn-lg btn-block" 
-        				data-dismiss="modal" onclick="updateMerchant()">
+        				data-dismiss="modal">
         	确认修改个人信息
         </button>
       </div>
@@ -220,9 +220,10 @@
 
 </body>
 <script type="text/javascript">
-	function updateMerchant() {
-		var form = document.getElementById("updateMerchantForm");
-		form.submit();
-	}
+	$(document).ready(function(){
+		$("button.btn-block").click(function(){
+			$("#updateMerchantForm").submit();
+		});
+	});
 </script>
 </html>

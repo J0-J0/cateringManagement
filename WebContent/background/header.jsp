@@ -19,12 +19,12 @@
 
 
 <script type="text/javascript">
-function verify(){
+/* function verify(){
 	var status = document.getElementById("status").value;
 	/**
 	 * view1代表登录注册按钮，view2代表我的主页，
 	 *  view3代表警告框，view4代表警告框里的文字
-	 */
+	
 	 
 	if(status == "null"){
 		var view4 = document.getElementById("view4");
@@ -51,11 +51,36 @@ function verify(){
 function verifyUser(){
 	var form = document.getElementById("modalForm");
 	form.submit();
-}
+} */
+
+$(document).ready(function(){
+	// 模态框登录按钮设置点击事件
+	$("#login").click(function(){
+		$("#userLoginForm").submit();
+	});
+	
+	
+	// 警告框、登录注册按钮、我的主页按钮 
+	if($("#status").val() == "null"){
+		$("#view4").html("用户民或密码不能为空！");
+		
+	}else if($("#status").val() == "failed"){
+		$("#view4").html("用户民或密码错误！");
+		
+	}else if($("#status").val() == "success"){
+		
+		// 关闭警告框 
+		$("#view3").css("display", "none");
+		// 关闭登录按钮
+		$("#view1").css("display", "none");
+		// 开启我的主页按钮
+		$("#view2").css("display", "block");
+	}
+});
 </script>
 
 </head>
-<body onload = "verify()">
+<body>
 	
 	<input type="text"  id="status" style = "display: none;" value="${status }" />
 <div class="container">
@@ -102,16 +127,19 @@ function verifyUser(){
 					<ul class="nav navbar-nav navbar-right">
 						<li id="view1"><a data-toggle="modal" 
 							href="#myModal" style="margin: auto 80px auto auto;">登录/注册</a></li>
-						<li id="view2" class="dropdown" style="display: none;"><a 
-							href="#" class="dropdown-toggle" data-toggle="dropdown" style="margin: auto 80px auto auto;">个人中心 <span
-								class="caret"></span></a>
-							<ul class="dropdown-menu" role="menu">
-								<li><a href="${pageContext.request.contextPath }/userMain.jsp">我的主页</a></li>
-								<li><a href="#">购物车</a></li>
-								<li class="divider"></li>
-								<li><a href="#">退出</a></li>
-							</ul></li>
-					</ul>
+
+							<li id="view2" class="dropdown" style="display: none;"><a
+								href="#" class="dropdown-toggle" data-toggle="dropdown"
+								style="margin: auto 80px auto auto;">个人中心 <span
+									class="caret"></span></a>
+								<ul class="dropdown-menu" role="menu">
+									<li><a
+										href="${pageContext.request.contextPath }/userMain.jsp">我的主页</a></li>
+									<li><a href="#">购物车</a></li>
+									<li class="divider"></li>
+									<li><a href="#">退出</a></li>
+								</ul></li>
+						</ul>
 				</div>
 				<!-- /.navbar-collapse -->
 			</div>
@@ -131,6 +159,7 @@ function verifyUser(){
 				</div>
 		</div>
 	</div>
+	
 	<!-- 模态框，这龟孙反正是看不见得 -->
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
 		aria-labelledby="mySmallModalLabel" aria-hidden="true">
@@ -143,8 +172,9 @@ function verifyUser(){
 					<h4 class="modal-title" id="myModalLabel" align="center">进去吃饭</h4>
 				</div>
 				<div class="modal-body">
+				
 					<!-- 模态框表单 -->
-					<form class="form-horizontal" role="form" id="modalForm" method="post"
+					<form class="form-horizontal" role="form" id="userLoginForm" method="post"
 						action="${pageContext.request.contextPath }/userLogin">
 						<div class="form-group">
 							<div class="col-sm-10" style="margin: auto auto auto 25px;">
@@ -174,7 +204,7 @@ function verifyUser(){
 
 						<div class="col-md-4">
 							<button type="button" class="btn btn-default"
-								onclick="verifyUser()" data-dismiss="modal">登录</button>
+								id="login"	 data-dismiss="modal">登录</button>
 						</div>
 						<div class="col-md-3"></div>
 						<div class="col-md-4">

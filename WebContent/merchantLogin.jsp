@@ -18,12 +18,14 @@
 
 <title>商家登录</title>
 <script type="text/javascript">
-function resetValue(){
-	var merchantName = document.getElementById("merchantName");
-	var password = document.getElementById("password");
-	merchantName.value = "";
-	password.value = "";
-}
+
+$(document).ready(function(){
+	$("button.btn-default").click(function(){
+		$("#merchantName").val("");
+		$("#password").val("");		
+	});
+});
+
 </script>
 </head>
 <body>
@@ -76,7 +78,7 @@ function resetValue(){
 								<button type="submit" class="btn btn-primary" style="margin:auto auto auto 40px;">登录</button>
 							</div>
 							<div class="col-sm-6">
-								<button class="btn btn-default" onclick="resetValue()">重置</button>
+								<button class="btn btn-default">重置</button>
 							</div>
 						</div>
 					</form>

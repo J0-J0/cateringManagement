@@ -3,6 +3,7 @@
 .project
 
 src/Test.java
+src/com/jojo/web/TestServlet.java
 WebContent/wulala.jsp
 
 *.MF
