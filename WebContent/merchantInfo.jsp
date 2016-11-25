@@ -153,7 +153,7 @@
 
 
 
-<!-- 模态框，这龟孙反正是看不见得 -->
+<!-- 登录用模态框 -->
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
 		aria-labelledby="mySmallModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-sm">

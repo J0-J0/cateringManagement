@@ -347,7 +347,7 @@ public class FoodDao {
 	}
 
 	/**
-	 * 商家查询自己商品的历史评论,返回一个list
+	 * 根据商品ID查询所有评论，返回list
 	 * 
 	 * @param food
 	 * @return

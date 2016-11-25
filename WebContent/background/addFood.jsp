@@ -63,8 +63,8 @@
 			<div class="form-group">
 				<label for="num" class="col-sm-2 control-label">数量</label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control" id="num" name="num"
-						placeholder="这里填数量">
+					<input type="text" class="form-control" id="num" name="num" 
+						value="99999999" >
 				</div>
 			</div>
 			

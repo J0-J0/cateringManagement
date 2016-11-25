@@ -85,82 +85,88 @@
 	</div>
 	<!-- /.container-fluid --> </nav>
 
-<div class="container">
-	<div class="row clearfix" style="margin-top: 70px">
-		<div class="col-md-9 column">
-		
-		
-			<div id="left" class="col-md-6 column">
-			
-				<div id="top">
-					<img alt="156*124" width="400px" height="260px" src="" id="picture">
-				</div>
-				
-				<div id="bottom" style="margin-top: 5px">
-					<div style="margin-left: 5px" class="pictures">
-						<img alt="150*50" id="" width="98px" height="85px" src="">
-					</div>
-				</div>
-			
-			</div>
+	<div class="container">
+		<div class="row clearfix" style="margin-top: 70px">
+			<div class="col-md-9 column">
 
-
-				<div id="right" class="col-md-6 column">
-				
-				<div class="panel panel-default">
-				  <div class="panel-heading">
-				    <h3 class="panel-title">${food.foodName }</h3>
-				  </div>
-						<div class="panel-body">
-							<h4>
-								<span class="label label-primary">描述</span>&nbsp;&nbsp;
-								${food.description }
-							</h4>
-							
-							<h4>
-								<span class="label label-primary">价格</span>&nbsp;&nbsp;
-								${food.foodPrice }
-							</h4>
-							
-							<h4>
-								<span class="label label-primary">剩余</span>&nbsp;&nbsp;
-								${food.num }
-							</h4>
-
-							<!-- 数量与输入框 -->
-							<div class="row clearfix">
-								<div class="col-md-2 column">
-									<h4>
-										<span class="label label-primary">数量</span>
-									</h4>
-								</div>
-								<div class="col-md-4 column">
-									<div class="input-group">
-										<span class="input-group-btn">
-											<button class="btn btn-default" type="button"
-												onclick="minus()">-</button>
-										</span> <input type="text" class="form-control" value="1"
-											id="foodNum"> <span class="input-group-btn">
-											<button class="btn btn-default" type="button"
-												onclick="plus()">+</button>
-										</span>
-									</div>
-								</div>
+				<div class="row clearfix">
+					<div id="left" class="col-md-6 column">
+						<div id="top">
+							<img alt="156*124" width="400px" height="260px" src=""
+								id="picture">
+						</div>
+						<div id="bottom" style="margin-top: 5px">
+							<div style="margin-left: 5px" class="pictures">
+								<img alt="150*50" id="" width="98px" height="85px" src="">
 							</div>
-							
-							<ul class="nav nav-list"> <li class="divider"></li> </ul>
-							<button data-toggle="modal" data-target="#myModal" type="button"
-								style="margin-top: 25px;"
-								class="btn btn-warning" onclick="fillModal()">提交订单</button>
 						</div>
 					</div>
-					
-				</div>
-			</div>
-	</div>
-</div>
 
-<!-- 模态框 -->
+
+					<div id="right" class="col-md-6 column">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">${food.foodName }</h3>
+							</div>
+							<div class="panel-body">
+								<h4>
+									<span class="label label-primary">描述</span>&nbsp;&nbsp;
+									${food.description }
+								</h4>
+
+								<h4>
+									<span class="label label-primary">价格</span>&nbsp;&nbsp;
+									${food.foodPrice }
+								</h4>
+
+								<h4>
+									<span class="label label-primary">剩余</span>&nbsp;&nbsp;
+									${food.num }
+								</h4>
+
+								<!-- 数量与输入框 -->
+								<div class="row clearfix">
+									<div class="col-md-2 column">
+										<h4>
+											<span class="label label-primary">数量</span>
+										</h4>
+									</div>
+									<div class="col-md-4 column">
+										<div class="input-group">
+											<span class="input-group-btn">
+												<button class="btn btn-default" type="button"
+													onclick="minus()">-</button>
+											</span> <input type="text" class="form-control" value="1"
+												id="foodNum"> <span class="input-group-btn">
+												<button class="btn btn-default" type="button"
+													onclick="plus()">+</button>
+											</span>
+										</div>
+									</div>
+								</div>
+
+								<ul class="nav nav-list">
+									<li class="divider"></li>
+								</ul>
+								<button data-toggle="modal" data-target="#myModal" type="button"
+									style="margin-top: 25px;" class="btn btn-warning"
+									onclick="fillModal()">提交订单</button>
+							</div>
+						</div>
+					</div>
+				</div><!-- 头部终了 -->
+				
+				
+				<!-- 底下放评论 -->
+				<div class="row clearfix">
+									
+				</div>
+				
+			</div>
+		</div>
+	</div>
+
+	<!-- 模态框 -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
