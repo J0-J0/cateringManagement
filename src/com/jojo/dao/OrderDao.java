@@ -222,7 +222,57 @@ public class OrderDao {
 		}
 		return list;
 	}
-
+	/**
+	 * 根据id与状态查询总订单数
+	 * @param id
+	 * @param status
+	 * @return
+	 * @throws SQLException 
+	 */
+	public int selectOrderCounts(int id, int status, boolean flag) throws SQLException {
+		String sql = "";
+		if(flag == true){
+			sql = "select count(*) from (`t_order` `o`   JOIN `t_orderfood` `f` ON ((`o`.`orderId` = `f`.`orderId`))) where `o`.`userId` = ? and `o`.`status` = ?";
+		}else{
+			sql = "select count(*) from (`t_order` `o`   JOIN `t_orderfood` `f` ON ((`o`.`orderId` = `f`.`orderId`))) where `o`.`merchantId` = ? and `o`.`status` = ?";
+		}
+		PreparedStatement pstmt = conn.prepareStatement(sql, 
+				ResultSet.TYPE_FORWARD_ONLY, 
+				ResultSet.CONCUR_READ_ONLY, 
+				ResultSet.CLOSE_CURSORS_AT_COMMIT);
+		pstmt.setInt(1, id);
+		pstmt.setInt(2, status);
+		
+		ResultSet rs = pstmt.executeQuery();
+		
+		int result = 0;
+		if(rs.next()){
+			result = rs.getInt(1);
+		}
+		return result;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 * 发货与确认收货，成功返回 1
 	 * 
@@ -271,6 +321,4 @@ public class OrderDao {
 
 		return resultOrder;
 	}
-
-	
 }
