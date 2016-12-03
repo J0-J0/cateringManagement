@@ -9,6 +9,8 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  
+  
   <servlet>
     <servlet-name>alterOrderServlet</servlet-name>
     <servlet-class>com.jojo.web.AlterOrderServlet</servlet-class>
@@ -25,6 +27,8 @@
     <servlet-name>alterFoodServlet</servlet-name>
     <url-pattern>/alterFood</url-pattern>
   </servlet-mapping>
+  
+  
   <servlet>
     <servlet-name>foodDetailServlet</servlet-name>
     <servlet-class>com.jojo.web.FoodDetailServlet</servlet-class>
@@ -34,6 +38,16 @@
     <url-pattern>/foodDetail</url-pattern>
   </servlet-mapping>
   <servlet>
+    <servlet-name>merchantDetailServlet</servlet-name>
+    <servlet-class>com.jojo.web.MerchantDetailServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>merchantDetailServlet</servlet-name>
+    <url-pattern>/merchantDetail</url-pattern>
+  </servlet-mapping>
+  
+  
+  <servlet>
     <servlet-name>indexServlet</servlet-name>
     <servlet-class>com.jojo.web.IndexServlet</servlet-class>
   </servlet>
@@ -41,6 +55,8 @@
     <servlet-name>indexServlet</servlet-name>
     <url-pattern>/index</url-pattern>
   </servlet-mapping>
+  
+  
   <servlet>
     <servlet-name>merchantInfoServlet</servlet-name>
     <servlet-class>com.jojo.web.MerchantInfoServlet</servlet-class>
@@ -50,29 +66,15 @@
     <url-pattern>/merchantInfo</url-pattern>
   </servlet-mapping>
   <servlet>
-    <servlet-name>merchantLoginServlet</servlet-name>
-    <servlet-class>com.jojo.web.MerchantLoginServlet</servlet-class>
+    <servlet-name>userInfoServlet</servlet-name>
+    <servlet-class>com.jojo.web.UserInfoServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>merchantLoginServlet</servlet-name>
-    <url-pattern>/merchantLogin</url-pattern>
+    <servlet-name>userInfoServlet</servlet-name>
+    <url-pattern>/userInfo</url-pattern>
   </servlet-mapping>
-  <servlet>
-    <servlet-name>userLoginServlet</servlet-name>
-    <servlet-class>com.jojo.web.UserLoginServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>userLoginServlet</servlet-name>
-    <url-pattern>/userLogin</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <servlet-name>userInfoUpdateServlet</servlet-name>
-    <servlet-class>com.jojo.web.UserInfoUpdateServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>userInfoUpdateServlet</servlet-name>
-    <url-pattern>/userInfoUpdate</url-pattern>
-  </servlet-mapping>
+  
+  
   <servlet>
     <servlet-name>orderListServlet</servlet-name>
     <servlet-class>com.jojo.web.OrderListServlet</servlet-class>
@@ -81,6 +83,8 @@
     <servlet-name>orderListServlet</servlet-name>
     <url-pattern>/orderList</url-pattern>
   </servlet-mapping>
+  
+  
   <servlet>
     <servlet-name>imageServlet</servlet-name>
     <servlet-class>com.jojo.web.ImageServlet</servlet-class>

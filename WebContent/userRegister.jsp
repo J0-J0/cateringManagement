@@ -38,8 +38,10 @@
 				</div>
 				
 				<form class="form-horizontal" role="form" id="registerForm"  method="post"
-							action="${pageContext.request.contextPath }/userInfoUpdate">
-
+							action="${pageContext.request.contextPath }/userInfo">
+					
+					<input type="text" name="action" id="action" value="register" style="display:none;">
+					
 					<div class="form-group">
 						<label for="userName" class="col-sm-2 control-label">用户名</label>
 						<div class="col-sm-10">

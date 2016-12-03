@@ -205,98 +205,101 @@
 	</div>
 
 <!-- 模态框代码，我就把你放在最下面了 -->
-<div class="modal fade" id="myModal" tabindex="-1" 
-			role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">
-        	<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-        </button>
-        <h4 class="modal-title" id="myModalLabel" style="text-align: center;">个人信息修改</h4>
-      </div>
-      <div class="modal-body">
-       
-					<form class="form-horizontal" role="form" id="updateUserForm"  method="post"
-							action="${pageContext.request.contextPath }/userInfoUpdate">
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+					</button>
+					<h4 class="modal-title" id="myModalLabel"
+						style="text-align: center;">个人信息修改</h4>
+				</div>
+				<div class="modal-body">
 
-					<div class="form-group">
-						<label for="userName" class="col-sm-2 control-label">用户名</label>
-						<div class="col-sm-10">
-							<input type="text" class="form-control" name="userName"
-								id="userName" value="${currentUser.userName }">
-						</div>
-					</div>
+					<form class="form-horizontal" role="form" id="updateUserForm"
+						method="post"
+						action="${pageContext.request.contextPath }/userInfo">
 
-					<div class="form-group">
-						<label for="password" class="col-sm-2 control-label">密码</label>
-						<div class="col-sm-10">
-							<input type="password" class="form-control" name="password"
-								id="password" value="${currentUser.password }">
-						</div>
-					</div>
+						<input type="text" name="action" id="action" value="update"
+							style="display: none;">
 
-					<div class="form-group">
-						<label for="userIdCard" class="col-sm-2 control-label">学号</label>
-						<div class="col-sm-10">
-							<input type="text" class="form-control" name="userIdCard"
-								id="userIdCard" value="${currentUser.userIdCard }">
+						<div class="form-group">
+							<label for="userName" class="col-sm-2 control-label">用户名</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" name="userName"
+									id="userName" value="${currentUser.userName }">
+							</div>
 						</div>
-					</div>
 
-					<div class="form-group">
-						<label for="userRealName" class="col-sm-2 control-label">真实姓名</label>
-						<div class="col-sm-10">
-							<input type="text" class="form-control" name="userRealName"
-								id="userRealName" value="${currentUser.userRealName }">
+						<div class="form-group">
+							<label for="password" class="col-sm-2 control-label">密码</label>
+							<div class="col-sm-10">
+								<input type="password" class="form-control" name="password"
+									id="password" value="${currentUser.password }">
+							</div>
 						</div>
-					</div>
 
-					<div class="form-group">
-						<label class="col-sm-2 control-label">性别</label>&nbsp;&nbsp;&nbsp;
-						<label class="radio-inline"> <input type="radio"
-							name="sex" id="sex" value="男"> 男
-						</label> 
-						<label class="radio-inline"> <input type="radio"
-							name="sex" id="sex" value="option3"> 女
-						</label>
-					</div>
+						<div class="form-group">
+							<label for="userIdCard" class="col-sm-2 control-label">学号</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" name="userIdCard"
+									id="userIdCard" value="${currentUser.userIdCard }">
+							</div>
+						</div>
 
-					<div class="form-group">
-						<label for="age" class="col-sm-2 control-label">年龄</label>
-						<div class="col-sm-10">
-							<input type="text" class="form-control" name="age" id="age"
-								value="${currentUser.age }">
+						<div class="form-group">
+							<label for="userRealName" class="col-sm-2 control-label">真实姓名</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" name="userRealName"
+									id="userRealName" value="${currentUser.userRealName }">
+							</div>
 						</div>
-					</div>
-					
-					<div class="form-group">
-						<label for="userTel" class="col-sm-2 control-label">联系电话</label>
-						<div class="col-sm-10">
-							<input type="text" class="form-control" name="userTel" id="userTel"
-								value="${currentUser.userTel }">
+
+						<div class="form-group">
+							<label class="col-sm-2 control-label">性别</label>&nbsp;&nbsp;&nbsp;
+							<label class="radio-inline"> <input type="radio"
+								name="sex" id="sex" value="男"> 男
+							</label> <label class="radio-inline"> <input type="radio"
+								name="sex" id="sex" value="option3"> 女
+							</label>
 						</div>
-					</div>
-					
-					<div class="form-group">
-						<label for="address" class="col-sm-2 control-label">送货地址</label>
-						<div class="col-sm-10">
-							<input type="text" class="form-control" name="address" id="address"
-								value="${currentUser.address }">
+
+						<div class="form-group">
+							<label for="age" class="col-sm-2 control-label">年龄</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" name="age" id="age"
+									value="${currentUser.age }">
+							</div>
 						</div>
-					</div>
+
+						<div class="form-group">
+							<label for="userTel" class="col-sm-2 control-label">联系电话</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" name="userTel"
+									id="userTel" value="${currentUser.userTel }">
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="address" class="col-sm-2 control-label">送货地址</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" name="address"
+									id="address" value="${currentUser.address }">
+							</div>
+						</div>
 
 					</form>
-			
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger btn-lg btn-block" 
-        				data-dismiss="modal">
-        	确认修改个人信息
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
+
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger btn-lg btn-block"
+							data-dismiss="modal">确认修改个人信息</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
 
 </body>

@@ -153,16 +153,10 @@ $(document).ready(function(){
 			<!-- Wrapper for slides -->
 			<div class="carousel-inner" role="listbox">
 
-				<!-- 滚动页 -->
-				<div class="item active">
-					<!-- 这里放个欢迎光临好了 -->
-					<img src="${pageContext.request.contextPath}/images/slide.jpg"
-						alt="..." style="width: 1600px; height: 500px;">
-					<div class="carousel-caption">随便写写</div>
-				</div>
 				
-				<!-- 这里是foreach -->
+			
 <%-- 	
+			<!-- 这里是foreach -->
 			<c:foreach var= "indexFood" items= "${indexFoodList}">
 				<div class="item">
 					<img src="${pageContext.request.contextPath}/${indexFood.pics[0]}"
@@ -172,6 +166,13 @@ $(document).ready(function(){
 			</c:foreach>
 --%>
 				
+				<!-- 滚动页 -->
+				<div class="item active">
+					<!-- 这里放个欢迎光临好了 -->
+					<img src="${pageContext.request.contextPath}/images/slide.jpg"
+						alt="..." style="width: 1600px; height: 500px;">
+					<div class="carousel-caption">随便写写</div>
+				</div>
 				
 				<div class="item">
 					<img src="${pageContext.request.contextPath}/images/slide3.jpg"
@@ -206,18 +207,19 @@ $(document).ready(function(){
 
 		<!-- 商家展示 -->
 		<div class="row clearfix" style="margin: 20px;">
-			<c:forEach var= "merchant" items="${merchantList }">
+			<c:forEach var="merchant" items="${merchantList }">
 				<div class="col-md-3 column">
 					<div class="thumbnail">
 						<img alt="140x140" style="width: 140px; height: 140px;"
 							src="${pageContext.request.contextPath }/${merchant.pic}"
 							class="img-rounded img-center" />
-						 <div class="caption">
+						<div class="caption">
 							<h2>${merchant.merchantName }</h2>
 							<p>${merchant.description }</p>
 							<p>
-								<a class="btn btn-primary" 
-									  href="${pageContext.request.contextPath }/merchantInfo?merchantId=${merchant.merchantId}&merchantName=${merchant.merchantName}">进去瞧瞧 »</a>
+								<a class="btn btn-primary"
+									href="${pageContext.request.contextPath }/merchantDetail?merchantId=${merchant.merchantId}&merchantName=${merchant.merchantName}">进去瞧瞧
+									»</a>
 							</p>
 						</div>
 					</div>
@@ -239,10 +241,15 @@ $(document).ready(function(){
 					<h4 class="modal-title" id="myModalLabel" align="center">进去吃饭</h4>
 				</div>
 				<div class="modal-body">
-				
+
 					<!-- 模态框表单 -->
-					<form class="form-horizontal" role="form" id="userLoginForm" method="post"
-						action="${pageContext.request.contextPath }/userLogin">
+					<form class="form-horizontal" role="form" id="userLoginForm"
+						method="post"
+						action="${pageContext.request.contextPath }/userInfo">
+						
+						<input type="text" name="action" id="action" value="login"
+							style="display: none;">
+							
 						<div class="form-group">
 							<div class="col-sm-10" style="margin: auto auto auto 25px;">
 								<input type="text" class="form-control" id="userName"
@@ -270,12 +277,13 @@ $(document).ready(function(){
 					<div class="row">
 
 						<div class="col-md-4">
-							<button type="button" class="btn btn-default"
-								id="login"	 data-dismiss="modal">登录</button>
+							<button type="button" class="btn btn-default" id="login"
+								data-dismiss="modal">登录</button>
 						</div>
 						<div class="col-md-3"></div>
 						<div class="col-md-4">
-							<a href="${pageContext.request.contextPath }/userRegister.jsp" class="btn btn-default">注册</a>
+							<a href="${pageContext.request.contextPath }/userRegister.jsp"
+								class="btn btn-default">注册</a>
 						</div>
 						<div class="col-md-1"></div>
 					</div>

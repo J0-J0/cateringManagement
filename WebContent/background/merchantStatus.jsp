@@ -14,7 +14,7 @@
 	
 	<div id="orderListDIV">
 		<c:forEach var="merchantOrder" items="${orderList }">
-			<div class="panel panel-default" style="margin: 20px auto auto auto;">
+			<div class="panel panel-default" style="margin: 20px auto auto auto;" id="${merchantOrder.orderId }">
 				<div class="panel-heading">
 				<div class="checkbox-inline" style="margin: auto auto 15px auto;">
 					<label><input type="checkbox"></label>
@@ -43,6 +43,14 @@
 								<td>${food.foodSum }</td>
 							</tr>
 						</c:forEach>
+						<tr style="margin-top:5px;">
+							<td colspan="2" align="right">
+								<button type="button" class="btn btn-danger btn-xs">不接</button>
+							</td>
+							<td colspan="2" align="right">
+								<button type="button" class="btn btn-primary btn-xs">接了</button>
+							</td>
+						</tr>
 					</table>
 				</div>
 			</div>

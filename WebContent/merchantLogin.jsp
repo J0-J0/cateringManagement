@@ -54,28 +54,34 @@ $(document).ready(function(){
 						<p>本页面仅开放给商家，学生登录当心我封你账号！</p>
 						<footer>jojo</footer>
 					</blockquote>
-					
-					<form class="form-horizontal" role="form" action = "${pageContext.request.contextPath }/merchantLogin"
+
+					<form class="form-horizontal" role="form"
+						action="${pageContext.request.contextPath }/merchantInfo"
 						style="margin: 40px auto 60px 10px;" method="post">
+
+						<input type="text" id="action" name="action" value="login"
+							style="display: none;" />
 						<div class="form-group">
-							<div class="col-sm-10"><font color="red">${error }</font>
+							<div class="col-sm-10">
+								<font color="red">${error }</font>
 							</div>
 						</div>
 						<div class="form-group">
 							<div class="col-sm-10">
-								<input type="text" class="form-control" id="merchantName" name = "merchantName"
-									placeholder="在这里输用户名">
+								<input type="text" class="form-control" id="merchantName"
+									name="merchantName" placeholder="在这里输用户名">
 							</div>
 						</div>
 						<div class="form-group">
 							<div class="col-sm-10">
-								<input type="password" class="form-control" id="password" name ="password"  
-									placeholder="在这里输密码">
+								<input type="password" class="form-control" id="password"
+									name="password" placeholder="在这里输密码">
 							</div>
 						</div>
 						<div class="form-group">
 							<div class="col-sm-6">
-								<button type="submit" class="btn btn-primary" style="margin:auto auto auto 40px;">登录</button>
+								<button type="submit" class="btn btn-primary"
+									style="margin: auto auto auto 40px;">登录</button>
 							</div>
 							<div class="col-sm-6">
 								<button class="btn btn-default">重置</button>
