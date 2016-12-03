@@ -1,6 +1,7 @@
 package com.jojo.web;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 
 import javax.servlet.ServletException;
@@ -32,13 +33,61 @@ public class AlterOrderServlet extends HttpServlet{
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if(request.getParameter("action").equals("add")){
+		String action = request.getParameter("action");
+		
+		if("add".equals(action)){
 			addOrder(request, response);
 			response.sendRedirect(request.getContextPath()+"/userMain.jsp");
 			return ;
+		
+		}else if("updateStatus".equals(action)){
+			updateOrderStatus(request, response);
+			return ;  // ajax请求，犯不着跳转页面
 		}
 	}
 
+	
+	
+	/**
+	 * 更新订单
+	 * @param request
+	 * @param response
+	 * @throws IOException 
+	 */
+	private void updateOrderStatus(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		int status = Integer.parseInt(request.getParameter("status"));
+		int orderId = Integer.parseInt(request.getParameter("orderId"));
+		
+		DaoFactory daoFactory = new DaoFactory();
+		try {
+			daoFactory.beginConnectionScope();
+			daoFactory.beginTransaction();
+			
+			OrderDao orderDao = daoFactory.createOrderDao();
+			int row = orderDao.updateOrder(orderId, status);
+			if(row == 1){
+				response.setContentType("text/html");
+				response.setCharacterEncoding("UTF-8");
+				
+				PrintWriter out = new PrintWriter(response.getWriter(), true);
+				out.println("修改成功!");
+				out.close();
+			}
+			
+			daoFactory.endTransaction();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			daoFactory.abortTransaction();
+		}finally{
+			daoFactory.endConnectionScope();
+		}
+	}
+
+	/**
+	 * 添加订单
+	 * @param request
+	 * @param response
+	 */
 	protected void addOrder(HttpServletRequest request, HttpServletResponse response) {
 		int foodId = Integer.parseInt(request.getParameter("foodId"));
 		int userId = Integer.parseInt(request.getParameter("userId"));

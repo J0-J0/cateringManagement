@@ -14,7 +14,7 @@
 	
 	<div id="orderListDIV">
 		<c:forEach var="merchantOrder" items="${orderList }">
-			<div class="panel panel-default" style="margin: 20px auto auto auto;" id="${merchantOrder.orderId }">
+			<div class="panel panel-default" style="margin: 20px auto auto auto;">
 				<div class="panel-heading">
 				<div class="checkbox-inline" style="margin: auto auto 15px auto;">
 					<label><input type="checkbox"></label>
@@ -28,7 +28,7 @@
 					<strong>总金额 : </strong>
 					<font id="sum">${merchantOrder.sum }</font>
 				</span>
-				<button type="button" class="close">
+				<button type="button" class="close" id="${merchantOrder.orderId }">
 					<span aria-hidden="true">&times;</span> <span class="sr-only">Close</span>
 				</button>
 			</div>
@@ -44,11 +44,12 @@
 							</tr>
 						</c:forEach>
 						<tr style="margin-top:5px;">
-							<td colspan="2" align="right">
-								<button type="button" class="btn btn-danger btn-xs">不接</button>
-							</td>
-							<td colspan="2" align="right">
-								<button type="button" class="btn btn-primary btn-xs">接了</button>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td align="right">
+								<button type="button" class="btn btn-primary btn-sm" id="${merchantOrder.orderId }"
+									onclick="orderTaking()">接了</button>
 							</td>
 						</tr>
 					</table>
@@ -91,6 +92,22 @@
 	
 </body>
 <script type="text/javascript">
+
+function orderTaking(){
+	var srcElement = $(window.event.srcElement);
+	var order = srcElement.parent().parent().parent().parent().parent().parent();
+	$.ajax({
+		url: "alterOrder",
+		type: "POST",
+		data: {
+			action: "updateStatus",
+			orderId: srcElement.attr("id"),
+			status: 1
+		}
+	}).done(function(data, textStatus, jqXHR){
+		order.css("display", "none");
+	});
+}
 
 	// keep it simple and stupid !
 	$(document).ready(function() {

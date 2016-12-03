@@ -26,6 +26,42 @@ public class OrderDao {
 		this.conn = conn;
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * 生成Order，用于填充addOrder(), 初始状态下的order，没有主键，没有状态... 方便编码，改善视觉体验。
+	 * 
+	 * @param food
+	 * @param user
+	 * @return
+	 */
+	public Order createOrder(Food food, User user, Merchant merchant, int num) {
+		Order resultOrder = new Order();
+		
+		resultOrder.setUserId(user.getUserId());
+		resultOrder.setUserIdCard(user.getUserIdCard());
+		resultOrder.setMerchantId(merchant.getMerchantId());
+		resultOrder.setMerchantName(merchant.getMerchantName());
+		// 未发货，默认为0
+		resultOrder.setStatus(0);
+		resultOrder.setSum(food.getFoodPrice()*(double)num);
+		resultOrder.setAddress(user.getAddress());
+		// 设置时间
+		java.util.Date addTime = new java.util.Date(System.currentTimeMillis());
+		resultOrder.setAddTime(addTime);
+
+		return resultOrder;
+	}
 	/**
 	 * 增加订单，成功返回 1
 	 * 
@@ -98,7 +134,7 @@ public class OrderDao {
 	 */
 	public int selectOrderId(Order order) throws SQLException{
 		String sql = "select orderId from t_order "
-						  + "where userId = ? and merchantId = ? and status = ?";
+						  + "where userId = ? and merchantId = ? and status = ? and addTime = ?";
 		PreparedStatement pstmt = conn.prepareStatement(sql, 
 				ResultSet.TYPE_FORWARD_ONLY, 
 				ResultSet.CONCUR_READ_ONLY,
@@ -106,6 +142,7 @@ public class OrderDao {
 		pstmt.setInt(1, order.getUserId());
 		pstmt.setInt(2, order.getMerchantId());
 		pstmt.setInt(3, order.getStatus());
+		pstmt.setTimestamp(4, new Timestamp(order.getAddTime().getTime()));
 		ResultSet rs = pstmt.executeQuery();
 		
 		int orderId = 0;
@@ -149,7 +186,7 @@ public class OrderDao {
 								+ " `f`.`foodSum` AS `foodSum`"
 								+ "  FROM"
 								+ "  (`t_order` `o`   JOIN `t_orderfood` `f` ON ((`o`.`orderId` = `f`.`orderId`)))"
-								+ "  WHERE   (`o`.`status` = ? and userId = ?) limit ?,?";
+								+ "  WHERE   (`o`.`status` = ? and userId = ?) order by `o`.`addTime` desc limit ?,?";
 		}else{
 			sql = "SELECT"
 					+ " `o`.`orderId` AS `orderId`,"
@@ -169,7 +206,7 @@ public class OrderDao {
 					+ " `f`.`foodSum` AS `foodSum`"
 					+ "  FROM"
 					+ "  (`t_order` `o`   JOIN `t_orderfood` `f` ON ((`o`.`orderId` = `f`.`orderId`)))"
-					+ "  WHERE   (`o`.`status` = ? and merchantId = ?) limit ?,?";
+					+ "  WHERE   (`o`.`status` = ? and merchantId = ?) order by `o`.`addTime` desc limit ?,?";
 		}
 		
 		PreparedStatement pstmt = conn.prepareStatement(sql, 
@@ -179,7 +216,7 @@ public class OrderDao {
 		pstmt.setInt(1, status);
 		pstmt.setInt(2, id);
 		pstmt.setInt(3, (page - 1) * 10);
-		pstmt.setInt(4, (page - 1) * 10 + 9);
+		pstmt.setInt(4, (page - 1) * 10 + 10);
 
 		ResultSet rs = pstmt.executeQuery();
 		Order o = new Order();
@@ -281,7 +318,7 @@ public class OrderDao {
 	 * @return
 	 * @throws SQLException
 	 */
-	public int updateOrder(Order order, int status) throws SQLException {
+	public int updateOrder(int orderId, int status) throws SQLException {
 		String sql = "update t_order set status = ?, ackTime = ? where orderId = ?";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setInt(1, status);
@@ -292,33 +329,8 @@ public class OrderDao {
 		} else {
 			pstmt.setTimestamp(2, null);
 		}
-		pstmt.setInt(3, order.getOrderId());
+		pstmt.setInt(3, orderId);
 		int row = pstmt.executeUpdate();
 		return row;
-	}
-
-	/**
-	 * 生成Order，用于填充addOrder(), 初始状态下的order，没有主键，没有状态... 方便编码，改善视觉体验。
-	 * 
-	 * @param food
-	 * @param user
-	 * @return
-	 */
-	public Order createOrder(Food food, User user, Merchant merchant, int num) {
-		Order resultOrder = new Order();
-		
-		resultOrder.setUserId(user.getUserId());
-		resultOrder.setUserIdCard(user.getUserIdCard());
-		resultOrder.setMerchantId(merchant.getMerchantId());
-		resultOrder.setMerchantName(merchant.getMerchantName());
-		// 未发货，默认为0
-		resultOrder.setStatus(0);
-		resultOrder.setSum(food.getFoodPrice()*(double)num);
-		resultOrder.setAddress(user.getAddress());
-		// 设置时间
-		java.util.Date addTime = new java.util.Date(System.currentTimeMillis());
-		resultOrder.setAddTime(addTime);
-
-		return resultOrder;
 	}
 }
