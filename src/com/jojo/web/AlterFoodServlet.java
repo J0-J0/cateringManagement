@@ -1,6 +1,7 @@
 package com.jojo.web;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 import java.util.List;
@@ -57,6 +58,10 @@ public class AlterFoodServlet extends HttpServlet{
 			request.getRequestDispatcher("merchantMain.jsp").forward(request, response);
 			return;
 		
+		}else if(action.equals("selectFoodNum")){
+			selectFoodNum(request, response);
+			return ;  // AJAX请求，所以就不做跳转处理了
+			
 		// 显示updateFood.jsp，另外与add不同，要预先显示一部分数据
 		}else if(action.equals("showUpdate")){
 			showUpdateFood(request, response);
@@ -69,6 +74,46 @@ public class AlterFoodServlet extends HttpServlet{
 			updateFood(request, response);
 			response.sendRedirect("merchantMain.jsp");
 			return;
+		}
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * 按merchantId查找食品数量，个人觉得这个方法可能不需要
+	 * 先这么写着，然后在优化吧
+	 * @param request
+	 * @param response
+	 * @throws IOException 
+	 */
+	private void selectFoodNum(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		int merchantId = Integer.parseInt(request.getParameter("merchantId"));
+		
+		DaoFactory daoFactory = new DaoFactory();
+		try {
+			daoFactory.beginConnectionScope();
+			daoFactory.beginTransaction();
+			
+			FoodDao foodDao = daoFactory.createFoodDao();
+			int num = foodDao.selectFoodNum(merchantId);
+			
+			response.setContentType("text/html");
+			response.setCharacterEncoding("UTF-8");
+			PrintWriter out = new PrintWriter(response.getWriter(), true);
+			out.println(num);
+			out.close();
+			
+			daoFactory.endTransaction();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			daoFactory.abortTransaction();
+		}finally{
+			daoFactory.endConnectionScope();
 		}
 	}
 

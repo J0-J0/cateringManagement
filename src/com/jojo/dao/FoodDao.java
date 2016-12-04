@@ -220,6 +220,27 @@ public class FoodDao {
 	}
 	
 	/**
+	 * 根据merchantId来查询食品数目，失败返回0
+	 * @param merchantId
+	 * @return
+	 * @throws SQLException 
+	 */
+	public int selectFoodNum(int merchantId) throws SQLException {
+		String sql = "select count(foodId) from t_food where merchantId = " + merchantId;
+		PreparedStatement pstmt = conn.prepareStatement(sql, 
+				ResultSet.TYPE_FORWARD_ONLY, 
+				ResultSet.CONCUR_READ_ONLY,
+				ResultSet.CLOSE_CURSORS_AT_COMMIT);
+		ResultSet rs = pstmt.executeQuery();
+		
+		int result = 0;
+		if(rs.next()){
+			result = rs.getInt(1);
+		}
+		return result;
+	}
+	
+	/**
 	 * 根据merchantId查出所有食品，按类别排序，是嵌套的list
 	 * 相应的，还会有一个按类别查询的方法
 	 * @param merchantId

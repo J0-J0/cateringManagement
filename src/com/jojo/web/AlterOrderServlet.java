@@ -43,11 +43,47 @@ public class AlterOrderServlet extends HttpServlet{
 		}else if("updateStatus".equals(action)){
 			updateOrderStatus(request, response);
 			return ;  // ajax请求，犯不着跳转页面
+		
+		}else if("selectOrderNum".equals(action)){
+			selectOrderNum(request, response);
+			return ;
 		}
 	}
 
 	
-	
+	/**
+	 * 按状态与商家id查询订单的数目
+	 * @param request
+	 * @param response
+	 * @throws IOException 
+	 */
+	private void selectOrderNum(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		int status = Integer.parseInt(request.getParameter("status"));
+		int merchantId = Integer.parseInt(request.getParameter("merchantId"));
+		
+		DaoFactory daoFactory = new DaoFactory();
+		try {
+			daoFactory.beginConnectionScope();
+			daoFactory.beginTransaction();
+			
+			OrderDao orderDao = daoFactory.createOrderDao();
+			int num = orderDao.selectOrderCounts(merchantId, status, false);
+
+			response.setContentType("text/html");
+			response.setCharacterEncoding("UTF-8");
+			PrintWriter out = new PrintWriter(response.getWriter(), true);
+			out.println(num);
+			out.close();
+
+			daoFactory.endTransaction();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			daoFactory.abortTransaction();
+		}finally{
+			daoFactory.endConnectionScope();
+		}
+	}
+
 	/**
 	 * 更新订单
 	 * @param request

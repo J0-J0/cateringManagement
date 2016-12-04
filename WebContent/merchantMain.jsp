@@ -36,8 +36,12 @@
 						class="btn btn-warning" role="button"
 						style="margin: 10px auto auto auto; width: 100%;">
 						<h5>Hi ! &nbsp;&nbsp;${currentMerchant.merchantName}</h5>
-					</a>
+					</a> 
+					<input id="merchantId" type="text"
+						value="${currentMerchant.merchantId}" style="display: none;" />
 				</div>
+				
+				
 				<div style="margin: 20px auto auto auto;">
 					<ul class="list-group">
 						<li class="list-group-item"><span class="label label-success">累计收入</span>&nbsp;&nbsp;
@@ -59,10 +63,10 @@
 					<ul class="nav nav-pills nav-stacked" role="tablist">
 						<li role="presentation"><a
 							href="${pageContext.request.contextPath }/orderList?id=${currentMerchant.merchantId}&status=0&flag=flase&page=1"
-							class="btn btn-default"> 待处理<span class="badge">42</span></a></li>
+							class="btn btn-default"> 待处理<span class="badge" id="pending"></span></a></li>
 						<li role="presentation"><a
 							href="${pageContext.request.contextPath }/orderList?id=${currentMerchant.merchantId}&status=1&flag=flase&page=1"
-							class="btn btn-default"> 等待收货<span class="badge">42</span></a></li>
+							class="btn btn-default"> 等待收货<span class="badge" id="waiting">42</span></a></li>
 						<li role="presentation"><a
 							href="${pageContext.request.contextPath }/orderList?id=${currentMerchant.merchantId}&status=2&flag=flase&page=1"
 							class="btn btn-default"> 已完成</a></li>
@@ -77,10 +81,10 @@
 					<ul class="nav nav-pills nav-stacked" role="tablist">
 						<li role="presentation"><a
 							href="${pageContext.request.contextPath }/alterFood?action=selectList&merchantId=${currentMerchant.merchantId}"
-							class="btn btn-default"> 已发布<span class="badge">42</span></a></li>
+							class="btn btn-default"> 已发布<span class="badge" id="published"></span></a></li>
 						<li role="presentation"><a
 							href="${pageContext.request.contextPath }/alterFood?action=showAdd"
-							class="btn btn-default"> 添加食品<span class="badge">42</span></a></li>
+							class="btn btn-default"> 添加食品<span class="badge"></span></a></li>
 					</ul>
 				</div>
 
@@ -228,6 +232,22 @@
 	$(document).ready(function(){
 		$("button.btn-block").click(function(){
 			$("#updateMerchantForm").submit();
+		});
+		
+		
+	$("#pending").load("alterOrder", {
+			action : "selectOrderNum",
+			merchantId : $("#merchantId").val(),
+			status : 0
+		});
+	$("#waiting").load("alterOrder", {
+			action : "selectOrderNum",
+			merchantId : $("#merchantId").val(),
+			status : 1
+		});
+	$("#published").load("alterFood", {
+			action : "selectFoodNum",
+			merchantId : $("#merchantId").val(),
 		});
 	});
 </script>
