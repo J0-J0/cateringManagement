@@ -19,6 +19,12 @@ import com.jojo.dao.DaoFactory;
 import com.jojo.dao.OrderDao;
 import com.jojo.model.Order;
 
+
+/**
+ * 这个类写的太乱了
+ * @author flash.J
+ *
+ */
 public class OrderListServlet extends HttpServlet {
 
 	/**
@@ -46,12 +52,13 @@ public class OrderListServlet extends HttpServlet {
 			
 			OrderDao orderDao = daoFactory.createOrderDao();
 			List<Order> orderList =  orderDao.selectOrderByStatus(id, status, flag, page);
+			daoFactory.endTransaction();
 			
-			// 是否AJAX请求
-			if (isAJAX == null || "".equals(isAJAX)) {
+			if (isAJAX == null || "".equals(isAJAX)) {			// 是否AJAX请求
 				
 				// 查询并插入总页数
 				int totalPages = orderDao.selectOrderCounts(id, status, flag);
+				daoFactory.endTransaction();
 				if(totalPages % 10 == 0){
 					totalPages /= 10;
 				}else{
@@ -60,16 +67,29 @@ public class OrderListServlet extends HttpServlet {
 				request.setAttribute("totalPages", totalPages);
 				request.setAttribute("orderList", orderList);
 				
-				// 根据这个flag发往指定的页面
+				// 发往用户或商家
 				if (flag == true) {
-					request.setAttribute("xxxjsp", "background/userStatus.jsp");
+					// 根据status选择相应的jsp
+					if (status == 0) {
+						request.setAttribute("xxxjsp", "background/userStatus0.jsp");
+					} else if (status == 1) {
+						request.setAttribute("xxxjsp", "background/userStatus1.jsp");
+					} else if (status == 2) {
+						request.setAttribute("xxxjsp", "background/userStatus2.jsp");
+					}
 					request.getRequestDispatcher("userMain.jsp").forward(request, response);
-					daoFactory.endTransaction();
 					return;
+					
 				} else {
-					request.setAttribute("xxxjsp", "background/merchantStatus.jsp");
+					// 根据status选择相应的jsp
+					if (status == 0) {
+						request.setAttribute("xxxjsp", "background/merchantStatus0.jsp");
+					} else if (status == 1) {
+						request.setAttribute("xxxjsp", "background/merchantStatus1.jsp");
+					} else if (status == 2) {
+						request.setAttribute("xxxjsp", "background/merchantStatus2.jsp");
+					}
 					request.getRequestDispatcher("merchantMain.jsp").forward(request, response);
-					daoFactory.endTransaction();
 					return;
 				}
 				

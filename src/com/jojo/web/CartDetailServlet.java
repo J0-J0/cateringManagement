@@ -9,12 +9,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.jojo.dao.CartDao;
 import com.jojo.dao.DaoFactory;
-import com.jojo.dao.FoodDao;
-import com.jojo.model.Food;
+import com.jojo.model.Cart;
 
 
-public class MerchantDetailServlet extends HttpServlet {
+public class CartDetailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -22,21 +22,18 @@ public class MerchantDetailServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String merchantName = request.getParameter("merchantName");
-		int merchantId = Integer.parseInt(request.getParameter("merchantId"));
-		
+		int userId = Integer.parseInt(request.getParameter("userId"));
 		DaoFactory daoFactory = new DaoFactory();
 		try {
 			daoFactory.beginConnectionScope();
 			daoFactory.beginTransaction();
 			
-			FoodDao foodDao = daoFactory.createFoodDao();
-			List<List<Food>> foodTypeList = foodDao.selectFoodList(merchantId);
+			CartDao cartDao = daoFactory.createCartDao();
+			List<List<Cart>> cartList = cartDao.selectCart(userId);
 			
-			request.setAttribute("foodTypeList", foodTypeList);
-			request.setAttribute("merchantName", merchantName);
-			request.setAttribute("merchantId", merchantId);
-			request.getRequestDispatcher("merchantDetail.jsp").forward(request, response);
+			request.setAttribute("cartList", cartList);
+			request.getRequestDispatcher("userCart.jsp").forward(request, response);
+			
 			daoFactory.endTransaction();
 		} catch (SQLException e) {
 			e.printStackTrace();

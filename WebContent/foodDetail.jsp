@@ -75,7 +75,7 @@
 					<ul class="dropdown-menu" role="menu">
 						<li><a
 							href="${pageContext.request.contextPath }/userMain.jsp">我的主页</a></li>
-						<li><a href="#">购物车</a></li>
+						<li><a href="${pageContext.request.contextPath }/cartDetail?userId=${currentUser.userId}">购物车</a></li>
 						<li class="divider"></li>
 						<li><a href="#">退出</a></li>
 					</ul></li>

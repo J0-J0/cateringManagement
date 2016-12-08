@@ -27,6 +27,14 @@
     <servlet-name>alterFoodServlet</servlet-name>
     <url-pattern>/alterFood</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>alterCartServlet</servlet-name>
+    <servlet-class>com.jojo.web.AlterCartServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>alterCartServlet</servlet-name>
+    <url-pattern>/alterCart</url-pattern>
+  </servlet-mapping>
   
   
   <servlet>
@@ -36,6 +44,14 @@
   <servlet-mapping>
     <servlet-name>foodDetailServlet</servlet-name>
     <url-pattern>/foodDetail</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>cartDetailServlet</servlet-name>
+    <servlet-class>com.jojo.web.CartDetailServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>cartDetailServlet</servlet-name>
+    <url-pattern>/cartDetail</url-pattern>
   </servlet-mapping>
   <servlet>
     <servlet-name>merchantDetailServlet</servlet-name>

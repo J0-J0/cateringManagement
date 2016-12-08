@@ -11,10 +11,19 @@ public class Cart {
 	private int userId;
 	private int foodId;
 	private int merchantId;
+	private String merchantName;
 	private String foodName;
 	private double foodPrice;     //单价
 	private int num;
 	private double sum;               //总价
+
+	public String getMerchantName() {
+		return merchantName;
+	}
+
+	public void setMerchantName(String merchantName) {
+		this.merchantName = merchantName;
+	}
 
 	public int getCartId() {
 		return cartId;

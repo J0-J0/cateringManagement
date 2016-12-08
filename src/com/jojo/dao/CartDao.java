@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.jojo.model.Cart;
+import com.jojo.model.Food;
 
 public class CartDao {
 	private Connection conn = null;
@@ -22,6 +23,39 @@ public class CartDao {
 		this.conn = conn;
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * 创建购物车，为往数据库增加购物车做准备
+	 * @param merchantId
+	 * @param merchantName
+	 * @param userId
+	 * @param userName
+	 * @param foodId
+	 * @return
+	 */
+	public Cart createCart(int merchantId, String merchantName, int userId, Food food) {
+		Cart cart = new Cart();
+		
+		cart.setFoodId(food.getFoodId());
+		cart.setFoodName(food.getFoodName());
+		cart.setFoodPrice(food.getFoodPrice());
+		cart.setMerchantId(merchantId);
+		cart.setMerchantName(merchantName);
+		cart.setUserId(userId);
+		cart.setNum(1);   // 第一次加入购物车，只会是1，也不对，日后有空慢慢更新吧
+		cart.setSum(food.getFoodPrice());
+		
+		return cart;
+	}
 	/**
 	 * 增删查改之增，成功返回 1
 	 * 
@@ -29,15 +63,16 @@ public class CartDao {
 	 * @throws SQLException
 	 */
 	public int addCart(Cart cart) throws SQLException {
-		String sql = "insert into t_cart values(null, ?, ?, ?, ?, ?, ?, ?)";
+		String sql = "insert into t_cart values(null, ?, ?, ?, ?, ?, ?, ?, ?)";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setInt(1, cart.getUserId());
 		pstmt.setInt(2, cart.getFoodId());
 		pstmt.setInt(3, cart.getMerchantId());		
-		pstmt.setString(4, cart.getFoodName());
-		pstmt.setDouble(5, cart.getFoodPrice());
-		pstmt.setInt(6, cart.getNum());
-		pstmt.setDouble(7, cart.getSum());
+		pstmt.setString(4, cart.getMerchantName());		
+		pstmt.setString(5, cart.getFoodName());
+		pstmt.setDouble(6, cart.getFoodPrice());
+		pstmt.setInt(7, cart.getNum());
+		pstmt.setDouble(8, cart.getSum());
 
 		int row = pstmt.executeUpdate();
 		return row;
@@ -72,55 +107,61 @@ public class CartDao {
 		pstmt.setInt(1, userId);
 		pstmt.setInt(2, foodId);
 		ResultSet rs = pstmt.executeQuery();
-		try {
-			if (rs.next()) {
-				int cartId = rs.getInt("userId");
-				if (cartId != 0)
-					result = true;
-				else
-					result = false;
-			}
-		} finally {
-			if (rs != null) {// 关掉！
-				rs.close();
-			}
+		
+		if (rs.next()) {
+			int cartId = rs.getInt(1);
+			if (cartId != 0)
+				result = true;
+			else
+				result = false;
 		}
+	
 		return result;
 	}
 
 	/**
 	 * 增删查改之查，查一堆
+	 * 此处要将查出的购物车商品按照merchantId进行分类，
+	 * 这样方便填充userCart.jsp
 	 * 
 	 * @param userId
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<Cart> selectCart(int userId) throws SQLException {
+	public List<List<Cart>> selectCart(int userId) throws SQLException {
+		List<List<Cart>> cartList = new ArrayList<List<Cart>>();
 		List<Cart> list = null;
-		String sql = "select * from t_cart where userId = " + userId;
+		
+		String sql = "select * from t_cart where userId = " + userId +" order by merchantId";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		ResultSet rs = pstmt.executeQuery();
-		try {
-			list = new ArrayList<Cart>();
-			while (rs.next()) {
-				Cart cart = new Cart();
-				cart.setCartId(rs.getInt("cartId"));
-				cart.setUserId(rs.getInt("userId"));
-				cart.setFoodId(rs.getInt("foodId"));
-				cart.setMerchantId(rs.getInt("merchantId"));
-				cart.setFoodName(rs.getString("foodName"));
-				cart.setFoodPrice(rs.getDouble("foodPrice"));
-				cart.setNum(rs.getInt("num"));
-				cart.setSum(rs.getDouble("sum"));
 
+		while (rs.next()) {
+			Cart cart = new Cart();
+			cart.setCartId(rs.getInt("cartId"));
+			cart.setUserId(rs.getInt("userId"));
+			cart.setFoodId(rs.getInt("foodId"));
+			cart.setMerchantId(rs.getInt("merchantId"));
+			cart.setMerchantName(rs.getString("merchantName"));
+			cart.setFoodName(rs.getString("foodName"));
+			cart.setFoodPrice(rs.getDouble("foodPrice"));
+			cart.setNum(rs.getInt("num"));
+			cart.setSum(rs.getDouble("sum"));
+
+			if(list == null){
+				list = new ArrayList<Cart>();
 				list.add(cart);
+				cartList.add(list);
+			}else if(list.get(0).getMerchantId() == cart.getMerchantId()){
+				list.add(cart);
+			}else{
+				list = new ArrayList<Cart>();
+				list.add(cart);
+				cartList.add(list);
 			}
-		} finally {
-			// 关掉！
-			if (rs != null)
-				rs.close();
 		}
-		return list;
+
+		return cartList;
 	}
 
 	/**
@@ -129,15 +170,13 @@ public class CartDao {
 	 * @return
 	 * @throws SQLException 
 	 */
-	public int updateCart(Cart cart, int num) throws SQLException {
-		String sql = "update t_cart set num = ? sum = ? where cartId = ?";
+	public int updateCart(int cartId, int num, float sum) throws SQLException {
+		String sql = "update t_cart set num = ?, sum = ? where cartId = ?";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setInt(1, num);
 		
-		//修改总价
-		double sum = cart.getFoodPrice() * num;
 		pstmt.setDouble(2, sum);
-		pstmt.setInt(3, cart.getCartId());
+		pstmt.setInt(3, cartId);
 		
 		int row = pstmt.executeUpdate();
 		return row;

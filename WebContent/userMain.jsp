@@ -75,7 +75,7 @@
 					data-toggle="dropdown">个人中心 <span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
 						<li><a href="${pageContext.request.contextPath }/userMain.jsp">我的主页</a></li>
-						<li><a href="#">购物车</a></li>
+						<li><a href="${pageContext.request.contextPath }/cartDetail?userId=${currentUser.userId}">购物车</a></li>
 						<li class="divider"></li>
 						<li><a href="#">退出</a></li>
 					</ul></li>
@@ -173,7 +173,7 @@
 			  <div class="panel-body">
 			   <!-- 订单信息导航 -->
 					 	<ul class="nav nav-pills" role="tablist">
-						  <li role="presentation" class="active">
+						  <li role="presentation">
 						  		<a href="${pageContext.request.contextPath }/orderList?id=${currentUser.userId}&status=0&flag=true&page=1">已付款</a></li>
 						  <li role="presentation">
 						  		<a href="${pageContext.request.contextPath }/orderList?id=${currentUser.userId}&status=1&flag=true&page=1">待处理</a></li>
@@ -182,7 +182,7 @@
 						</ul>
 						
 						<%if(request.getAttribute("xxxjsp") != null){ %>
-							<jsp:include page="background/userStatus.jsp"></jsp:include>	
+							<jsp:include page="${xxxjsp }"></jsp:include>
 						<%}else{ %>
 							<div class="jumbotron" style="margin-top: 20px;">
 							  <h2>点击上方按钮，查询自己的订单~</h2>

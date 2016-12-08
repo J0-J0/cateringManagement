@@ -47,7 +47,7 @@
 				<div class="collapse navbar-collapse"
 					id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
-						<li class="active"><a href="#">首页</a></li>
+						<li class="active"><a href="${pageContext.request.contextPath}/index">首页</a></li>
 						<li><a href="#">Link</a></li>
 					</ul>
 					<form class="navbar-form navbar-left" role="search">
@@ -105,6 +105,9 @@
 
 <div class="jumbotron">
   <h1 style="text-align: center;">${merchantName }</h1>
+  <input type="hidden" id="merchantId" value="${merchantId}" />
+  <input type="hidden" id="merchantName" value="${merchantName}" />
+  <input type="hidden" id="userId" value="${currentUser.userId}" />
 </div>
 
 
@@ -119,22 +122,23 @@
 		<c:forEach var="food" items="${foodType}">
 			 <div class="col-md-3 column">
 			    <div class="thumbnail">
-							<a
-								href="${pageContext.request.contextPath }/foodDetail?foodId=${food.foodId}&merchantName=${merchantName}">
-								<img data-src="holder.js/300x300" alt="300x300"
-								style="height: 300px; width: 300px;">
-							</a>
-							<div class="caption">
+						<a
+							href="${pageContext.request.contextPath }/foodDetail?foodId=${food.foodId}&merchantName=${merchantName}">
+							<img data-src="holder.js/300x300" alt="300x300"
+							style="height: 300px; width: 300px;">
+						</a>
+						<div class="caption">
 				      
-				      	<input style="display:none;" id="foodFoodId" value="${food.foodId }" />
 				        <h3 style="display:inline;" id = "foodFoodName">${food.foodName }</h3>
 				        <h3 style="display:inline;">&nbsp;&nbsp;&nbsp;<small>￥：</small><small id = "foodFoodPrice">${food.foodPrice }</small></h3>
 				       
 				        <p>${food.description }</p>
 				        <p>剩余数量：${food.num }</p>
 				        <p>
-					        <a href="#" class="btn btn-primary" role="button" style="margin-left: 10px;" >加购物车</a>
-					        <a href="#" class="btn btn-default" role="button" style="margin-left: 45px;" >放收藏夹</a>
+							<a id="${food.foodId}" class="btn btn-primary" role="button"
+								style="margin-left: 10px;" onclick="cart()" >加购物车</a>
+							 <a id="${food.foodId}" class="btn btn-default" role="button" 
+							 style="margin-left: 45px;" >放收藏夹</a>
 					    </p>
 				      </div>
 				</div>
@@ -211,29 +215,45 @@
 	</div>
 </body>
 <script type="text/javascript">
-$(document).ready(function(){
-	// 模态框登录按钮设置点击事件
-	$("#login").click(function(){
-		$("#userLoginForm").submit();
+	$(document).ready(function() {
+		// 模态框登录按钮设置点击事件
+		$("#login").click(function() {
+			$("#userLoginForm").submit();
+		});
+
+		// 警告框、登录注册按钮、我的主页按钮 
+		if ($("#status").val() == "null") {
+			$("#view4").html("用户民或密码不能为空！");
+
+		} else if ($("#status").val() == "failed") {
+			$("#view4").html("用户民或密码错误！");
+
+		} else if ($("#status").val() == "success") {
+
+			// 关闭警告框 
+			$("#view3").css("display", "none");
+			// 关闭登录按钮
+			$("#view1").css("display", "none");
+			// 开启我的主页按钮
+			$("#view2").css("display", "block");
+		}
 	});
-	
-	
-	// 警告框、登录注册按钮、我的主页按钮 
-	if($("#status").val() == "null"){
-		$("#view4").html("用户民或密码不能为空！");
-		
-	}else if($("#status").val() == "failed"){
-		$("#view4").html("用户民或密码错误！");
-		
-	}else if($("#status").val() == "success"){
-		
-		// 关闭警告框 
-		$("#view3").css("display", "none");
-		// 关闭登录按钮
-		$("#view1").css("display", "none");
-		// 开启我的主页按钮
-		$("#view2").css("display", "block");
+
+	function cart(){
+		var foodId = $(window.event.srcElement).attr("id");
+		$.ajax({
+			url: "alterCart",
+			type: "POST",
+			data: {
+				action:"add",
+				foodId: foodId,
+				merchantId: $("#merchantId").val(),
+				merchantName: $("#merchantName").val(),
+				userId: $("#userId").val()
+			}
+		}).done(function(){
+			alert("添加成功 ！ ");
+		});
 	}
-});
 </script>
 </html>
