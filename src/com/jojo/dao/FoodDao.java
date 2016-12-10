@@ -14,7 +14,7 @@ import java.util.List;
 
 import com.jojo.model.Food;
 import com.jojo.model.FoodComment;
-import com.jojo.model.User;
+import com.jojo.model.Page;
 
 public class FoodDao {
 
@@ -29,6 +29,13 @@ public class FoodDao {
 		this.conn = conn;
 	}
 
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 * 商家添加食物
 	 * 
@@ -98,23 +105,30 @@ public class FoodDao {
 	 * @return
 	 * @throws SQLException
 	 */
-	public int addFoodComment(String comment, int foodId, int userId) throws SQLException {
-		// 我总有一种这个方法要重写的预感
-
-		int row = 0;
-		String sql = "insert into t_foodcomment values(null, ?,?,?,?)";
+	public int addFoodComment(FoodComment foodComment) throws SQLException {
+		String sql = "insert into t_foodcomment values(null, ?,?,?,?,?,?,?)";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
-		pstmt.setString(1, comment);
-		pstmt.setInt(2, userId);
-		pstmt.setInt(3, foodId);
-
+		pstmt.setString(1, foodComment.getComment());
+		pstmt.setInt(2, foodComment.getUserId());
+		pstmt.setString(3, foodComment.getUserName());
+		pstmt.setInt(4, foodComment.getFoodId());
+		pstmt.setString(5, foodComment.getFoodName());
 		Timestamp ts = new Timestamp(System.currentTimeMillis());
-		pstmt.setTimestamp(4, ts);
+		pstmt.setTimestamp(6, ts);
+		pstmt.setInt(7, foodComment.getIsPositive());
 
-		row = pstmt.executeUpdate();
-		return row;
+		return pstmt.executeUpdate();
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 * 删除单个食品
 	 * 
@@ -332,75 +346,49 @@ public class FoodDao {
 	}
 	
 	/**
-	 * 用户查询自己的历史评论，返回一个list
+	 * 用户或商家查询评论，返回一个list
 	 * 
+	 * 参数为食物id，是否好评，用户查的还是商家查的。
+	 * 最后，确定页数 
 	 * @param user
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<FoodComment> selectFoodComment(User user) throws SQLException {
-		List<FoodComment> list = null;
-		String sql = "select * from t_foodcomment where userId = " + user.getUserId();
-		PreparedStatement pstmt = conn.prepareStatement(sql);
-		ResultSet rs = pstmt.executeQuery();
-		try {
-			list = new ArrayList<FoodComment>();
-			while (rs.next()) {
-				FoodComment foodComment = new FoodComment();
-				foodComment.setFoodCommentId(rs.getInt("foodCommentId"));
-				foodComment.setComment(rs.getString("comment"));
-				foodComment.setUserId(rs.getInt("userId"));
-				foodComment.setFoodId(rs.getInt("foodId"));
-
-				// 时间转换
-				java.util.Date addTime = new java.util.Date(rs.getTimestamp("addTime").getTime());
-				foodComment.setAddTime(addTime);
-				foodComment.setAddTime_();
-
-				list.add(foodComment);
-			}
-		} finally {
-			// 把他关掉！
-			if (rs != null)
-				rs.next();
+	public List<FoodComment> selectFoodComment(int id, int isPositive, boolean flag, Page page) throws SQLException {
+		List<FoodComment> commentList = new ArrayList<FoodComment>();
+		StringBuilder sql = null;			// 根据flag确定用userId还是foodId
+		if (flag == true) {
+			sql = new StringBuilder("select * from t_foodcomment where userId = "+id);
+		} else {
+			sql = new StringBuilder("select * from t_foodcomment where foodId = "+id);
 		}
-		return list;
-	}
-
-	/**
-	 * 根据商品ID查询所有评论，返回list
-	 * 
-	 * @param food
-	 * @return
-	 * @throws SQLException
-	 */
-	public List<FoodComment> selectFoodComment(int  foodId) throws SQLException {
-		List<FoodComment> list = null;
-		String sql = "select * from t_foodcomment where foodId = " + foodId;
-		PreparedStatement pstmt = conn.prepareStatement(sql);
+		sql.append(" and isPositive = "+isPositive);		// 注意这里面都有个空格的
+		sql.append(" order by addTime desc");
+		sql.append(" limit "+page.getStart()+","+page.getRows());
+		
+		PreparedStatement pstmt = conn.prepareStatement(sql.toString(), 
+				ResultSet.TYPE_FORWARD_ONLY, 
+				ResultSet.CONCUR_READ_ONLY,
+				ResultSet.CLOSE_CURSORS_AT_COMMIT);
 		ResultSet rs = pstmt.executeQuery();
-		try {
-			list = new ArrayList<FoodComment>();
-			while (rs.next()) {
-				FoodComment foodComment = new FoodComment();
-				foodComment.setFoodCommentId(rs.getInt("foodCommentId"));
-				foodComment.setComment(rs.getString("comment"));
-				foodComment.setUserId(rs.getInt("userId"));
-				foodComment.setFoodId(rs.getInt("foodId"));
 
-				// 时间转换
-				java.util.Date addTime = new java.util.Date(rs.getTimestamp("addTime").getTime());
-				foodComment.setAddTime(addTime);
-				foodComment.setAddTime_();
-
-				list.add(foodComment);
-			}
-		} finally {
-			// 关掉！
-			if (rs != null)
-				rs.close();
+		
+		while (rs.next()) {
+			FoodComment foodComment = new FoodComment();
+			foodComment.setFoodCommentId(rs.getInt("foodCommentId"));
+			foodComment.setUserId(rs.getInt("userId"));
+			foodComment.setComment(rs.getString("userName"));
+			foodComment.setComment(rs.getString("comment"));
+			foodComment.setFoodId(rs.getInt("foodId"));
+			foodComment.setFoodName(rs.getString("foodName"));
+			
+			java.util.Date addTime = new java.util.Date(rs.getTimestamp("addTime").getTime());
+			foodComment.setAddTime(addTime);
+			foodComment.setIsPositive(isPositive);
+			
+			commentList.add(foodComment);
 		}
-		return list;
+		return commentList;
 	}
 
 	
@@ -452,5 +440,22 @@ public class FoodDao {
 
 		int row = pstmt.executeUpdate();
 		return row;
+	}
+	
+	
+	/**
+	 * 用户修改评论时间就不用改了
+	 * @param foodComment
+	 * @return
+	 * @throws SQLException
+	 */
+	public int updateFoodComment(FoodComment foodComment) throws SQLException{
+		String sql = "update t_foodComment set comment = ?, isPositive = ? where foodCommentId = " + foodComment.getFoodCommentId();
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, foodComment.getComment());
+		pstmt.setInt(2, foodComment.getIsPositive());
+		pstmt.setInt(3, foodComment.getFoodCommentId());
+
+		return pstmt.executeUpdate();
 	}
 }

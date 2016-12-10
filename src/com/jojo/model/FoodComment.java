@@ -1,10 +1,10 @@
 package com.jojo.model;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
  * Ê³Æ·ÆÀÂÛ
+ * 
  * @author flash.J
  *
  */
@@ -13,9 +13,35 @@ public class FoodComment {
 	private int foodCommentId;
 	private String comment;
 	private int userId;
+	private String userName;
 	private int foodId;
+	private String foodName;
 	private Date addTime;
-	private String addTime_;
+	private int isPositive;
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getFoodName() {
+		return foodName;
+	}
+
+	public void setFoodName(String foodName) {
+		this.foodName = foodName;
+	}
+
+	public int getIsPositive() {
+		return isPositive;
+	}
+
+	public void setIsPositive(int isPositive) {
+		this.isPositive = isPositive;
+	}
 
 	public int getFoodCommentId() {
 		return foodCommentId;
@@ -55,15 +81,5 @@ public class FoodComment {
 
 	public void setAddTime(Date addTime) {
 		this.addTime = addTime;
-	}
-	
-	public String getAddTime_() {
-		return addTime_;
-	}
-
-	public String setAddTime_() {
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		addTime_ = format.format(this.addTime);
-		return addTime_;
 	}
 }

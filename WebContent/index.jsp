@@ -60,7 +60,7 @@ $(document).ready(function(){
 </script>
 </head>
 <body>
-<input type="text"  id="status" style = "display: none;" value="${status }" />
+<input type="hidden"  id="status" value="${status }" />
 <div class="container">
 	<div class="row clearfix">
 		<div class="col-md-12 column">
@@ -134,7 +134,6 @@ $(document).ready(function(){
 		</div>
 	</div>
 	
-
 	<!-- 具体内容 -->
 	<div class="container" style = "margin-top: 30px;">
 		

@@ -35,6 +35,14 @@
     <servlet-name>alterCartServlet</servlet-name>
     <url-pattern>/alterCart</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>alterCommentServlet</servlet-name>
+    <servlet-class>com.jojo.web.AlterCommentServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>alterCommentServlet</servlet-name>
+    <url-pattern>/alterComment</url-pattern>
+  </servlet-mapping>
   
   
   <servlet>
