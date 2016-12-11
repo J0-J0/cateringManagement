@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="com.jojo.model.*" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -105,15 +106,19 @@
 								</div>
 								<h4>
 									<span class="label label-primary">学号</span>&nbsp;&nbsp;
-									${currentUser.userIdCard }
+									<span>${currentUser.userIdCard }</span>
+									<span class="label label-primary" style="margin-left: 15px;">性别</span>&nbsp;&nbsp;
+									<span>${currentUser.sex }</span>
 								</h4>
 								<h4>
 									<span class="label label-primary">电话</span>&nbsp;&nbsp;
-									${currentUser.userTel }
+									<span>${currentUser.userTel }</span>
+									<span class="label label-primary" style="margin-left: 15px;">年龄</span>&nbsp;&nbsp;
+									<span>${currentUser.age }</span>
 								</h4>
 								<h4>
-									<span class="label label-primary">送货地址</span>
-									&nbsp;&nbsp;${currentUser.address }
+									<span class="label label-primary">送货地址</span>&nbsp;&nbsp;
+									${currentUser.address }
 								</h4>
 							</div>
 							<div class="col-md-4 column"></div>
@@ -259,11 +264,18 @@
 
 						<div class="form-group">
 							<label class="col-sm-2 control-label">性别</label>&nbsp;&nbsp;&nbsp;
-							<label class="radio-inline"> <input type="radio"
-								name="sex" id="sex" value="男"> 男
-							</label> <label class="radio-inline"> <input type="radio"
-								name="sex" id="sex" value="option3"> 女
-							</label>
+								<label class="radio-inline"> 
+									<input type="radio" name="sex" id="sex" value="男"
+									<%if (((User) session.getAttribute("currentUser")).getSex().equals("男")) {
+										out.println(" checked");
+									}%>>男
+								</label> 
+								<label class="radio-inline"> 
+									<input type="radio" name="sex" id="sex" value="女"
+									<%if (((User) session.getAttribute("currentUser")).getSex().equals("女")) {
+										out.println(" checked");
+									}%>>女
+								</label>
 						</div>
 
 						<div class="form-group">

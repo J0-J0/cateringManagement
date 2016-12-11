@@ -64,7 +64,7 @@ $(document).ready(function(){
 <div class="container">
 	<div class="row clearfix">
 		<div class="col-md-12 column">
-	<!-- 头部导航条 -->
+		<!-- 头部导航条 -->
 			<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 			<div class="container-fluid">
 				<div class="navbar-header">

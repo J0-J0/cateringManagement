@@ -37,7 +37,7 @@ public class UserDao {
 	 * @throws SQLException
 	 */
 	public int addUser(User user) throws SQLException {
-		String sql = "insert into t_user values(null,?,?,?,?,?,?,?,?,?,?,?)";
+		String sql = "insert into t_user values(null,?,?,?,?,?,?,?,?,?,?,?,null)";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 
 		// 我现在觉得写jdbc恶心了
@@ -64,8 +64,7 @@ public class UserDao {
 
 		pstmt.setDouble(11, user.getSum());
 
-		int row = pstmt.executeUpdate();
-		return row;
+		return pstmt.executeUpdate();
 	}
 
 	/**

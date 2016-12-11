@@ -35,6 +35,7 @@ public class UserInfoServlet extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
 		String action = request.getParameter("action");
 		
 		if("update".equals(action)){
@@ -64,7 +65,6 @@ public class UserInfoServlet extends HttpServlet {
 	 * @throws ServletException 
 	 */
 	private void userLogin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setCharacterEncoding("UTF-8");
 		String userName = request.getParameter("userName");
 		String password = request.getParameter("password");
 		HttpSession session = request.getSession();
@@ -92,6 +92,8 @@ public class UserInfoServlet extends HttpServlet {
 				
 				session.setAttribute("currentUser", user);
 				session.setAttribute("status", "success");
+				
+				session.setMaxInactiveInterval(60*60);
 				response.sendRedirect("index");
 			}
 			daoFactory.endTransaction();
@@ -130,6 +132,7 @@ public class UserInfoServlet extends HttpServlet {
 				
 				HttpSession session = request.getSession();
 				session.setAttribute("currentUser", currentUser);
+				session.setMaxInactiveInterval(60*60);
 				daoFactory.endTransaction();
 			}else{
 				
@@ -186,7 +189,6 @@ public class UserInfoServlet extends HttpServlet {
 	 * @throws UnsupportedEncodingException 
 	 */
 	private void getUserInfo(User user, HttpServletRequest request) throws UnsupportedEncodingException {
-		request.setCharacterEncoding("UTF-8");
 		String userName = request.getParameter("userName");
 		String password = request.getParameter("password");
 		String userIdCard = request.getParameter("userIdCard");

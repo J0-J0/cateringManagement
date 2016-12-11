@@ -18,7 +18,6 @@
 	src="${pageContext.request.contextPath }/bootstrap3/js/bootstrap.min.js"></script>
 	
 	
-	
 <title>用户注册</title>
 <link rel="shortcut icon"
 	href="${pageContext.request.contextPath}/images/title.ico">
@@ -29,9 +28,7 @@
 
 	<div class="container">
 		<div class="row clearfix">
-			
 			<div class="col-md-2 column"></div>
-		
 			<div class="col-md-8 column">
 				<div class="page-header">
 				  <h1 style="text-align: center;">User&nbsp;Register</h1>
@@ -80,7 +77,7 @@
 							name="sex" id="sex" value="男"> 男
 						</label> 
 						<label class="radio-inline"> <input type="radio"
-							name="sex" id="sex" value="option3"> 女
+							name="sex" id="sex" value="女"> 女
 						</label>
 					</div>
 

@@ -104,18 +104,21 @@
 function takeOrder(){
 	var srcElement = $(window.event.srcElement);
 	var order = srcElement.parent().parent().parent().parent().parent().parent();
-	$.ajax({
-		url: "alterOrder",
-		type: "POST",
-		data: {
-			action: "updateStatus",
-			orderId: srcElement.attr("id"),
-			status: 2
+	
+	if (confirm("想好要确认收货了？")) {
+			$.ajax({
+				url : "alterOrder",
+				type : "POST",
+				data : {
+					action : "updateStatus",
+					orderId : srcElement.attr("id"),
+					status : 2
+				}
+			}).done(function(data, textStatus, jqXHR) {
+				order.css("display", "none");
+			});
 		}
-	}).done(function(data, textStatus, jqXHR){
-		order.css("display", "none");
-	});
-}
+	}
 
 	// keep it simple and stupid !
 	$(document).ready(function() {
@@ -124,62 +127,62 @@ function takeOrder(){
 			var currentPage = $("#currentPage").val();
 			// 检查是否可以跳转 
 			if (currentPage != 1) {
-				currentPage = currentPage - 1;    // 向左 
+				currentPage = currentPage - 1; // 向左 
 				$("#currentPage").val(currentPage);
 				$.ajax({
 					url : "orderList",
 					type : "POST",
-					data:{
-						id:$("#userId").val(),
-						status:$("#status").val(),
-						flag:"true",
-						page:currentPage,
-						isAJAX:"true"
+					data : {
+						id : $("#userId").val(),
+						status : $("#status").val(),
+						flag : "true",
+						page : currentPage,
+						isAJAX : "true"
 					}
 				}).done(function(data, textStatus, jqXHR) {
 					fill(data);
 				});
 			}
 		});
-		
+
 		// 跳转钮 
 		$("#left").click(function() {
 			var currentPage = $("#currentPage").val();
 			// 检查是否可以跳转 
 			if (currentPage != $("#totalPages").text()) {
-				currentPage = currentPage - 1 + 2;    
+				currentPage = currentPage - 1 + 2;
 				$("#currentPage").val(currentPage);
 				$.ajax({
 					url : "orderList",
 					type : "POST",
-					data:{
-						id:$("#userId").val(),
-						status:$("#status").val(),
-						flag:"true",
-						page:currentPage,
-						isAJAX:"true"
+					data : {
+						id : $("#userId").val(),
+						status : $("#status").val(),
+						flag : "true",
+						page : currentPage,
+						isAJAX : "true"
 					}
 				}).done(function(data, textStatus, jqXHR) {
 					fill(data);
 				});
 			}
 		});
-		
+
 		// 右钮 
 		$("#left").click(function() {
 			var Go = $("#Go").val();
 			// 检查是否可以跳转 
-			if (Go>= 1 && Go<= $("#totalPages").text()) {
+			if (Go >= 1 && Go <= $("#totalPages").text()) {
 				$("#currentPage").val(Go);
 				$.ajax({
 					url : "orderList",
 					type : "POST",
-					data:{
-						id:$("#userId").val(),
-						status:$("#status").val(),
-						flag:"true",
-						page:Go,
-						isAJAX:"true"
+					data : {
+						id : $("#userId").val(),
+						status : $("#status").val(),
+						flag : "true",
+						page : Go,
+						isAJAX : "true"
 					}
 				}).done(function(data, textStatus, jqXHR) {
 					fill(data);
@@ -188,7 +191,6 @@ function takeOrder(){
 		});
 	});
 
-	
 	function fill(data) {
 		var orderList = $.parseJSON(data);
 		$("#orderListDIV").empty();

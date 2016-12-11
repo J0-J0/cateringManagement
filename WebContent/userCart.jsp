@@ -22,7 +22,13 @@
 <script
 	src="${pageContext.request.contextPath }/bootstrap3/js/bootstrap.min.js"></script>
 
-
+<%
+	// 权限验证
+	if (session.getAttribute("currentUser") == null && session.getAttribute("currentMerchant") == null) {
+		response.sendRedirect(request.getContextPath() + "/index");
+		return;
+	}
+%>
 </head>
 <body>
 
