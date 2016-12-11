@@ -46,7 +46,7 @@
 					<div class="collapse navbar-collapse"
 						id="bs-example-navbar-collapse-1">
 						<ul class="nav navbar-nav">
-							<li class="active"><a href="#">首页</a></li>
+							<li class="active"><a href="${pageContext.request.contextPath }/index">首页</a></li>
 							<li><a href="#">Link</a></li>
 						</ul>
 						
@@ -130,43 +130,57 @@
 </div>
 
 
-<div class="container">
-<c:forEach var="foodType" items="${foodTypeList }">
+	<div class="container">
+		<div class="row clearfix">
+			<div class="col-md-2 column"><!-- 导航栏 -->
+				<ul class="nav nav-pills nav-stacked" role="tablist" style="position:fixed; top=125px;">
+					<li role="presentation" class="active"><a href="#">类别导航</a></li>
+					<c:forEach var="foodType" items="${foodTypeList }" varStatus="status">
+						<li role="presentation"><a href="# ${status.index}">${foodType[0].foodType}</a></li>
+					</c:forEach>
+				</ul>
+			</div>
+			
+			
+			<div class="col-md-10 column"><!-- 商品列表 -->
+				<c:forEach var="foodType" items="${foodTypeList }" varStatus="status">
+					<div class="page-header" id=" ${status.index}">
+						<h2>${foodType[0].foodType}</h2>
+					</div>
+					<div class="row clearfix">
+						<c:forEach var="food" items="${foodType}">
+							<div class="col-md-3 column">
+								<div class="thumbnail">
+									<a
+										href="${pageContext.request.contextPath }/foodDetail?foodId=${food.foodId}&merchantName=${merchantName}">
+										<img data-src="holder.js/300x300" alt="300x300"
+										style="height: 200px; width: 200px;">
+									</a>
+									<div class="caption">
 
-	<div class="page-header">
-	  <h2>${foodType[0].foodType}</h2>
+										<h3 style="display: inline;" id="foodFoodName">${food.foodName }</h3>
+										<h3 style="display: inline;">
+											&nbsp;&nbsp;&nbsp;<small>￥：</small><small id="foodFoodPrice">${food.foodPrice }</small>
+										</h3>
+
+										<p>${food.description }</p>
+										<p>剩余数量：${food.num }</p>
+										<p>
+											<a id="${food.foodId}" class="btn btn-primary" role="button"
+												 onclick="cart()">加购物车</a> <a
+												id="${food.foodId}" class="btn btn-default" role="button"
+												style="margin-left: 10px;">放收藏夹</a>
+										</p>
+									</div>
+								</div>
+							</div>
+						</c:forEach>
+					</div>
+				</c:forEach>
+			</div>
+		</div>
+
 	</div>
-	
-	<div class="row clearfix">
-		<c:forEach var="food" items="${foodType}">
-			 <div class="col-md-3 column">
-			    <div class="thumbnail">
-						<a
-							href="${pageContext.request.contextPath }/foodDetail?foodId=${food.foodId}&merchantName=${merchantName}">
-							<img data-src="holder.js/300x300" alt="300x300"
-							style="height: 300px; width: 300px;">
-						</a>
-						<div class="caption">
-				      
-				        <h3 style="display:inline;" id = "foodFoodName">${food.foodName }</h3>
-				        <h3 style="display:inline;">&nbsp;&nbsp;&nbsp;<small>￥：</small><small id = "foodFoodPrice">${food.foodPrice }</small></h3>
-				       
-				        <p>${food.description }</p>
-				        <p>剩余数量：${food.num }</p>
-				        <p>
-							<a id="${food.foodId}" class="btn btn-primary" role="button"
-								style="margin-left: 10px;" onclick="cart()" >加购物车</a>
-							 <a id="${food.foodId}" class="btn btn-default" role="button" 
-							 style="margin-left: 45px;" >放收藏夹</a>
-					    </p>
-				      </div>
-				</div>
-			 </div>
-		</c:forEach>
-	</div>
-
-</c:forEach>
-</div>
 
 
 
@@ -176,7 +190,7 @@
 
 
 
-<!-- 登录用模态框 -->
+	<!-- 登录用模态框 -->
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
 		aria-labelledby="mySmallModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-sm">
@@ -191,7 +205,8 @@
 				
 					<!-- 模态框表单 -->
 					<form class="form-horizontal" role="form" id="userLoginForm" method="post"
-						action="${pageContext.request.contextPath }/userLogin">
+						action="${pageContext.request.contextPath }/userInfo">
+						<input type="hidden" id="action" name="action" value="login" />
 						<div class="form-group">
 							<div class="col-sm-10" style="margin: auto auto auto 25px;">
 								<input type="text" class="form-control" id="userName"
@@ -255,6 +270,8 @@
 			}
 		}).done(function(){
 			alert("添加成功 ！ ");
+		}).fail(function(){
+			alert("抱歉失败了！")
 		});
 	}
 </script>

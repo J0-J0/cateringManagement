@@ -47,24 +47,20 @@ public class FoodDao {
 	 * @throws SQLException
 	 */
 	public int addFood(Food food, int merchantId) throws SQLException {
-		String sql = "insert into t_food values(null,?,?,?,?,?,?,?,?,?)";
+		String sql = "insert into t_food values(null,?,?,?,?,?,?,?)";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, food.getFoodName());
 		pstmt.setDouble(2, food.getFoodPrice());
 		pstmt.setString(3, food.getFoodType());
 		pstmt.setString(4, food.getDescription());
 		pstmt.setInt(5, food.getNum());
-		pstmt.setInt(6, food.getPositive());
-		pstmt.setInt(7, food.getNegative());
-
 		// 插入新增食品时间
 		food.setAddTime(new java.util.Date(System.currentTimeMillis()));
 		Timestamp ts = new Timestamp(food.getAddTime().getTime());
-		pstmt.setTimestamp(8, ts);
-		pstmt.setInt(9, merchantId);
+		pstmt.setTimestamp(6, ts);
+		pstmt.setInt(7, merchantId);
 
-		int row = pstmt.executeUpdate();
-		return row;
+		return pstmt.executeUpdate();
 	}
 
 	/**
@@ -88,8 +84,6 @@ public class FoodDao {
 
 		} catch (FileNotFoundException e) {
 
-			// 这个IO类型就自己处理一下吧，咦，用户上传时没选中图片是怎么弄得？
-			// 要不然我catch里return一个 -1？
 			e.printStackTrace();
 			return -1;
 		}
@@ -221,8 +215,6 @@ public class FoodDao {
 			resultFood.setFoodType(rs.getString("foodType"));
 			resultFood.setDescription(rs.getString("description"));
 			resultFood.setNum(rs.getInt("num"));
-			resultFood.setPositive(rs.getInt("positive"));
-			resultFood.setNegative(rs.getInt("negative"));
 			// 获取时间
 			Timestamp ts = rs.getTimestamp("addTime");
 			resultFood.setAddTime(new java.util.Date(ts.getTime()));
@@ -283,8 +275,6 @@ public class FoodDao {
 			f.setFoodType(rs.getString("foodType"));
 			f.setDescription(rs.getString("description"));
 			f.setNum(rs.getInt("num"));
-			f.setPositive(rs.getInt("positive"));
-			f.setNegative(rs.getInt("negative"));
 			// 获取时间
 			Timestamp ts = rs.getTimestamp("addTime");
 			f.setAddTime(new java.util.Date(ts.getTime()));
@@ -331,8 +321,6 @@ public class FoodDao {
 			f.setFoodType(rs.getString("foodType"));
 			f.setDescription(rs.getString("description"));
 			f.setNum(rs.getInt("num"));
-			f.setPositive(rs.getInt("positive"));
-			f.setNegative(rs.getInt("negative"));
 			// 获取时间
 			Timestamp ts = rs.getTimestamp("addTime");
 			f.setAddTime(new java.util.Date(ts.getTime()));

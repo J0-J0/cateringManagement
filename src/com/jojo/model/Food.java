@@ -18,8 +18,6 @@ public class Food {
 	private String foodType;
 	private String description; // 描述
 	private int num; // 数量
-	private int positive; // 赞一个
-	private int negative; // 黑一个
 	private Date addTime;
 	private String addTime_;
 	private int merchantId;
@@ -79,22 +77,6 @@ public class Food {
 
 	public void setNum(int num) {
 		this.num = num;
-	}
-
-	public int getPositive() {
-		return positive;
-	}
-
-	public void setPositive(int positive) {
-		this.positive = positive;
-	}
-
-	public int getNegative() {
-		return negative;
-	}
-
-	public void setNegative(int negative) {
-		this.negative = negative;
 	}
 
 	public Date getAddTime() {
