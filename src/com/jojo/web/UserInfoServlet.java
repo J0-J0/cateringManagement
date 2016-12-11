@@ -68,32 +68,28 @@ public class UserInfoServlet extends HttpServlet {
 		String userName = request.getParameter("userName");
 		String password = request.getParameter("password");
 		HttpSession session = request.getSession();
-		
-		// 判空
 		if(userName == null || "".equals(userName)|| password == null || "".equals(password)){
-			session.setAttribute("status", "null");
-			request.getRequestDispatcher("index.jsp").forward(request, response);
+			session.setAttribute("error", "用户名或密码不能为空！");
+			request.getRequestDispatcher("index").forward(request, response);
 			return;
 		}
+		
 		DaoFactory daoFactory = new DaoFactory();
 		try{
 			daoFactory.beginConnectionScope();
 			daoFactory.beginTransaction();
-			
 			UserDao userDao = daoFactory.createUserDao();
+			
 			User user = userDao.selectUser(userName, password);
 			if(user == null){
-				
-				// 用户名或密码错误
-				session.setAttribute("status", "failed");
-				request.getRequestDispatcher("index.jsp").forward(request, response);
+				session.setAttribute("error", "用户名或密码错误！");
+				request.getRequestDispatcher("index").forward(request, response);
 				return;
+			
 			}else{
-				
 				session.setAttribute("currentUser", user);
-				session.setAttribute("status", "success");
-				
-				session.setMaxInactiveInterval(60*60);
+				session.removeAttribute("error");		// 删除error
+				session.setMaxInactiveInterval(60*60);      			// 设置生命周期
 				response.sendRedirect("index");
 			}
 			daoFactory.endTransaction();

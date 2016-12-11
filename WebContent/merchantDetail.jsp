@@ -27,78 +27,97 @@
 </head>
 <body>
 
-<input type="text"  id="status" style = "display: none;" value="${status }" />
-<div class="container">
-	<div class="row clearfix">
-		<div class="col-md-12 column">
-	<!-- 头部导航条 -->
-			<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-			<div class="container-fluid">
-				<div class="navbar-header">
-					<button type="button" class="navbar-toggle collapsed"
-						data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-						<span class="sr-only">Toggle navigation</span> <span
-							class="icon-bar"></span> <span class="icon-bar"></span> <span
-							class="icon-bar"></span>
-					</button>
-					<a class="navbar-brand" href="#"> Brand</a>
+	<div class="container">
+		<div class="row clearfix">
+			<div class="col-md-12 column">
+				<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+				<div class="container-fluid">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed"
+							data-toggle="collapse"
+							data-target="#bs-example-navbar-collapse-1">
+							<span class="sr-only">Toggle navigation</span> <span
+								class="icon-bar"></span> <span class="icon-bar"></span> <span
+								class="icon-bar"></span>
+						</button>
+						<a class="navbar-brand" href="#"> Brand</a>
+					</div>
+
+					<div class="collapse navbar-collapse"
+						id="bs-example-navbar-collapse-1">
+						<ul class="nav navbar-nav">
+							<li class="active"><a href="#">首页</a></li>
+							<li><a href="#">Link</a></li>
+						</ul>
+						
+						<form class="navbar-form navbar-left" role="search">
+							<div class="form-group">
+								<input type="text" class="form-control" placeholder="Search">
+							</div>
+							<div class="btn-group">
+								<button type="button" class="btn btn-default dropdown-toggle"
+									data-toggle="dropdown">
+									搜一搜 <span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu" role="menu">
+									<li><a href="#">搜店家</a></li>
+									<li><a href="#">搜小菜</a></li>
+								</ul>
+							</div>
+						</form>
+						
+						
+						<ul class="nav navbar-nav navbar-right" style="margin: auto 80px auto auto;">
+							<%
+								if (session.getAttribute("currentUser") == null) {
+							%>
+							<li><a data-toggle="modal" href="#myModal">登录/注册</a></li>
+							<%
+								} else {
+							%>
+							<li class="dropdown"><a href="#" class="dropdown-toggle"
+								data-toggle="dropdown">个人中心 <span class="caret"></span>
+							</a>
+								<ul class="dropdown-menu" role="menu">
+									<li><a
+										href="${pageContext.request.contextPath }/userMain.jsp">我的主页</a></li>
+									<li><a
+										href="${pageContext.request.contextPath }/cartDetail?userId=${currentUser.userId}">购物车</a></li>
+									<li class="divider"></li>
+									<li><a href="#">退出</a></li>
+								</ul></li>
+							<%
+								}
+							%>
+						</ul>
+					</div>
 				</div>
-		
-				<div class="collapse navbar-collapse"
-					id="bs-example-navbar-collapse-1">
-					<ul class="nav navbar-nav">
-						<li class="active"><a href="${pageContext.request.contextPath}/index">首页</a></li>
-						<li><a href="#">Link</a></li>
-					</ul>
-					<form class="navbar-form navbar-left" role="search">
-						<div class="form-group">
-							<input type="text" class="form-control" placeholder="Search">
-						</div>
-		
-						<!-- Single button -->
-						<div class="btn-group">
-							<button type="button" class="btn btn-default dropdown-toggle"
-								data-toggle="dropdown">
-								搜一搜 <span class="caret"></span>
-							</button>
-							<ul class="dropdown-menu" role="menu">
-								<li><a href="#">搜店家</a></li>
-								<li><a href="#">搜小菜</a></li>
-							</ul>
-						</div>
-		
-		
-					</form>
-					<ul class="nav navbar-nav navbar-right">
-						<li id="view1"><a data-toggle="modal" 
-							href="#myModal" style="margin: auto 80px auto auto;">登录/注册</a></li>
-						<li id="view2" class="dropdown" style="display: none;"><a 
-							href="#" class="dropdown-toggle" data-toggle="dropdown" style="margin: auto 80px auto auto;">个人中心 <span
-								class="caret"></span></a>
-							<ul class="dropdown-menu" role="menu">
-								<li><a href="${pageContext.request.contextPath }/userMain.jsp">我的主页</a></li>
-								<li><a href="#">购物车</a></li>
-								<li class="divider"></li>
-								<li><a href="#">退出</a></li>
-							</ul></li>
-					</ul>
-				</div>
-				<!-- /.navbar-collapse -->
+				</nav>
 			</div>
-			<!-- /.container-fluid --> </nav>
 		</div>
-	</div>
-		<!-- 登录异常弹出框 -->
+		<%
+			if (session.getAttribute("currentUser") == null) {
+		%>
 		<div class="row clearfix" style="margin-top: 60px;">
 			<div class="col-md-12 column">
-				<div id = "view3" class="alert alert-warning alert-dismissible" role="alert">
+				<div class="alert alert-warning alert-dismissible" role="alert">
 					<button type="button" class="close" data-dismiss="alert">
 						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 					</button>
-					<strong>Warning!</strong>&nbsp;&nbsp;<span id = "view4">尚未登录</span>
+					<strong>Warning!</strong>&nbsp;&nbsp;
+					<span> 
+					<%
+					 	if (session.getAttribute("error") != null) {
+					 			out.println((String) session.getAttribute("error"));
+					 		} else {
+					 			out.println("尚未登录！");
+					 		}
+					 %>
+					</span>
 				</div>
-				</div>
+			</div>
 		</div>
+		<%} %>
 	</div>
 
 
@@ -220,23 +239,6 @@
 		$("#login").click(function() {
 			$("#userLoginForm").submit();
 		});
-
-		// 警告框、登录注册按钮、我的主页按钮 
-		if ($("#status").val() == "null") {
-			$("#view4").html("用户民或密码不能为空！");
-
-		} else if ($("#status").val() == "failed") {
-			$("#view4").html("用户民或密码错误！");
-
-		} else if ($("#status").val() == "success") {
-
-			// 关闭警告框 
-			$("#view3").css("display", "none");
-			// 关闭登录按钮
-			$("#view1").css("display", "none");
-			// 开启我的主页按钮
-			$("#view2").css("display", "block");
-		}
 	});
 
 	function cart(){
