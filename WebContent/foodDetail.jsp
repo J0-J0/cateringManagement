@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -103,8 +104,6 @@
 							</div>
 						</div>
 					</div>
-
-
 					<div id="right" class="col-md-6 column">
 						<div class="panel panel-default">
 							<div class="panel-heading">
@@ -115,17 +114,14 @@
 									<span class="label label-primary">描述</span>&nbsp;&nbsp;
 									${food.description }
 								</h4>
-
 								<h4>
 									<span class="label label-primary">价格</span>&nbsp;&nbsp;
 									${food.foodPrice }
 								</h4>
-
 								<h4>
 									<span class="label label-primary">剩余</span>&nbsp;&nbsp;
 									${food.num }
 								</h4>
-
 								<!-- 数量与输入框 -->
 								<div class="row clearfix">
 									<div class="col-md-2 column">
@@ -146,7 +142,6 @@
 										</div>
 									</div>
 								</div>
-
 								<ul class="nav nav-list">
 									<li class="divider"></li>
 								</ul>
@@ -158,13 +153,27 @@
 					</div>
 				</div><!-- 头部终了 -->
 				
-				
-				<!-- 底下放评论 -->
-				<div class="row clearfix">
-									
-				</div>
+			<div style="margin-top: 50px;">	<!-- 评论 -->
+				<jsp:include page="background/commentList.jsp"></jsp:include>		
+			</div><!-- 评论 -->
 				
 			</div>
+			<div class="col-md-3 column">	<!-- 历史记录 -->
+				<div class="page-header">
+				  <h2>footprints</h2>
+				</div>
+				<c:forEach var="food" items="${historyList}">
+					<div class="panel panel-default">
+					  <div class="panel-body">
+					  	<a href="${pageContext.request.contextPath }/foodDetail?foodId=${food.foodId}">
+					    	<img src="" alt="缩略图" style="margin-left:50px; height:125px; width:125px;"/>
+					    </a>
+					    <h3>${food.foodName}</h3>
+					    <h3>￥：<small>${food.foodPrice }</small></h3>
+					  </div>
+					</div>
+				</c:forEach>
+			</div>	<!-- 历史记录 -->
 		</div>
 	</div>
 

@@ -22,10 +22,8 @@
 </head>
 <body>
 
-	<div class="container">
 		<div class="row clearfix">
-			<div class="col-md-2 column"></div>
-			<div class="col-md-8 column">
+			<div class="col-md-10 column">
 				<ul class="nav nav-tabs" role="tablist">
 					<li role="presentation"><a href="#" onclick="showPositive()">好评</a></li>
 					<li role="presentation"><a href="#" onclick="showNegative()">差评</a></li>
@@ -124,7 +122,6 @@
 			</div>
 			<div class="col-md-2 column"></div>
 		</div>
-	</div>
 
 
 
