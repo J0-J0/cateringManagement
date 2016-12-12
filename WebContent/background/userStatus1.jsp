@@ -68,7 +68,6 @@
 
 
 	<div class="row clearfix" style="margin-top: 20px;">
-
 		<div class="col-lg-4">
 			<div class="input-group">
 				<span class="input-group-btn">
@@ -96,16 +95,24 @@
 				</span>
 			</div>
 		</div>
-
 	</div>
 
+
+<form id="nextPage" style="display:none;"action="orderList" method="post">
+	<input type="hidden" id="id" name="id" value="${currentUser.userId}" />
+	<input type="hidden" id="status" name="status" value="1" />
+	<input type="hidden" id="flag" name="flag" value="true" />
+	<input type="hidden" id="page" name="page" value="" />
+</form>
 </body>
 <script type="text/javascript">
-function takeOrder(){
-	var srcElement = $(window.event.srcElement);
-	var order = srcElement.parent().parent().parent().parent().parent().parent();
-	
-	if (confirm("想好要确认收货了？")) {
+
+	function takeOrder() {
+		var srcElement = $(window.event.srcElement);
+		var order = srcElement.parent().parent().parent().parent().parent()
+				.parent();
+
+		if (confirm("想好要确认收货了？")) {
 			$.ajax({
 				url : "alterOrder",
 				type : "POST",
@@ -120,121 +127,38 @@ function takeOrder(){
 		}
 	}
 
-	// keep it simple and stupid !
-	$(document).ready(function() {
+	$(document).ready(function() { // keep it simple and stupid !
 		// 左钮 
 		$("#left").click(function() {
 			var currentPage = $("#currentPage").val();
 			// 检查是否可以跳转 
-			if (currentPage != 1) {
+			if (currentPage > 1) {
 				currentPage = currentPage - 1; // 向左 
-				$("#currentPage").val(currentPage);
-				$.ajax({
-					url : "orderList",
-					type : "POST",
-					data : {
-						id : $("#userId").val(),
-						status : $("#status").val(),
-						flag : "true",
-						page : currentPage,
-						isAJAX : "true"
-					}
-				}).done(function(data, textStatus, jqXHR) {
-					fill(data);
-				});
+				$("#currentPage").val(currentPage); // 修改当前页码
+				$("#page").val(currentPage); // 给隐藏表单赋值
+				$("#nextPage").submit(); // 表单提交
 			}
 		});
 
-		// 跳转钮 
-		$("#left").click(function() {
+		$("#right").click(function() {
 			var currentPage = $("#currentPage").val();
-			// 检查是否可以跳转 
-			if (currentPage != $("#totalPages").text()) {
-				currentPage = currentPage - 1 + 2;
+			if (currentPage < $("#totalPages").text()) { // 向右 
+				currentPage = currentPage - 1 + 2; // 修改当前页码
 				$("#currentPage").val(currentPage);
-				$.ajax({
-					url : "orderList",
-					type : "POST",
-					data : {
-						id : $("#userId").val(),
-						status : $("#status").val(),
-						flag : "true",
-						page : currentPage,
-						isAJAX : "true"
-					}
-				}).done(function(data, textStatus, jqXHR) {
-					fill(data);
-				});
+				$("#page").val(currentPage); // 给隐藏表单赋值
+				$("#nextPage").submit(); // 表单提交
 			}
 		});
 
-		// 右钮 
-		$("#left").click(function() {
+		$("#Go").click(function() {
 			var Go = $("#Go").val();
 			// 检查是否可以跳转 
 			if (Go >= 1 && Go <= $("#totalPages").text()) {
 				$("#currentPage").val(Go);
-				$.ajax({
-					url : "orderList",
-					type : "POST",
-					data : {
-						id : $("#userId").val(),
-						status : $("#status").val(),
-						flag : "true",
-						page : Go,
-						isAJAX : "true"
-					}
-				}).done(function(data, textStatus, jqXHR) {
-					fill(data);
-				});
+				$("#page").val(currentPage); // 给隐藏表单赋值
+				$("#nextPage").submit(); // 表单提交
 			}
 		});
 	});
-
-	function fill(data) {
-		var orderList = $.parseJSON(data);
-		$("#orderListDIV").empty();
-		for (var i = 0; i < orderList.length; i++) {
-			var panel = $("<div class=\"panel panel-default\" style=\"margin-top : 20px;\"></div>");
-
-			var panel_heading = $("<div class=\"panel-heading\"></div>");
-			// 复选框 
-			panel_heading
-					.append($("<div class=\"checkbox-inline\" style=\"margin: auto auto 15px auto;\">"
-							+ "<label><input type=\"checkbox\"></label></div>"));
-			// 订单生成时间 
-			panel_heading
-					.append($("<span>" + orderList[i].addTime_ + "</span>"));
-			// 商家名称 
-			panel_heading.append($("<span style=\"margin-left: 40px\">"
-					+ "<strong>商家名称 : </strong>" + orderList[i].merchantName
-					+ "</span>"));
-			// 总金额 
-			panel_heading
-					.append($("<span style=\"margin-left: 40px\">"
-							+ "<strong>总金额 : </strong>" + orderList[i].sum
-							+ "</span>"));
-			// X钮 
-			panel_heading
-					.append($("<button type=\"button\" class=\"close\">"
-							+ "<span aria-hidden=\"true\">&times;</span> <span class=\"sr-only\">Close</span>"
-							+ "</button>"));
-			panel.append(panel_heading); // panel_heading结束 
-
-			var table = $("<table class=\"table table-hover\"></table>");
-			for (var j = 0; j < orderList[i].foodList.length; j++) {
-				var str = "<tr>" + "	<td width=\"25%\">缩略图</td>"
-						+ "	<td width=\"50%\">"
-						+ orderList[i].foodList[j].foodName + "</td>"
-						+ "	<td width=\"17%\">" + orderList[i].foodList[j].num
-						+ "</td>" + "	<td>" + orderList[i].foodList[j].foodSum
-						+ "</td>" + "</tr>";
-				table.append($(str));
-			}
-			panel.append($("<div class=\"panel-body\"></div>").append(table)); // panel_body结束
-
-			$("#orderListDIV").append(panel);
-		}
-	}
 </script>
 </html>

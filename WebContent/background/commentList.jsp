@@ -35,7 +35,7 @@
 							<blockquote>
 								<p>${comment.comment }</p>
 								<footer>
-									<fmt:formatDate type="date" value="${comment.addTime }" />
+									<fmt:formatDate type="date" value="${comment.addTime }" />&nbsp;&nbsp;
 									<cite>${comment.userName }</cite>
 								</footer>
 							</blockquote>

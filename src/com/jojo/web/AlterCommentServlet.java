@@ -16,6 +16,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.jojo.dao.DaoFactory;
 import com.jojo.dao.FoodDao;
+import com.jojo.dao.UserDao;
 import com.jojo.model.FoodComment;
 import com.jojo.model.Page;
 
@@ -181,7 +182,11 @@ public class AlterCommentServlet extends HttpServlet {
 			daoFactory.beginConnectionScope();
 			daoFactory.beginTransaction();
 			
-			FoodDao foodDao = daoFactory.createFoodDao();			// 新增评论
+			FoodDao foodDao = daoFactory.createFoodDao();			// 补最后两条信息
+			UserDao userDao = daoFactory.createUserDao();
+			foodComment.setFoodName(foodDao.selectFoodName(foodId));
+			foodComment.setUserName(userDao.selectUserName(userId));
+			
 			foodDao.addFoodComment(foodComment);
 			
 			daoFactory.endTransaction();

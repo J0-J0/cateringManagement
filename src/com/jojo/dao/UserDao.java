@@ -167,6 +167,25 @@ public class UserDao {
 		
 		return resultUser;
 	}
+	/**
+	 * 查名字
+	 * @param userId
+	 * @return
+	 * @throws SQLException 
+	 */
+	public String selectUserName(int userId) throws SQLException {
+		String sql = "select userName from t_user where userId="+userId;
+		PreparedStatement pstmt = conn.prepareStatement(sql,
+				ResultSet.TYPE_FORWARD_ONLY, 
+				ResultSet.CONCUR_READ_ONLY,
+				ResultSet.CLOSE_CURSORS_AT_COMMIT);
+		ResultSet rs = pstmt.executeQuery();
+		String userName = null;
+		if(rs.next()){
+			userName = rs.getString(1);
+		}
+		return userName;
+	}
 	
 	/**
 	 * 注册后返回userId,失败返回0

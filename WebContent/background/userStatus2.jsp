@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -30,14 +31,14 @@
 				<div class="checkbox-inline" style="margin: auto auto 15px auto;">
 					<label><input type="checkbox"></label>
 				</div>
-				<span>${userOrder.addTime_}</span>
+				<span><fmt:formatDate type="date" pattern="yyyy-MM-dd" value="${userOrder.ackTime}" /></span>
 				<span style="margin-left: 40px;">
 					<strong>商家名称 : </strong>
-					<font id="merchantName">${userOrder.merchantName }</font>
+					<font>${userOrder.merchantName }</font>
 				</span> 
 				<span style="margin-left: 40px;">
 					<strong>总金额 : </strong>
-					<font id="sum">${userOrder.sum }</font>
+					<font>${userOrder.sum }</font>
 				</span>
 				<button type="button" class="close">
 					<span aria-hidden="true">&times;</span> <span class="sr-only">Close</span>
@@ -45,16 +46,17 @@
 			</div>
 
 			<div class="panel-body">
-				<table>
 					<c:forEach var="food" items="${userOrder.foodList }">
-						<tr>
-							<td width="25%">缩略图</td>
-							<td width="50%">${food.foodName }</td>
-							<td width="17%">${food.num }</td>
-							<td>${food.foodSum }</td>
-						</tr>
+						<div class="row clearfix">
+							<div class="col-md-3 column">缩略图</div>
+							<div class="col-md-3 column">${food.foodName }</div>
+							<div class="col-md-2 column">${food.num }</div>
+							<div class="col-md-2 column">${food.foodSum }</div>
+							<div class="col-md-2 column">
+								<button type="button" class="btn btn-warning btn-sm" id="${food.foodId }" onclick="launchModal()">尚未评价</button>
+							</div>
+						</div>
 					</c:forEach>
-				</table>
 			</div>
 		</div>
 	</c:forEach>
@@ -62,7 +64,6 @@
 
 
 	<div class="row clearfix" style="margin-top: 20px;">
-
 		<div class="col-lg-4">
 			<div class="input-group">
 				<span class="input-group-btn">
@@ -90,128 +91,113 @@
 				</span>
 			</div>
 		</div>
-
 	</div>
 
+
+<!-- 评论用模态框 -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+					</button>
+					<h4 class="modal-title" id="myModalLabel">我要吐槽这盘菜~</h4>
+				</div>
+				<div class="modal-body">
+					<input type="hidden" id="prepareToDelete" />
+					<input type="hidden" id="isPositive" value="1" />
+					<input type="hidden" id="uid" value="${currentUser.userId }" />
+					<form role="form">
+						<div class="form-group">
+							<label class="col-sm-2 control-label">这个菜</label>&nbsp;&nbsp;&nbsp;
+							<label class="radio-inline"> <input type="radio"/> 蛮好</label> 
+							<label class="radio-inline"> <input type="radio" onclick="negative()"/> 垃圾</label>
+						</div>
+						<div class="form-group">
+							<textarea class="form-control" rows="3" id="textarea"></textarea>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal" onclick="addComment()">确认评价</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+<form id="nextPage" style="display:none;"action="orderList" method="post">
+	<input type="hidden" id="id" name="id" value="${currentUser.userId}" />
+	<input type="hidden" id="status" name="status" value="2" />
+	<input type="hidden" id="flag" name="flag" value="true" />
+	<input type="hidden" id="page" name="page" value="" />
+</form>
 </body>
 <script type="text/javascript">
+function launchModal(){
+	$("#prepareToDelete").val($(window.event.srcElement).attr("id"));
+	$("#myModal").modal();
+}
+function negative(){
+	$("#isPositive").val(0);  // 给它差评！ 
+}
+function addComment(){
+	$.ajax({
+		url:"alterComment",
+		type:"POST",
+		data:{
+			action:"add",
+			comment:$("#textarea").val(),
+			userId:$("#uid").val(),
+			foodId:$("#prepareToDelete").val(),
+			isPositive:$("#isPositive").val()
+		}
+	}).done(function(){
+		var buttonId = $("#prepareToDelete").val();
+		$("#"+buttonId).remove();
+	});
+}
 
-	// keep it simple and stupid !
-	$(document).ready(function() {
+
+
+	$(document).ready(function() {				// keep it simple and stupid !
 		// 左钮 
 		$("#left").click(function() {
 			var currentPage = $("#currentPage").val();
 			// 检查是否可以跳转 
-			if (currentPage != 1) {
-				currentPage = currentPage - 1;    // 向左 
-				$("#currentPage").val(currentPage);
-				$.ajax({
-					url : "orderList",
-					type : "POST",
-					data:{
-						id:$("#userId").val(),
-						status:$("#status").val(),
-						flag:"true",
-						page:currentPage,
-						isAJAX:"true"
-					}
-				}).done(function(data, textStatus, jqXHR) {
-					fill(data);
-				});
+			if (currentPage > 1) {
+				currentPage = currentPage - 1;    					// 向左 
+				$("#currentPage").val(currentPage);				// 修改当前页码
+				$("#page").val(currentPage);								// 给隐藏表单赋值
+				$("#nextPage").submit();									// 表单提交
 			}
 		});
 		
 		// 跳转钮 
-		$("#left").click(function() {
+		$("#right").click(function() {
 			var currentPage = $("#currentPage").val();
-			// 检查是否可以跳转 
-			if (currentPage != $("#totalPages").text()) {
-				currentPage = currentPage - 1 + 2;    
-				$("#currentPage").val(currentPage);
-				$.ajax({
-					url : "orderList",
-					type : "POST",
-					data:{
-						id:$("#userId").val(),
-						status:$("#status").val(),
-						flag:"true",
-						page:currentPage,
-						isAJAX:"true"
-					}
-				}).done(function(data, textStatus, jqXHR) {
-					fill(data);
-				});
+			if (currentPage < $("#totalPages").text()) {		// 向右 
+				currentPage = currentPage - 1 + 2;    				// 修改当前页码
+				$("#currentPage").val(currentPage);				
+				$("#page").val(currentPage);								// 给隐藏表单赋值
+				$("#nextPage").submit();									// 表单提交
 			}
 		});
 		
 		// 右钮 
-		$("#left").click(function() {
+		$("#Go").click(function() {
 			var Go = $("#Go").val();
 			// 检查是否可以跳转 
 			if (Go>= 1 && Go<= $("#totalPages").text()) {
 				$("#currentPage").val(Go);
-				$.ajax({
-					url : "orderList",
-					type : "POST",
-					data:{
-						id:$("#userId").val(),
-						status:$("#status").val(),
-						flag:"true",
-						page:Go,
-						isAJAX:"true"
-					}
-				}).done(function(data, textStatus, jqXHR) {
-					fill(data);
-				});
+				$("#page").val(currentPage);								// 给隐藏表单赋值
+				$("#nextPage").submit();									// 表单提交
 			}
 		});
 	});
-
 	
-	function fill(data) {
-		var orderList = $.parseJSON(data);
-		$("#orderListDIV").empty();
-		for (var i = 0; i < orderList.length; i++) {
-			var panel = $("<div class=\"panel panel-default\" style=\"margin-top : 20px;\"></div>");
-
-			var panel_heading = $("<div class=\"panel-heading\"></div>");
-			// 复选框 
-			panel_heading
-					.append($("<div class=\"checkbox-inline\" style=\"margin: auto auto 15px auto;\">"
-							+ "<label><input type=\"checkbox\"></label></div>"));
-			// 订单生成时间 
-			panel_heading
-					.append($("<span>" + orderList[i].addTime_ + "</span>"));
-			// 商家名称 
-			panel_heading.append($("<span style=\"margin-left: 40px\">"
-					+ "<strong>商家名称 : </strong>" + orderList[i].merchantName
-					+ "</span>"));
-			// 总金额 
-			panel_heading
-					.append($("<span style=\"margin-left: 40px\">"
-							+ "<strong>总金额 : </strong>" + orderList[i].sum
-							+ "</span>"));
-			// X钮 
-			panel_heading
-					.append($("<button type=\"button\" class=\"close\">"
-							+ "<span aria-hidden=\"true\">&times;</span> <span class=\"sr-only\">Close</span>"
-							+ "</button>"));
-			panel.append(panel_heading); // panel_heading结束 
-
-			var table = $("<table class=\"table table-hover\"></table>");
-			for (var j = 0; j < orderList[i].foodList.length; j++) {
-				var str = "<tr>" + "	<td width=\"25%\">缩略图</td>"
-						+ "	<td width=\"50%\">"
-						+ orderList[i].foodList[j].foodName + "</td>"
-						+ "	<td width=\"17%\">" + orderList[i].foodList[j].num
-						+ "</td>" + "	<td>" + orderList[i].foodList[j].foodSum
-						+ "</td>" + "</tr>";
-				table.append($(str));
-			}
-			panel.append($("<div class=\"panel-body\"></div>").append(table)); // panel_body结束
-
-			$("#orderListDIV").append(panel);
-		}
-	}
 </script>
 </html>

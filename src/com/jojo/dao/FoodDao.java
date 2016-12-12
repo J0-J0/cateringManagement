@@ -247,6 +247,27 @@ public class FoodDao {
 	}
 	
 	/**
+	 * 根据foodId查询食物名称
+	 * @param foodId
+	 * @return
+	 * @throws SQLException 
+	 */
+	public String selectFoodName(int foodId) throws SQLException {
+		String sql = "select foodName from t_food where foodId = "+ foodId;
+		PreparedStatement pstmt = conn.prepareStatement(sql, 
+				ResultSet.TYPE_FORWARD_ONLY, 
+				ResultSet.CONCUR_READ_ONLY,
+				ResultSet.CLOSE_CURSORS_AT_COMMIT);
+		ResultSet rs = pstmt.executeQuery();
+		
+		String result = null;
+		if(rs.next()){
+			result = rs.getString(1);
+		}
+		return result;
+	}
+	
+	/**
 	 * 根据merchantId查出所有食品，按类别排序，是嵌套的list
 	 * 相应的，还会有一个按类别查询的方法
 	 * @param merchantId
@@ -365,7 +386,7 @@ public class FoodDao {
 			FoodComment foodComment = new FoodComment();
 			foodComment.setFoodCommentId(rs.getInt("foodCommentId"));
 			foodComment.setUserId(rs.getInt("userId"));
-			foodComment.setComment(rs.getString("userName"));
+			foodComment.setUserName(rs.getString("userName"));
 			foodComment.setComment(rs.getString("comment"));
 			foodComment.setFoodId(rs.getInt("foodId"));
 			foodComment.setFoodName(rs.getString("foodName"));

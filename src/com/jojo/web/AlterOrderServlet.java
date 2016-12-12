@@ -283,8 +283,9 @@ public class AlterOrderServlet extends HttpServlet{
 				cartDao.deleteCart(order.getUserId(), of.getFoodId());
 				orderDao.addOrderFood(of, order.getOrderId());
 			}
-			
 			daoFactory.endTransaction();
+			session.removeAttribute("order"); 					// 添加成功，删除已存在的变量	
+			session.removeAttribute("orderFoodList");
 		} catch (SQLException e) {
 			e.printStackTrace();
 			daoFactory.abortTransaction();

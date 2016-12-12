@@ -150,7 +150,7 @@
 								<div class="row clearfix">
 									<div class="col-md-6 column">
 										<button type="button" style="margin-top: 25px;" class="btn btn-default"
-										onclick="cart()">提交订单</button>
+										onclick="cart()">加购物车</button>
 									</div>
 									<div class="col-md-6 column">
 										<button type="button" style="margin-top: 25px;" class="btn btn-danger"
