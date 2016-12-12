@@ -398,11 +398,11 @@ public class FoodDao {
 	 * @return
 	 * @throws SQLException
 	 */
-	public int updateFoodNum(Food food, int num) throws SQLException{
-		String sql = "update t_food set num = ? where foodId = ?";
+	public int updateFoodNum(int  foodId, int num) throws SQLException{
+		String sql = "update t_food set num=num-? where foodId = ?";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
-		pstmt.setInt(1, food.getNum() - num);
-		pstmt.setInt(2, food.getFoodId());
+		pstmt.setInt(1, num);
+		pstmt.setInt(2, foodId);
 		
 		int row = pstmt.executeUpdate();
 		return row;

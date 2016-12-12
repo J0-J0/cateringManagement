@@ -39,13 +39,15 @@ public class OrderDao {
 	
 	
 	/**
-	 * 生成Order，用于填充addOrder(), 初始状态下的order，没有主键，没有状态... 方便编码，改善视觉体验。
+	 * 生成Order，预先准备一些基础信息 
+	 * 方便编码，改善视觉体验。
 	 * 
 	 * @param food
 	 * @param user
+	 * @param orderFoodList 
 	 * @return
 	 */
-	public Order createOrder(Food food, User user, Merchant merchant, int num) {
+	public Order createOrder(User user, Merchant merchant, List<OrderFood> orderFoodList) {
 		Order resultOrder = new Order();
 		
 		resultOrder.setUserId(user.getUserId());
@@ -54,14 +56,36 @@ public class OrderDao {
 		resultOrder.setMerchantName(merchant.getMerchantName());
 		// 未发货，默认为0
 		resultOrder.setStatus(0);
-		resultOrder.setSum(food.getFoodPrice()*(double)num);
-		resultOrder.setAddress(user.getAddress());
-		// 设置时间
-		java.util.Date addTime = new java.util.Date(System.currentTimeMillis());
-		resultOrder.setAddTime(addTime);
-
+		double sum = 0;
+		for(OrderFood of : orderFoodList){
+			sum += of.getFoodSum();
+		}
+		resultOrder.setSum(sum);
 		return resultOrder;
 	}
+	
+	/**
+	 * 生成订OrderFood
+	 * @param food
+	 * @param num
+	 * @return
+	 */
+	public OrderFood createOrderFood(Food food, int num) {
+		OrderFood orderFood = new OrderFood();
+		orderFood.setFoodId(food.getFoodId());
+		orderFood.setFoodName(food.getFoodName());
+		orderFood.setFoodPrice(food.getFoodPrice());
+		orderFood.setNum(num);
+		orderFood.setFoodSum(food.getFoodPrice() * num);
+		
+		return orderFood;
+	}
+	
+	
+	
+	
+	
+	
 	/**
 	 * 增加订单，成功返回 1
 	 * 
@@ -69,7 +93,7 @@ public class OrderDao {
 	 * @throws SQLException
 	 */
 	public int addOrder(Order order) throws SQLException {
-		String sql = "insert into t_order values(null,?,?,?,?,?,?,?,?,?)";
+		String sql = "insert into t_order values(null,?,?,?,?,?,?,?,?,?,?)";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setInt(1, order.getUserId());
 		pstmt.setInt(2, order.getUserIdCard());
@@ -77,16 +101,17 @@ public class OrderDao {
 		pstmt.setString(4, order.getMerchantName());
 		pstmt.setInt(5, order.getStatus());
 		pstmt.setDouble(6, order.getSum());
-		pstmt.setString(7, order.getAddress());
+		pstmt.setString(7, order.getWay());
+		pstmt.setString(8, order.getAddress());
 
 		// 时间转换
 		Timestamp tsd = new Timestamp(order.getAddTime().getTime());
-		pstmt.setTimestamp(8, tsd);
+		pstmt.setTimestamp(9, tsd);
 		if (order.getAckTime() != null) {
 			Timestamp tsk = new Timestamp(order.getAckTime().getTime());
-			pstmt.setTimestamp(9, tsk);
+			pstmt.setTimestamp(10, tsk);
 		}else{
-			pstmt.setTimestamp(9, null);
+			pstmt.setTimestamp(10, null);
 		}
 
 		int row = pstmt.executeUpdate();
@@ -99,19 +124,17 @@ public class OrderDao {
 	 * @param num
 	 * @throws SQLException 
 	 */
-	public int addOrderFood(Order order, Food food, int num) throws SQLException {
-		int row = 0;
+	public int addOrderFood(OrderFood orderFood, int orderId) throws SQLException {
 		String sql = "insert into t_orderFood values(null,?,?,?,?,?,?)";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
-		pstmt.setInt(1, order.getOrderId());
-		pstmt.setInt(2, food.getFoodId());
-		pstmt.setString(3, food.getFoodName());
-		pstmt.setDouble(4, food.getFoodPrice());
-		pstmt.setInt(5, num);
-		pstmt.setDouble(6, food.getFoodPrice() * (double)num);
+		pstmt.setInt(1, orderId);
+		pstmt.setInt(2, orderFood.getFoodId());
+		pstmt.setString(3, orderFood.getFoodName());
+		pstmt.setDouble(4, orderFood.getFoodPrice());
+		pstmt.setInt(5, orderFood.getNum());
+		pstmt.setDouble(6, orderFood.getFoodSum());
 		
-		row = pstmt.executeUpdate();
-		return row;
+		return pstmt.executeUpdate();
 	}
 	
 	
@@ -134,7 +157,7 @@ public class OrderDao {
 	 */
 	public int selectOrderId(Order order) throws SQLException{
 		String sql = "select orderId from t_order "
-						  + "where userId = ? and merchantId = ? and status = ? and addTime = ?";
+						  + "where userId = ? and merchantId = ? and status = ? and addTime = ? and sum = ?";
 		PreparedStatement pstmt = conn.prepareStatement(sql, 
 				ResultSet.TYPE_FORWARD_ONLY, 
 				ResultSet.CONCUR_READ_ONLY,
@@ -143,6 +166,7 @@ public class OrderDao {
 		pstmt.setInt(2, order.getMerchantId());
 		pstmt.setInt(3, order.getStatus());
 		pstmt.setTimestamp(4, new Timestamp(order.getAddTime().getTime()));
+		pstmt.setDouble(5, order.getSum());
 		ResultSet rs = pstmt.executeQuery();
 		
 		int orderId = 0;
@@ -176,6 +200,7 @@ public class OrderDao {
 								+ " `o`.`merchantName` AS `merchantName`,"
 								+ " `o`.`status` AS `status`,"
 								+ " `o`.`sum` AS `sum`,"
+								+ " `o`.`way` AS `way`,"
 								+ " `o`.`address` AS `address`,"
 								+ " `o`.`addTime` AS `addTime`,"
 								+ " `o`.`ackTime` AS `ackTime`,"
@@ -196,6 +221,7 @@ public class OrderDao {
 					+ " `o`.`merchantName` AS `merchantName`,"
 					+ " `o`.`status` AS `status`,"
 					+ " `o`.`sum` AS `sum`,"
+					+ " `o`.`way` AS `way`,"
 					+ " `o`.`address` AS `address`,"
 					+ " `o`.`addTime` AS `addTime`,"
 					+ " `o`.`ackTime` AS `ackTime`,"
@@ -239,6 +265,8 @@ public class OrderDao {
 				o.setMerchantName(rs.getString("merchantName"));
 				o.setStatus(rs.getInt("status"));
 				o.setSum(rs.getDouble("sum"));
+				o.setWay(rs.getString("way"));
+				o.setAddress(rs.getString("address"));
 				if (rs.getTimestamp("addTime") != null) {
 					java.util.Date addTime = new java.util.Date(rs.getTimestamp("addTime").getTime());
 					o.setAddTime(addTime);

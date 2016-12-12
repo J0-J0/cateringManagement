@@ -105,6 +105,8 @@
 	Iterator<List<Cart>> itList = cartList.iterator();
 	while(itList.hasNext()){
 		List<Cart> list = itList.next();
+		StringBuilder foodIdList = new StringBuilder();
+		StringBuilder numList = new StringBuilder();
 %>
 				<div class="panel panel-success"><!-- 外面板，此处标明商家名称 -->
 					<div class="panel-heading"><%=list.get(0).getMerchantName() %></div>
@@ -115,6 +117,8 @@
 					while(itCart.hasNext()){
 						Cart cart = itCart.next();
 						totalSum += cart.getSum();
+						foodIdList.append(":"+cart.getFoodId());
+						numList.append(":"+cart.getNum());
 				%>
 						<div class="panel panel-default"><!-- 内面板，具体商品信息 -->
 							<div class="panel-body">	<!-- 分三段 -->
@@ -157,7 +161,15 @@
 						<div style="float:right;">
 							<span style="font-size: medium;">累计：</span>
 							<span style="font-size: medium;"><%=totalSum %></span>
-							<a href="#" class="btn btn-danger">check out !</a>
+							<form method="post" action="${pageContext.request.contextPath }/alterOrder">
+								<input type="hidden" id="action" name="action" value="generate">
+								<input type="hidden" id="source" name="source" value="fromCart">
+								<input type="hidden" id="userId" name="userId" value="${currentUser.userId }">
+								<input type="hidden" id="foodIdList" name="foodIdList" value="<%out.print(foodIdList.toString());%>">
+								<input type="hidden" id="numList" name="numList" value="<%=numList.toString()%>">
+								<input type="submit" class="btn btn-danger" value="check out !">
+							</form>
+							<!-- <a href="#" class="btn btn-danger">check out !</a> -->
 						</div>
 					</div>
 				</div>

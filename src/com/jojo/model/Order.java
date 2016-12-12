@@ -20,12 +20,21 @@ public class Order {
 	private String merchantName;
 	private int status; // 未发货，发货，收货
 	private double sum;
+	private String way;
 	private String address;
 	private Date addTime;
 	private String addTime_;
 	private Date ackTime;
 	private String ackTime_;
 	private List<OrderFood> foodList = new ArrayList<OrderFood>();
+
+	public String getWay() {
+		return way;
+	}
+
+	public void setWay(String way) {
+		this.way = way;
+	}
 
 	public int getUserIdCard() {
 		return userIdCard;

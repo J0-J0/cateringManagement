@@ -11,8 +11,11 @@ import javax.servlet.http.HttpServletResponse;
 import com.jojo.dao.CartDao;
 import com.jojo.dao.DaoFactory;
 import com.jojo.dao.FoodDao;
+import com.jojo.dao.MerchantDao;
 import com.jojo.model.Cart;
 import com.jojo.model.Food;
+import com.jojo.model.Merchant;
+import com.jojo.util.StringUtil;
 
 public class AlterCartServlet extends HttpServlet {
 
@@ -104,11 +107,17 @@ public class AlterCartServlet extends HttpServlet {
 	 * @param request
 	 * @param response
 	 */
+	@SuppressWarnings("unused")
 	private void addCart(HttpServletRequest request, HttpServletResponse response) {
 		int merchantId = Integer.parseInt(request.getParameter("merchantId"));
 		String merchantName = request.getParameter("merchantName");
 		int userId = Integer.parseInt(request.getParameter("userId"));
 		int foodId = Integer.parseInt(request.getParameter("foodId"));
+		String tmp = request.getParameter("num");
+		int num = 0;
+		if(StringUtil.isNotEmpty(tmp)){
+			num = Integer.parseInt(tmp);
+		}
 		
 		DaoFactory daoFactory = new DaoFactory();
 		try {
@@ -121,8 +130,11 @@ public class AlterCartServlet extends HttpServlet {
 			boolean flag = cartDao.selectCart(userId, foodId);
 			if (!flag) {
 				FoodDao foodDao = daoFactory.createFoodDao();
+				MerchantDao merchantDao = daoFactory.createMerchantDao();
+				
 				Food food = foodDao.selectFood(foodId);
-				Cart cart = cartDao.createCart(merchantId, merchantName, userId, food);
+				Merchant merchant = merchantDao.selectMerchant(food.getMerchantId());
+				Cart cart = cartDao.createCart(merchant.getMerchantId(), merchant.getMerchantName(), userId, food, num);
 				cartDao.addCart(cart);
 				daoFactory.endTransaction();
 			}else{

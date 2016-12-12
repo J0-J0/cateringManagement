@@ -42,7 +42,7 @@ public class CartDao {
 	 * @param foodId
 	 * @return
 	 */
-	public Cart createCart(int merchantId, String merchantName, int userId, Food food) {
+	public Cart createCart(int merchantId, String merchantName, int userId, Food food, int num) {
 		Cart cart = new Cart();
 		
 		cart.setFoodId(food.getFoodId());
@@ -51,7 +51,7 @@ public class CartDao {
 		cart.setMerchantId(merchantId);
 		cart.setMerchantName(merchantName);
 		cart.setUserId(userId);
-		cart.setNum(1);   // 第一次加入购物车，只会是1，也不对，日后有空慢慢更新吧
+		cart.setNum(num);   // 第一次加入购物车，只会是1，也不对，日后有空慢慢更新吧
 		cart.setSum(food.getFoodPrice());
 		
 		return cart;
@@ -77,6 +77,19 @@ public class CartDao {
 		int row = pstmt.executeUpdate();
 		return row;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	/**
 	 * 增删查改之删，成功返回1
@@ -88,9 +101,32 @@ public class CartDao {
 	public int deleteCart(int cartId) throws SQLException {
 		String sql = "delete from t_cart where cartId = " + cartId;
 		PreparedStatement pstmt = conn.prepareStatement(sql);
-		int row = pstmt.executeUpdate();
-		return row;
+		return pstmt.executeUpdate();
 	}
+	
+	/**
+	 * 批量形成订单时用到，根据userId 与 foodId删除对应的cart
+	 * @param userId
+	 * @param foodId
+	 * @throws SQLException 
+	 */
+	public int deleteCart(int userId, int foodId) throws SQLException {
+		String sql = "delete from t_cart where userId = "+userId+" and foodId = "+foodId;
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		return pstmt.executeUpdate();
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	/**
 	 * 存在为true，不存在为false 用于判重，食物添加至购物车时，要先判重
@@ -160,10 +196,19 @@ public class CartDao {
 				cartList.add(list);
 			}
 		}
-
 		return cartList;
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 * 增删查改之改，成功返回1
 	 * 老实说我只觉得会修改数量, 顺带着变一下总价

@@ -87,6 +87,7 @@
 	</nav>
 
 <input type="hidden" id="fid" value="${food.foodId}" />
+<input type="hidden" id="uid" value="${currentUser.userId}" />
 
 	<div class="container">
 		<div class="row clearfix" style="margin-top: 70px">
@@ -120,7 +121,7 @@
 								</h4>
 								<h4>
 									<span class="label label-primary">剩余</span>&nbsp;&nbsp;
-									${food.num }
+									<span id="fn">${food.num }</span>
 								</h4>
 								<!-- 数量与输入框 -->
 								<div class="row clearfix">
@@ -134,8 +135,9 @@
 											<span class="input-group-btn">
 												<button class="btn btn-default" type="button"
 													onclick="minus()">-</button>
-											</span> <input type="text" class="form-control" value="1"
-												id="foodNum"> <span class="input-group-btn">
+											</span>
+											 <input type="text" class="form-control" value="1" id="foodNum"> 
+											<span class="input-group-btn">
 												<button class="btn btn-default" type="button"
 													onclick="plus()">+</button>
 											</span>
@@ -145,9 +147,16 @@
 								<ul class="nav nav-list">
 									<li class="divider"></li>
 								</ul>
-								<button data-toggle="modal" data-target="#myModal" type="button"
-									style="margin-top: 25px;" class="btn btn-warning"
-									onclick="fillModal()">提交订单</button>
+								<div class="row clearfix">
+									<div class="col-md-6 column">
+										<button type="button" style="margin-top: 25px;" class="btn btn-default"
+										onclick="cart()">提交订单</button>
+									</div>
+									<div class="col-md-6 column">
+										<button type="button" style="margin-top: 25px;" class="btn btn-danger"
+										onclick="generateOrder()">提交订单</button>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -176,106 +185,17 @@
 			</div>	<!-- 历史记录 -->
 		</div>
 	</div>
-
-	<!-- 模态框 -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">想好了再下单，要为自己的订单负责哦~</h4>
-      </div>
-      <div class="modal-body">
-					<form class="form-horizontal" role="form" id="generateOrder"
-						method="post"
-						action="${pageContext.request.contextPath }/alterOrder">
-
-						<input type="hidden" id="action" name="action" value="add" />
-						<input type="hidden" id="foodId" name="foodId" value="${food.foodId }" />
-						<input type="hidden" id="userId" name="userId" value="${currentUser.userId}" />
-
-						<div class="form-group">
-							<label for="inputText3" class="col-sm-2 control-label">从</label>
-							<div class="col-sm-10">
-								<input type="text" class="form-control" name="merchantName"
-									id="merchantName" value="${merchantName}" disabled>
-							</div>
-						</div>
-
-						<div class="form-group">
-							<label for="inputText3" class="col-sm-2 control-label">购买</label>
-							<div class="col-sm-10">
-								<input type="text" class="form-control" name="foodName"
-									id="foodName" value="${food.foodName }" disabled>
-							</div>
-						</div>
-
-						<div class="form-group">
-							<label for="inputText3" class="col-sm-2 control-label">数量</label>
-							<div class="col-sm-10">
-								<input type="text" class="form-control" name="num" id="num"
-									value="" onchange="updateSum()">
-							</div>
-						</div>
-
-						<div class="form-group">
-							<label for="inputText3" class="col-sm-2 control-label">单价</label>
-							<div class="col-sm-10">
-								<input type="text" class="form-control" name="foodPrice"
-									id="foodPrice" value="${food.foodPrice }" disabled>
-							</div>
-						</div>
-						
-						<div class="form-group">
-							<label for="inputText3" class="col-sm-2 control-label">总价</label>
-							<div class="col-sm-10">
-								<input type="text" class="form-control" name="sum"
-									id="sum" value=" " disabled>
-							</div>
-						</div>
-
-						<div class="form-group">
-							<label class="col-sm-2 control-label">取货方式</label>&nbsp;&nbsp;&nbsp;
-							<label class="radio-inline"> <input type="radio"
-								name="way" id="way" value="外送"> 外送
-							</label> <label class="radio-inline"> <input type="radio"
-								name="way" id="way" value="自取"> 自取
-							</label>
-						</div>
-
-						<div class="form-group">
-							<label for="inputText3" class="col-sm-2 control-label">联系电话</label>
-							<div class="col-sm-10">
-								<input type="text" class="form-control" name="userTel"
-									id="userTel" value="${currentUser.userTel }">
-							</div>
-						</div>
-
-						<div class="form-group" id="addressDIV">
-							<label for="inputText3" class="col-sm-2 control-label">送货地址</label>
-							<div class="col-sm-10">
-								<input type="text" class="form-control" name="address"
-									id="address" value="${currentUser.address }">
-							</div>
-						</div>
-
-					</form>
-				</div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">再回去看看吧</button>
-        <button type="button" class="btn btn-primary" data-dismiss="modal"onclick="sub()">就决定是它了</button>
-      </div>
-    </div>
-  </div>
-</div>
+	
+	
+		
+	<form style="display:none;" method="post" action="${pageContext.request.contextPath }/alterOrder" id="a">
+		<input type="text" id="action" name="action" value="generate">
+		<input type="text" id="userId" name="userId" value="">
+		<input type="text" id="foodId" name="foodId" value="">
+		<input type="text" id="num" name="num" value="">
+	</form>
 </body>
 <script type="text/javascript">
-function updateSum(){
-	var num = document.getElementById("num").value;
-	var foodPrice = document.getElementById("foodPrice").value;
-	document.getElementById("sum").value = num*foodPrice;
-}
-
 function minus(){
 	var foodNum = document.getElementById("foodNum");
 	if(foodNum.value > 1){
@@ -286,19 +206,27 @@ function plus(){
 	var foodNum = document.getElementById("foodNum");
 		foodNum.value = foodNum.value-1+2;
 }
-
-function fillModal(){
-	var foodNum = document.getElementById("foodNum");
-	var num = document.getElementById("num");
-	var sum = document.getElementById("sum");
-	var foodPrice = document.getElementById("foodPrice");
-	num.value = foodNum.value;
-	sum.value = num.value * foodPrice.value;
+function generateOrder(){
+	$("#userId").val($("#uid").val());
+	$("#foodId").val($("#fid").val());
+	$("#num").val($("#foodNum").val());
+	$("#a").submit();
 }
-
-function sub(){
-	var form = document.getElementById("generateOrder");
-	form.submit();
+function cart(){
+	$.ajax({
+		url: "alterCart",
+		type: "POST",
+		data: {
+			action:"add",
+			foodId: foodId,
+			userId: $("#uId").val(),
+			num: $("#foodNum").val()
+		}
+	}).done(function(){
+		alert("添加成功 ！ ");
+	}).fail(function(){
+		alert("抱歉失败了！")
+	});
 }
 </script>
 </html>
