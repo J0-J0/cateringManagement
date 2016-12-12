@@ -27,6 +27,7 @@ public class MerchantInfoServlet extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
 		String action = request.getParameter("action");
 		
 		if("login".equals(action)){
@@ -50,9 +51,8 @@ public class MerchantInfoServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		Merchant currentMerchant = (Merchant)session.getAttribute("currentMerchant");
 
-		request.setCharacterEncoding("UTF-8");
 		String merchantName = request.getParameter("merchantName");
-		String password = request.getParameter("password1");
+		String password = request.getParameter("password");
 		String merchantIdCard = request.getParameter("merchantIdCard");
 		String merchantRealName = request.getParameter("merchantRealName");
 		String sex = request.getParameter("sex");
@@ -123,6 +123,7 @@ public class MerchantInfoServlet extends HttpServlet {
 				// ≤È—Ø≥…π¶£¨’ŸªΩsession
 				HttpSession session = request.getSession();
 				session.setAttribute("currentMerchant", merchant);
+				session.setMaxInactiveInterval(60*60);
 				response.sendRedirect("merchantMain.jsp");
 			}
 			

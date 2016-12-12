@@ -266,14 +266,14 @@
 							<label class="col-sm-2 control-label">性别</label>&nbsp;&nbsp;&nbsp;
 								<label class="radio-inline"> 
 									<input type="radio" name="sex" id="sex" value="男"
-									<%if (((User) session.getAttribute("currentUser")).getSex().equals("男")) {
-										out.println(" checked");
+									<%if ("男".equals(((User) session.getAttribute("currentUser")).getSex())) {
+										out.print(" checked");
 									}%>>男
 								</label> 
 								<label class="radio-inline"> 
 									<input type="radio" name="sex" id="sex" value="女"
-									<%if (((User) session.getAttribute("currentUser")).getSex().equals("女")) {
-										out.println(" checked");
+									<%if ("女".equals(((User) session.getAttribute("currentUser")).getSex())) {
+										out.print(" checked");
 									}%>>女
 								</label>
 						</div>

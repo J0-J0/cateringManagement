@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@page import="com.jojo.model.*" %>	
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -153,16 +154,8 @@
 						<div class="form-group">
 							<label for="password1" class="col-sm-2 control-label">密码</label>
 							<div class="col-sm-10">
-								<input type="password" class="form-control" name="password1"
-									id="password1" placeholder="这里输密码">
-							</div>
-						</div>
-
-						<div class="form-group">
-							<label for="password2" class="col-sm-2 control-label">确认密码</label>
-							<div class="col-sm-10">
-								<input type="password" class="form-control" name="password2"
-									id="password2" placeholder="这里输密码">
+								<input type="password" class="form-control" name="password"
+									id="password" placeholder="这里输密码">
 							</div>
 						</div>
 
@@ -185,11 +178,18 @@
 
 						<div class="form-group">
 							<label class="col-sm-2 control-label">性别</label>&nbsp;&nbsp;&nbsp;
-							<label class="radio-inline"> <input type="radio"
-								name="sex" id="sex" value="男"> 男
-							</label> <label class="radio-inline"> <input type="radio"
-								name="sex" id="sex" value="option3"> 女
-							</label>
+								<label class="radio-inline"> 
+									<input type="radio" name="sex" id="sex" value="男"
+									<%if ("男".equals(((Merchant) session.getAttribute("currentMerchant")).getSex())) {
+										out.print(" checked");
+									}%>>男
+								</label> 
+								<label class="radio-inline"> 
+									<input type="radio" name="sex" id="sex" value="女"
+									<%if ("女".equals(((Merchant) session.getAttribute("currentMerchant")).getSex())) {
+										out.print(" checked");
+									}%>>女
+								</label>
 						</div>
 
 						<div class="form-group">
