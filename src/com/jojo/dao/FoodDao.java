@@ -439,13 +439,14 @@ public class FoodDao {
 	 * @throws SQLException
 	 */
 	public int updateFood(Food food) throws SQLException {
-		String sql = "update t_food set foodName = ?, foodPrice = ?, description = ?, num = ? where foodId = ?";
+		String sql = "update t_food set foodName = ?, foodPrice = ?, description = ?, num = ?, foodType=? where foodId = ?";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, food.getFoodName());
 		pstmt.setDouble(2, food.getFoodPrice());
 		pstmt.setString(3, food.getDescription());
 		pstmt.setInt(4, food.getNum());
-		pstmt.setInt(5, food.getFoodId());
+		pstmt.setString(5, food.getFoodType());
+		pstmt.setInt(6, food.getFoodId());
 
 		int row = pstmt.executeUpdate();
 		return row;

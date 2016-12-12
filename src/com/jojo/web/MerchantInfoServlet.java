@@ -94,7 +94,6 @@ public class MerchantInfoServlet extends HttpServlet {
 	 * @throws ServletException 
 	 */
 	private void merchantLogin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setCharacterEncoding("UTF-8");
 
 		String merchantName = request.getParameter("merchantName");
 		String password = request.getParameter("password");

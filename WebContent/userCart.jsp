@@ -24,7 +24,7 @@
 
 <%
 	// 权限验证
-	if (session.getAttribute("currentUser") == null && session.getAttribute("currentMerchant") == null) {
+	if (session.getAttribute("currentUser") == null) {
 		response.sendRedirect(request.getContextPath() + "/index");
 		return;
 	}

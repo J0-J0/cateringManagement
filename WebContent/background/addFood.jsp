@@ -24,10 +24,10 @@
 		<form class="form-horizontal" role="form" 
 					method="post" 
 					action="${pageContext.request.contextPath }/alterFood">
-					
-					<input id = "action" name = "action" value="add" style="display: none;" />
-					<input id = "merchantId" name = "merchantId" value="${currentMerchant.merchantId }" style="display: none;" />
-					
+			
+			<input id = "action" name = "action" value="add" style="display: none;" />
+			<input id = "merchantId" name = "merchantId" value="${currentMerchant.merchantId }" style="display: none;" />
+			
 			<div class="form-group">
 				<label for="foodName" class="col-sm-2 control-label">食物名称</label>
 				<div class="col-sm-10">

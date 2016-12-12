@@ -33,6 +33,14 @@
 <link href="bootstrap3/css/date/vigo.datepicker.css" rel="stylesheet">
 <link href="bootstrap3/css/date/nigran.datepicker.css" rel="stylesheet">
 
+
+<%
+	// 权限验证
+	if (session.getAttribute("currentUser") == null) {
+		response.sendRedirect(request.getContextPath() + "/index");
+		return;
+	}
+%>
 </head>
 <body>
 	<div class="container">
