@@ -182,11 +182,11 @@ public class AlterCommentServlet extends HttpServlet {
 			daoFactory.beginConnectionScope();
 			daoFactory.beginTransaction();
 			
-			FoodDao foodDao = daoFactory.createFoodDao();			// 补最后两条信息
+			FoodDao foodDao = daoFactory.createFoodDao();			
 			UserDao userDao = daoFactory.createUserDao();
-			foodComment.setFoodName(foodDao.selectFoodName(foodId));
-			foodComment.setUserName(userDao.selectUserName(userId));
 			
+			foodComment.setFoodName(foodDao.selectFoodName(foodId));// 补最后两条信息
+			foodComment.setUserName(userDao.selectUserName(userId));
 			foodDao.addFoodComment(foodComment);
 			
 			daoFactory.endTransaction();

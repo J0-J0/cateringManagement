@@ -204,7 +204,7 @@ public class AlterOrderServlet extends HttpServlet{
 	}
 
 	/**
-	 * 更新订单
+	 * 更新订单状态，商家接单，用户确认收货
 	 * @param request
 	 * @param response
 	 * @throws IOException 
@@ -217,16 +217,17 @@ public class AlterOrderServlet extends HttpServlet{
 		try {
 			daoFactory.beginConnectionScope();
 			daoFactory.beginTransaction();
-			
 			OrderDao orderDao = daoFactory.createOrderDao();
-			int row = orderDao.updateOrder(orderId, status);
-			if(row == 1){
-				response.setContentType("text/html");
-				response.setCharacterEncoding("UTF-8");
-				
-				PrintWriter out = new PrintWriter(response.getWriter(), true);
-				out.println("修改成功!");
-				out.close();
+			if (1 == status) {
+				orderDao.updateOrder(orderId, status);
+			}else if(2 == status){				
+				UserDao userDao = daoFactory.createUserDao();
+				MerchantDao merchantDao = daoFactory.createMerchantDao();
+																											
+				orderDao.updateOrder(orderId, status);			// 确认收货时要更新用户与商家的总计消费
+				Order order = orderDao.selectOrder(orderId);
+				userDao.updateUser(order.getUserId(), order.getSum());
+				merchantDao.updateMerchant(order.getMerchantId(), order.getSum());
 			}
 			
 			daoFactory.endTransaction();

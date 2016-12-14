@@ -42,7 +42,7 @@
 					<tr>
 						<th class="center">名称</th>
 						<th class="center">类别</th>
-						<th class="center">数量</th>
+						<th class="center">剩余</th>
 						<th class="center">价格</th>
 						<th class="center"></th>
 					</tr>

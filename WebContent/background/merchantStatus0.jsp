@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="com.jojo.model.*, java.util.*, com.jojo.util.*" %>		
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -7,56 +8,152 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 </head>
 <body>
+	
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<div class="page-header"><!-- 页头 -->
+			  <h2>自取订单</h2>
+			</div>
 
-	<input id="merchantId" type="text" style="display:none;" value="${currentMerchant.merchantId }">
-	<input id="status" type="text" style="display:none;" value="${orderList[0].status }">
-	
-	
-	<div id="orderListDIV">
-		<c:forEach var="merchantOrder" items="${orderList }">
-			<div class="panel panel-default" style="margin: 20px auto auto auto;">
-				<div class="panel-heading">
-					<div class="checkbox-inline" style="margin: auto auto 15px auto;">
-						<label><input type="checkbox"></label>
-					</div>
-					<span>${merchantOrder.addTime_}</span>
+			<%
+				List<Order> deliver = (List<Order>) request.getAttribute("deliver");
+				HashMap<String, Integer> map = new HashMap<String, Integer>();
+				for (Order o : deliver) {
+			%>
+		
+			<div class="panel panel-default"> <!-- 订单的详细信息 -->
+			  <div class="panel-heading">
+			    	<span><%=DateUtil.formatDate(o.getAddTime(), "yyyy-MM-dd") %></span>
 					<span style="margin-left: 40px;">
-						<strong>学号 : </strong>
-						<font id="merchantName">${merchantOrder.userIdCard }</font>
+						<strong>学号 : </strong><%=o.getUserIdCard() %>
 					</span> 
 					<span style="margin-left: 40px;">
-						<strong>总金额 : </strong>
-						<font id="sum">${merchantOrder.sum }</font>
+						<strong>总金额 : </strong><%=o.getSum() %>
 					</span>
-					<button type="button" class="close" id="${merchantOrder.orderId }">
+					<span style="margin-left: 40px;">
+						<strong>联系电话 : </strong><%=o.getUserTel() %>
+					</span>
+					<button type="button" class="close">
 						<span aria-hidden="true">&times;</span> <span class="sr-only">Close</span>
 					</button>
-				</div>
-	
-				<div class="panel-body">
-					<table>
-						<c:forEach var="food" items="${merchantOrder.foodList }">
-							<tr>
-								<td width="25%">缩略图</td>
-								<td width="50%">${food.foodName }</td>
-								<td width="17%">${food.num }</td>
-								<td>${food.foodSum }</td>
-							</tr>
-						</c:forEach>
-						<tr style="margin-top:5px;">
-							<td></td>
-							<td></td>
-							<td></td>
-							<td align="right">
-								<button type="button" class="btn btn-primary btn-sm" id="${merchantOrder.orderId }"
-									onclick="takeOrder()">接了</button>
-							</td>
-						</tr>
-					</table>
-				</div>
+			  </div>
+			  <div class="panel-body">
+			  <%
+			  	for(OrderFood f : o.getFoodList()){
+			  		if(map.get(f.getFoodName()) == null){
+			  			map.put(f.getFoodName(), 1);
+			  		}else{
+			  			map.put(f.getFoodName(), map.get(f.getFoodName()) + 1);
+			  		}
+			  		%>
+			  		<div class="row clearfix">
+				    	<div class="col-md-3 column">缩略图</div>
+				    	<div class="col-md-3 column"><%=f.getFoodName() %></div>
+				    	<div class="col-md-2 column"><%=f.getNum() %></div>
+				    	<div class="col-md-2 column"><%=f.getFoodSum() %></div>
+				    	<div class="col-md-2 column">
+				    		<button type="button" class="btn btn-primary btn-sm" id="<%=o.getOrderId() %>"
+									onclick="takeOrder()">确认并发货</button>
+				    	</div>
+				    </div>
+			  		<%
+			  	}
+			  %>
+			  </div>
 			</div>
-		</c:forEach>
+	<%
+		}
+	%>
+			<!-- 统计信息 -->
+			<span><Strong>累计：</Strong>
+			<%
+				for(String key : map.keySet()){
+					%>
+					<a href="#"><%=key %>
+						<span class="badge"><%=map.get(key) %></span>
+					</a>&nbsp;&nbsp;
+					<%
+				}
+			%>
+			</span>
+		</div>
 	</div>
+
+
+<div class="panel panel-default" style="margin-top: 20px;">
+		<div class="panel-body">
+			<div class="page-header"><!-- 页头 -->
+			  <h2>外送订单</h2>
+			</div>
+
+			<%
+				List<Order> undeliver = (List<Order>) request.getAttribute("undeliver");
+				HashMap<String, Integer> map2 = new HashMap<String, Integer>();
+				for (Order o : undeliver) {
+			%>
+		
+			<div class="panel panel-default"> <!-- 订单的详细信息 -->
+			  <div class="panel-heading">
+			    	<span><%=DateUtil.formatDate(o.getAddTime(), "yyyy-MM-dd") %></span>
+					<span style="margin-left: 40px;">
+						<strong>学号 : </strong><%=o.getUserIdCard() %>
+					</span> 
+					<span style="margin-left: 40px;">
+						<strong>总金额 : </strong><%=o.getSum() %>
+					</span>
+					<span style="margin-left: 40px;">
+						<strong>联系电话 : </strong><%=o.getUserTel() %>
+					</span>
+					<span style="margin-left: 40px;">
+						<strong>外送地址 : </strong><%=o.getAddress() %>
+					</span>
+					<button type="button" class="close">
+						<span aria-hidden="true">&times;</span> <span class="sr-only">Close</span>
+					</button>
+			  </div>
+			  <div class="panel-body">
+			  <%
+			  	for(OrderFood f : o.getFoodList()){
+			  		if(map2.get(f.getFoodName()) == null){
+			  			map2.put(f.getFoodName(), 1);
+			  		}else{
+			  			map2.put(f.getFoodName(), map2.get(f.getFoodName()) + 1);
+			  		}
+			  		%>
+			  		<div class="row clearfix">
+				    	<div class="col-md-3 column">缩略图</div>
+				    	<div class="col-md-3 column"><%=f.getFoodName() %></div>
+				    	<div class="col-md-2 column"><%=f.getNum() %></div>
+				    	<div class="col-md-2 column"><%=f.getFoodSum() %></div>
+				    	<div class="col-md-2 column">
+				    		<button type="button" class="btn btn-primary btn-sm" id="<%=o.getOrderId() %>"
+									onclick="takeOrder()">确认并发货</button>
+				    	</div>
+				    </div>
+			  		<%
+			  	}
+			  %>
+			  </div>
+			</div>
+	<%
+		}
+	%>
+			<!-- 统计信息 -->
+			<span><Strong>累计：</Strong>
+			<%
+				for(String key : map2.keySet()){
+					%>
+					<a href="#"><%=key %>
+						<span class="badge"><%=map2.get(key) %></span>
+					</a>&nbsp;&nbsp;
+					<%
+				}
+			%>
+			</span>
+		</div>
+	</div>
+
+
 
 
 	<div class="row clearfix" style="margin-top: 20px;">
@@ -98,10 +195,9 @@
 	</form>
 </body>
 <script type="text/javascript">
-
 function takeOrder(){
 	var srcElement = $(window.event.srcElement);
-	var order = srcElement.parent().parent().parent().parent().parent().parent();
+	var order = srcElement.parent().parent().parent().parent();
 	$.ajax({
 		url: "alterOrder",
 		type: "POST",
@@ -166,7 +262,5 @@ $(document).ready(function() {				// keep it simple and stupid !
 		}
 	});
 });
-
-	
 </script>
 </html>

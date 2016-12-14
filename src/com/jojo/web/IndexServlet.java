@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.jojo.dao.DaoFactory;
+import com.jojo.dao.FoodDao;
 import com.jojo.dao.MerchantDao;
+import com.jojo.model.Food;
 import com.jojo.model.Merchant;
 
 /**
@@ -32,6 +34,60 @@ public class IndexServlet extends HttpServlet{
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		
+		if("selectFood".equals(request.getParameter("action"))){
+			selectFood(request, response);
+			request.getRequestDispatcher("selectFood.jsp").forward(request, response);
+			return ;
+		}else{
+			goIndex(request, response);
+			request.getRequestDispatcher("index.jsp").forward(request, response);
+			return ;
+		}
+	}
+	
+	
+	/**
+	 * 导航条搜索
+	 * @param request
+	 * @param response
+	 */
+	private void selectFood(HttpServletRequest request, HttpServletResponse response) {
+		String keyword = request.getParameter("keyword");
+																				// 为模糊搜索准备sql语句，注意要加引号
+		char[] arr = keyword.toCharArray();
+		StringBuilder sql = new StringBuilder("select * from t_food where foodName like \"%");
+		for(char c : arr){
+			sql.append(c + "%");
+		}
+		sql.append("\"");
+		DaoFactory daoFactory = new DaoFactory();
+		try {
+			daoFactory.beginConnectionScope();
+			daoFactory.beginTransaction();
+			
+			FoodDao foodDao = daoFactory.createFoodDao();
+			List<Food> foodList = foodDao.selectFood(sql.toString());
+			request.setAttribute("foodList", foodList);
+			
+			daoFactory.endTransaction();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			daoFactory.abortTransaction();
+		}finally{
+			daoFactory.endConnectionScope();
+		}
+		
+		
+	}
+
+	/**
+	 * 访问首页
+	 * @param request
+	 * @param response
+	 */
+	private void goIndex(HttpServletRequest request, HttpServletResponse response) {
 		DaoFactory daoFactory = new DaoFactory();
 		// 开启连接与事务
 		try {
@@ -40,10 +96,7 @@ public class IndexServlet extends HttpServlet{
 			
 			MerchantDao merchantDao = daoFactory.createMerchantDao();
 			List<Merchant> merchantList = merchantDao.selectAllMerchants();
-
-			// 取出来的时候也是Object，嘿，还必须得去看JSTL
 			request.setAttribute("merchantList", merchantList);
-			request.getRequestDispatcher("index.jsp").forward(request, response);
 			
 			daoFactory.endTransaction();
 		} catch (SQLException e) {
@@ -53,5 +106,4 @@ public class IndexServlet extends HttpServlet{
 			daoFactory.endConnectionScope();
 		}
 	}
-	
 }

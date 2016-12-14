@@ -226,6 +226,39 @@ public class FoodDao {
 	}
 	
 	/**
+	 * 导航条搜索，需要传入sql语句
+	 * @param sql
+	 * @throws SQLException 
+	 */
+	public List<Food> selectFood(String sql) throws SQLException {
+		List<Food> list = new ArrayList<Food>();
+		
+		PreparedStatement pstmt = conn.prepareStatement(sql, 
+				ResultSet.TYPE_FORWARD_ONLY, 
+				ResultSet.CONCUR_READ_ONLY,
+				ResultSet.CLOSE_CURSORS_AT_COMMIT);
+		ResultSet rs = pstmt.executeQuery();
+		
+		while(rs.next()){
+			Food food = new Food();
+			food.setFoodId(rs.getInt("foodId"));
+			food.setFoodName(rs.getString("foodName"));
+			food.setFoodPrice(rs.getDouble("foodPrice"));
+			food.setFoodType(rs.getString("foodType"));
+			food.setDescription(rs.getString("description"));
+			food.setNum(rs.getInt("num"));
+			// 获取时间
+			Timestamp ts = rs.getTimestamp("addTime");
+			food.setAddTime(new java.util.Date(ts.getTime()));
+			food.setAddTime_();
+			food.setMerchantId(rs.getInt("merchantId"));
+			list.add(food);
+		}
+		return list;
+	}
+	
+	
+	/**
 	 * 根据merchantId来查询食品数目，失败返回0
 	 * @param merchantId
 	 * @return

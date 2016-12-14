@@ -2,6 +2,7 @@ package com.jojo.web;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -55,12 +56,10 @@ public class OrderListServlet extends HttpServlet {
 				totalPages = totalPages / 10 + 1;
 			}
 			request.setAttribute("totalPages", totalPages);
-			request.setAttribute("orderList", orderList);
 			
-			// 发往用户或商家
-			if (flag == true) {
-				// 根据status选择相应的jsp
-				if (status == 0) {
+			if (flag == true) {									// 发往用户,根据status选择相应的jsp
+				request.setAttribute("orderList", orderList);
+				if (status == 0) {							
 					request.setAttribute("xxxjsp", "background/userStatus0.jsp");
 				} else if (status == 1) {
 					request.setAttribute("xxxjsp", "background/userStatus1.jsp");
@@ -69,14 +68,30 @@ public class OrderListServlet extends HttpServlet {
 				}
 				request.getRequestDispatcher("userMain.jsp").forward(request, response);
 				return;
-				
-			} else {
-				// 根据status选择相应的jsp
+
+			
+			
+			
+			} else {														
+				List<Order> deliver = new ArrayList<Order>();
+				List<Order> undeliver = new ArrayList<Order>();
+				for(Order o : orderList){												// 商家情况略特殊，因为要按照取货方式来分类
+					if( "自取".equals(o.getWay()) ){
+						undeliver.add(o);
+					}else if( "外送".equals(o.getWay()) ){
+						deliver.add(o);
+					}
+				}
 				if (status == 0) {
+					request.setAttribute("deliver", deliver);
+					request.setAttribute("undeliver", undeliver);
 					request.setAttribute("xxxjsp", "background/merchantStatus0.jsp");
 				} else if (status == 1) {
+					request.setAttribute("deliver", deliver);
+					request.setAttribute("undeliver", undeliver);
 					request.setAttribute("xxxjsp", "background/merchantStatus1.jsp");
 				} else if (status == 2) {
+					request.setAttribute("orderList", orderList);
 					request.setAttribute("xxxjsp", "background/merchantStatus2.jsp");
 				}
 				request.getRequestDispatcher("merchantMain.jsp").forward(request, response);

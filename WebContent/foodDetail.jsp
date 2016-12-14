@@ -52,20 +52,16 @@
 					<li><a href="#">Link</a></li>
 				</ul>
 	
-				<form class="navbar-form navbar-left" role="search">
+				<form class="navbar-form navbar-left" role="search" action="index" method="post">
 					<div class="form-group">
-						<input type="text" class="form-control" placeholder="Search">
+						<input type="text" class="form-control" placeholder="Search" id="keyword" name="keyword">
+						<input type="hidden" value="selectFood" id="action" name="action" />
 					</div>
 					<!-- Single button -->
 					<div class="btn-group">
-						<button type="button" class="btn btn-default dropdown-toggle"
-							data-toggle="dropdown">
-							搜一搜 <span class="caret"></span>
+						<button type="submit" class="btn btn-default " >
+							搜一搜 
 						</button>
-						<ul class="dropdown-menu" role="menu">
-							<li><a href="#">搜店家</a></li>
-							<li><a href="#">搜小菜</a></li>
-						</ul>
 					</div>
 				</form>
 	

@@ -53,6 +53,7 @@
 							<div class="col-md-2 column">${food.num }</div>
 							<div class="col-md-2 column">${food.foodSum }</div>
 							<div class="col-md-2 column">
+								<input type="hidden" id="${userOrder.orderId }" />
 								<button type="button" class="btn btn-warning btn-sm" id="${food.foodId }" onclick="launchModal()">尚未评价</button>
 							</div>
 						</div>
@@ -107,6 +108,7 @@
 				</div>
 				<div class="modal-body">
 					<input type="hidden" id="prepareToDelete" />
+					<input type="hidden" id="oid" />
 					<input type="hidden" id="isPositive" value="1" />
 					<input type="hidden" id="uid" value="${currentUser.userId }" />
 					<form role="form">
@@ -139,6 +141,7 @@
 <script type="text/javascript">
 function launchModal(){
 	$("#prepareToDelete").val($(window.event.srcElement).attr("id"));
+	$("#oid").val($(window.event.srcElement).parent().attr("id"))
 	$("#myModal").modal();
 }
 function negative(){
@@ -153,11 +156,13 @@ function addComment(){
 			comment:$("#textarea").val(),
 			userId:$("#uid").val(),
 			foodId:$("#prepareToDelete").val(),
+			orderId:$("#oid").val(),
 			isPositive:$("#isPositive").val()
 		}
 	}).done(function(){
 		var buttonId = $("#prepareToDelete").val();
 		$("#"+buttonId).remove();
+		alert("评论成功！");
 	});
 }
 

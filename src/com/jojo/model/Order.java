@@ -16,8 +16,10 @@ public class Order {
 	private int orderId;
 	private int userId;
 	private int userIdCard;
+	private String userTel;
 	private int merchantId;
 	private String merchantName;
+	private String merchantTel;
 	private int status; // 未发货，发货，收货
 	private double sum;
 	private String way;
@@ -26,7 +28,32 @@ public class Order {
 	private String addTime_;
 	private Date ackTime;
 	private String ackTime_;
+	private int commented = 0;
 	private List<OrderFood> foodList = new ArrayList<OrderFood>();
+
+	public int getCommented() {
+		return commented;
+	}
+
+	public void setCommented(int commented) {
+		this.commented = commented;
+	}
+
+	public String getUserTel() {
+		return userTel;
+	}
+
+	public void setUserTel(String userTel) {
+		this.userTel = userTel;
+	}
+
+	public String getMerchantTel() {
+		return merchantTel;
+	}
+
+	public void setMerchantTel(String merchantTel) {
+		this.merchantTel = merchantTel;
+	}
 
 	public String getWay() {
 		return way;

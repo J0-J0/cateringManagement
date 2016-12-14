@@ -12,6 +12,7 @@ import com.jojo.model.Food;
 import com.jojo.model.Merchant;
 import com.jojo.model.Order;
 import com.jojo.model.OrderFood;
+import com.jojo.model.Page;
 import com.jojo.model.User;
 
 public class OrderDao {
@@ -52,8 +53,10 @@ public class OrderDao {
 		
 		resultOrder.setUserId(user.getUserId());
 		resultOrder.setUserIdCard(user.getUserIdCard());
+		resultOrder.setUserTel(user.getUserTel());
 		resultOrder.setMerchantId(merchant.getMerchantId());
 		resultOrder.setMerchantName(merchant.getMerchantName());
+		resultOrder.setMerchantTel(merchant.getMerchantTel());
 		// 未发货，默认为0
 		resultOrder.setStatus(0);
 		double sum = 0;
@@ -93,29 +96,31 @@ public class OrderDao {
 	 * @throws SQLException
 	 */
 	public int addOrder(Order order) throws SQLException {
-		String sql = "insert into t_order values(null,?,?,?,?,?,?,?,?,?,?)";
+		String sql = "insert into t_order values(null,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setInt(1, order.getUserId());
 		pstmt.setInt(2, order.getUserIdCard());
-		pstmt.setInt(3, order.getMerchantId());
-		pstmt.setString(4, order.getMerchantName());
-		pstmt.setInt(5, order.getStatus());
-		pstmt.setDouble(6, order.getSum());
-		pstmt.setString(7, order.getWay());
-		pstmt.setString(8, order.getAddress());
+		pstmt.setString(3, order.getUserTel());
+		pstmt.setInt(4, order.getMerchantId());
+		pstmt.setString(5, order.getMerchantName());
+		pstmt.setString(6, order.getMerchantTel());
+		pstmt.setInt(7, order.getStatus());
+		pstmt.setDouble(8, order.getSum());
+		pstmt.setString(9, order.getWay());
+		pstmt.setString(10, order.getAddress());
 
 		// 时间转换
 		Timestamp tsd = new Timestamp(order.getAddTime().getTime());
-		pstmt.setTimestamp(9, tsd);
+		pstmt.setTimestamp(11, tsd);
 		if (order.getAckTime() != null) {
 			Timestamp tsk = new Timestamp(order.getAckTime().getTime());
-			pstmt.setTimestamp(10, tsk);
+			pstmt.setTimestamp(12, tsk);
 		}else{
-			pstmt.setTimestamp(10, null);
+			pstmt.setTimestamp(12, null);
 		}
+		pstmt.setInt(13, order.getCommented());
 
-		int row = pstmt.executeUpdate();
-		return row;
+		return pstmt.executeUpdate();
 	}
 	/**
 	 * 给t_orderFood增加数据
@@ -145,8 +150,47 @@ public class OrderDao {
 	
 	
 	
-	
-	
+	/**
+	 * 根据orderId，查询order
+	 * @param orderId
+	 * @return
+	 * @throws SQLException 
+	 */
+	public Order selectOrder(int orderId) throws SQLException {
+		Order order = null;
+		String sql = "select * from t_order where orderId = "+orderId;
+		PreparedStatement pstmt = conn.prepareStatement(sql, 
+				ResultSet.TYPE_FORWARD_ONLY, 
+				ResultSet.CONCUR_READ_ONLY,
+				ResultSet.CLOSE_CURSORS_AT_COMMIT);
+		ResultSet rs = pstmt.executeQuery();
+		if(rs.next()){
+			order = new Order();
+			order.setOrderId(rs.getInt("orderrderId"));
+			order.setUserId(rs.getInt("userId"));
+			order.setUserIdCard(rs.getInt("userIdCard"));
+			order.setUserTel(rs.getString("userTel"));
+			order.setMerchantId(rs.getInt("merchantId"));
+			order.setMerchantName(rs.getString("merchantName"));
+			order.setMerchantTel(rs.getString("merchantTel"));
+			order.setStatus(rs.getInt("status"));
+			order.setSum(rs.getDouble("sum"));
+			order.setWay(rs.getString("way"));
+			order.setAddress(rs.getString("address"));
+			if (rs.getTimestamp("addTime") != null) {
+				java.util.Date addTime = new java.util.Date(rs.getTimestamp("addTime").getTime());
+				order.setAddTime(addTime);
+				order.setAddTime_();
+			}
+			if (rs.getTimestamp("ackTime") != null) {
+				java.util.Date ackTime = new java.util.Date(rs.getTimestamp("ackTime").getTime());
+				order.setAckTime(ackTime);
+				order.setAckTime_();
+			}
+			order.setCommented(rs.getInt("commented"));
+		}
+		return order;
+	}
 	
 	
 	/**
@@ -188,81 +232,52 @@ public class OrderDao {
 	 */
 	public List<Order> selectOrderByStatus(int id, int status, boolean flag, int page) throws SQLException {
 		List<Order> list = new ArrayList<Order>();
-		String sql = null;
+		Page p = new Page(page, 10);
+		StringBuilder sql = new StringBuilder("select * from t_order o join t_orderfood f on (o.orderId=f.orderId) ");
 		
-		// 我知道这样看上去不够geek，但你妈真心方便啊，ctrl c + ctrl v
-		if (flag == true) {
-			sql = "SELECT"
-					+ " `o`.`orderId` AS `orderId`,"
-					+ " `o`.`userId` AS `userId`,"
-					+ " `o`.`userIdCard` AS `userIdCard`,"
-					+ " `o`.`merchantId` AS `merchantId`,"
-					+ " `o`.`merchantName` AS `merchantName`,"
-					+ " `o`.`status` AS `status`,"
-					+ " `o`.`sum` AS `sum`,"
-					+ " `o`.`way` AS `way`,"
-					+ " `o`.`address` AS `address`,"
-					+ " `o`.`addTime` AS `addTime`,"
-					+ " `o`.`ackTime` AS `ackTime`,"
-					+ " `f`.`foodId` AS `foodId`,"
-					+ " `f`.`foodName` AS `foodName`,"
-					+ " `f`.`foodPrice` AS `foodPrice`,"
-					+ " `f`.`num` AS `num`,"
-					+ " `f`.`foodSum` AS `foodSum`"
-					+ "  FROM"
-					+ "  (`t_order` `o`   JOIN `t_orderfood` `f` ON ((`o`.`orderId` = `f`.`orderId`)))"
-					+ "  WHERE   (`o`.`status` = ? and userId = ?) order by `o`.`addTime` desc limit ?,?";
+		if(false == flag){					// 这边开始对用户与商家进行分类
+			if (status == 2) {				// 另外状态不同，排序方式也不同
+				sql.append("where (o.status=" + status + " and o.merchantId=" + id + ") ");
+				sql.append("order by o.ackTime desc ");
+			}else{
+				sql.append("where (o.status=" + status + " and o.merchantId=" + id + " and o.addTime<=now()) ");
+				sql.append("order by o.addTime desc ");
+			}
+			sql.append("limit " + p.getStart() + "," + p.getRows() + ";");
+		
 		}else{
-			sql = "SELECT"
-					+ " `o`.`orderId` AS `orderId`,"
-					+ " `o`.`userId` AS `userId`,"
-					+ " `o`.`userIdCard` AS `userIdCard`,"
-					+ " `o`.`merchantId` AS `merchantId`,"
-					+ " `o`.`merchantName` AS `merchantName`,"
-					+ " `o`.`status` AS `status`,"
-					+ " `o`.`sum` AS `sum`,"
-					+ " `o`.`way` AS `way`,"
-					+ " `o`.`address` AS `address`,"
-					+ " `o`.`addTime` AS `addTime`,"
-					+ " `o`.`ackTime` AS `ackTime`,"
-					+ " `f`.`foodId` AS `foodId`,"
-					+ " `f`.`foodName` AS `foodName`,"
-					+ " `f`.`foodPrice` AS `foodPrice`,"
-					+ " `f`.`num` AS `num`,"
-					+ " `f`.`foodSum` AS `foodSum`"
-					+ "  FROM"
-					+ "  (`t_order` `o`   JOIN `t_orderfood` `f` ON ((`o`.`orderId` = `f`.`orderId`)))"
-					+ "  WHERE   (`o`.`status` = ? and merchantId = ?) order by `o`.`addTime` desc limit ?,?";
+			sql.append("where (o.status=" + status + " and o.userId=" + id + ") ");
+			if(status == 2){
+				sql.append("order by o.ackTime desc ");
+			}else{
+				sql.append("order by o.addTime desc ");
+			}
+			sql.append("limit " + p.getStart() + "," + p.getRows() + ";");
 		}
-		
-		PreparedStatement pstmt = conn.prepareStatement(sql, 
+		PreparedStatement pstmt = conn.prepareStatement(sql.toString(), 
 				ResultSet.TYPE_FORWARD_ONLY, 
 				ResultSet.CONCUR_READ_ONLY,
 				ResultSet.CLOSE_CURSORS_AT_COMMIT);
-		pstmt.setInt(1, status);
-		pstmt.setInt(2, id);
-		pstmt.setInt(3, (page - 1) * 10);
-		pstmt.setInt(4, (page - 1) * 10 + 10);
-
 		ResultSet rs = pstmt.executeQuery();
 		Order o = new Order();
+		
 		while (rs.next()) {
-
 			OrderFood f = new OrderFood();
 			f.setFoodId(rs.getInt("foodId"));
 			f.setFoodName(rs.getString("foodName"));
 			f.setFoodPrice(rs.getDouble("foodPrice"));
 			f.setNum(rs.getInt("num"));
 			f.setFoodSum(rs.getDouble("foodSum"));
-
-			// 判断是否同一笔订单
-			if (o.getOrderId() != rs.getInt(1)) {
+			
+			if (o.getOrderId() != rs.getInt(1)) {			// 判断是否同一笔订单
 				o = new Order();
 				o.setOrderId(rs.getInt("orderId"));
 				o.setUserId(rs.getInt("userId"));
 				o.setUserIdCard(rs.getInt("userIdCard"));
+				o.setUserTel(rs.getString("userTel"));
 				o.setMerchantId(rs.getInt("merchantId"));
 				o.setMerchantName(rs.getString("merchantName"));
+				o.setMerchantTel(rs.getString("merchantrTel"));
 				o.setStatus(rs.getInt("status"));
 				o.setSum(rs.getDouble("sum"));
 				o.setWay(rs.getString("way"));
@@ -277,10 +292,9 @@ public class OrderDao {
 					o.setAckTime(ackTime);
 					o.setAckTime_();
 				}
-
+				o.setCommented(rs.getInt("commented"));
 				o.getFoodList().add(f);
-				// 添加
-				list.add(o);
+				list.add(o);					// 添加
 			} else {
 				o.getFoodList().add(f);
 			}

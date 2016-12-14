@@ -295,16 +295,12 @@ public class UserDao {
 	 * @return
 	 * @throws SQLException
 	 */
-	public int updateUser(User user, double sum) throws SQLException {
-		String sql = "update t_user set sum = ? where userId = ?";
+	public int updateUser(int userId, double sum) throws SQLException {
+		String sql = "update t_user set sum=sum+?  where userId = ?";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
-
-		// 与原sum相加
-		sum += user.getSum();
 		pstmt.setDouble(1, sum);
-		pstmt.setInt(2, user.getUserId());
+		pstmt.setInt(2, userId);
 
-		int row = pstmt.executeUpdate();
-		return row;
+		return pstmt.executeUpdate();
 	}
 }

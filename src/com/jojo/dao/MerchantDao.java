@@ -306,7 +306,26 @@ public class MerchantDao {
 		int row = pstmt.executeUpdate();
 		return row;
 	}
+	
+	
+	/**
+	 * 更新总收入
+	 * @param merchant
+	 * @return
+	 * @throws SQLException
+	 */
+	public int updateMerchant(int merchantId, double sum) throws SQLException {
+		String sql = "update t_merchant set sum=sum+?  where merchantId = ?";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setDouble(1, sum);
+		pstmt.setInt(2, merchantId);
 
+		return pstmt.executeUpdate();
+	}
+	
+	
+	
+	
 	/**
 	 * 更新头像，成功返回1
 	 * 
