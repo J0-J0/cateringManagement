@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page import="com.jojo.model.*" %>
+<%@ page import="com.jojo.model.*"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -52,18 +52,18 @@
 				<li><a href="#">Link</a></li>
 			</ul>
 
-			<form class="navbar-form navbar-left" role="search" action="index" method="post">
-					<div class="form-group">
-						<input type="text" class="form-control" placeholder="Search" id="keyword" name="keyword">
-						<input type="hidden" value="selectFood" id="action" name="action" />
-					</div>
-					<!-- Single button -->
-					<div class="btn-group">
-						<button type="submit" class="btn btn-default " >
-							搜一搜 
-						</button>
-					</div>
-				</form>
+			<form class="navbar-form navbar-left" role="search" action="index"
+				method="post">
+				<div class="form-group">
+					<input type="text" class="form-control" placeholder="Search"
+						id="keyword" name="keyword"> <input type="hidden"
+						value="selectFood" id="action" name="action" />
+				</div>
+				<!-- Single button -->
+				<div class="btn-group">
+					<button type="submit" class="btn btn-default ">搜一搜</button>
+				</div>
+			</form>
 
 
 			<ul class="nav navbar-nav navbar-right"
@@ -71,8 +71,10 @@
 				<li class="dropdown"><a href="#" class="dropdown-toggle"
 					data-toggle="dropdown">个人中心 <span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
-						<li><a href="${pageContext.request.contextPath }/userMain.jsp">我的主页</a></li>
-						<li><a href="${pageContext.request.contextPath }/cartDetail?userId=${currentUser.userId}">购物车</a></li>
+						<li><a
+							href="${pageContext.request.contextPath }/userMain.jsp">我的主页</a></li>
+						<li><a
+							href="${pageContext.request.contextPath }/cartDetail?userId=${currentUser.userId}">购物车</a></li>
 						<li class="divider"></li>
 						<li><a href="#">退出</a></li>
 					</ul></li>
@@ -81,131 +83,108 @@
 		<!-- /.navbar-collapse -->
 	</div>
 	<!-- /.container-fluid --> </nav>
-	
+
 
 	<div class="container" style="margin: 80px;">
 		<div class="row clearfix">
 			<div class="col-md-8 column">
-				<div class="thumbnail">
-					<div class="caption">
-						<div class="row clearfix">
-							<div class="col-md-2 column">
-								<div style="height: 100px; width: 100px;">
-									<!-- 这里要设个最大宽度和高度 -->
-									<img alt="${currentUser.userName }"
-										src="${pageContext.request.contextPath }/${currentUser.pic}">
+				<div class="row clearfix">
+					<div class="col-md-12 column">
+						<div class="panel panel-default">
+							<div class="panel-body">
+								<div class="row clearfix">
+									<div class="col-md-2 column">
+										<div style="height: 100px; width: 100px;">
+											<!-- 这里要设个最大宽度和高度 -->
+											<img alt="${currentUser.userName }"
+												src="${pageContext.request.contextPath }/${currentUser.pic}">
+										</div>
+									</div>
+									<div class="col-md-6 column">
+										<div class="page-header">
+											<h3>Hi ! &nbsp;&nbsp;${currentUser.userName }</h3>
+										</div>
+										<h4>
+											<span class="label label-primary">学号</span>&nbsp;&nbsp; <span>${currentUser.userIdCard }</span>
+											<span class="label label-primary" style="margin-left: 15px;">性别</span>&nbsp;&nbsp;
+											<span>${currentUser.sex }</span>
+										</h4>
+										<h4>
+											<span class="label label-primary">电话</span>&nbsp;&nbsp; <span>${currentUser.userTel }</span>
+											<span class="label label-primary" style="margin-left: 15px;">年龄</span>&nbsp;&nbsp;
+											<span>${currentUser.age }</span>
+										</h4>
+										<h4>
+											<span class="label label-primary">送货地址</span>&nbsp;&nbsp;
+											${currentUser.address }
+										</h4>
+									</div>
+									<div class="col-md-4 column"></div>
+								</div>
+								<div class="row clearfix">
+									<div class="col-md-2 column"></div>
+									<div class="col-md-4 column">
+										<h4>
+											<span class="label label-warning">累计剁手</span>&nbsp;&nbsp;${currentUser.sum }
+										</h4>
+									</div>
+									<div class="col-md-3 column"></div>
+									<div class="col-md-3 column">
+										<!-- 模态框准备 -->
+										<button type="button" class="btn btn-success"
+											data-toggle="modal" data-target="#myModal">修改我的资料</button>
+									</div>
 								</div>
 							</div>
-							<div class="col-md-6 column">
-								<div class="page-header">
-									<h3>Hi ! &nbsp;&nbsp;${currentUser.userName }</h3>
-								</div>
-								<h4>
-									<span class="label label-primary">学号</span>&nbsp;&nbsp;
-									<span>${currentUser.userIdCard }</span>
-									<span class="label label-primary" style="margin-left: 15px;">性别</span>&nbsp;&nbsp;
-									<span>${currentUser.sex }</span>
-								</h4>
-								<h4>
-									<span class="label label-primary">电话</span>&nbsp;&nbsp;
-									<span>${currentUser.userTel }</span>
-									<span class="label label-primary" style="margin-left: 15px;">年龄</span>&nbsp;&nbsp;
-									<span>${currentUser.age }</span>
-								</h4>
-								<h4>
-									<span class="label label-primary">送货地址</span>&nbsp;&nbsp;
-									${currentUser.address }
-								</h4>
-							</div>
-							<div class="col-md-4 column"></div>
 						</div>
-						<div class="row clearfix">
-							<div class="col-md-2 column"></div>
-							<div class="col-md-4 column">
-								<h4>
-									<span class="label label-warning">累计剁手</span>&nbsp;&nbsp;${currentUser.sum }
-								</h4>
-							</div>
-							<div class="col-md-3 column"></div>
-							<div class="col-md-3 column">
-							<!-- 模态框准备 -->
-								<button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">
-									修改我的资料
-								</button>
+					</div>
+				</div>
+				<div class="row clearfix">
+					<div class="col-md-12 column">
+						<div class="panel panel-default">
+							<div class="panel-body">
+								<!-- 订单信息导航 -->
+								<ul class="nav nav-pills" role="tablist">
+									<li role="presentation"><a
+										href="${pageContext.request.contextPath }/orderList?id=${currentUser.userId}&status=0&flag=true&page=1">已付款</a></li>
+									<li role="presentation"><a
+										href="${pageContext.request.contextPath }/orderList?id=${currentUser.userId}&status=1&flag=true&page=1">待处理</a></li>
+									<li role="presentation"><a
+										href="${pageContext.request.contextPath }/orderList?id=${currentUser.userId}&status=2&flag=true&page=1">已完成</a></li>
+								</ul>
+
+								<%
+									if (request.getAttribute("xxxjsp") != null) {
+								%>
+								<jsp:include page="${xxxjsp }"></jsp:include>
+								<%
+									} else {
+								%>
+								<div class="jumbotron" style="margin-top: 20px;">
+									<h2>点击上方按钮，查询自己的订单~</h2>
+									<h3>~\(≧▽≦)/~~\(≧▽≦)/~~\(≧▽≦)/~</h3>
+								</div>
+								<%
+									}
+								%>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="col-md-4 column">
-				<div class="page-header">
-					<h3>我的购物车</h3>
-				</div>
-				<table class="table table-striped table-condensed table-hover">
-					<thead>
-						<tr>
-							<th>编号</th>
-							<th>产品</th>
-							<th>交付时间</th>
-							<th>状态</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>1</td>
-							<td>TB - Monthly</td>
-							<td>01/04/2012</td>
-							<td>Default</td>
-						</tr>
-						<tr class="success">
-							<td>1</td>
-							<td>TB - Monthly</td>
-							<td>01/04/2012</td>
-							<td>Approved</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</div>
-
-		<div class="row clearfix">
-			<div class="col-md-8 column">
-			<div class="panel panel-default">
-			  <div class="panel-body">
-			   <!-- 订单信息导航 -->
-					 	<ul class="nav nav-pills" role="tablist">
-						  <li role="presentation">
-						  		<a href="${pageContext.request.contextPath }/orderList?id=${currentUser.userId}&status=0&flag=true&page=1">已付款</a></li>
-						  <li role="presentation">
-						  		<a href="${pageContext.request.contextPath }/orderList?id=${currentUser.userId}&status=1&flag=true&page=1">待处理</a></li>
-						  <li role="presentation">
-						  		<a href="${pageContext.request.contextPath }/orderList?id=${currentUser.userId}&status=2&flag=true&page=1">已完成</a></li>
-						</ul>
-						
-						<%if(request.getAttribute("xxxjsp") != null){ %>
-							<jsp:include page="${xxxjsp }"></jsp:include>
-						<%}else{ %>
-							<div class="jumbotron" style="margin-top: 20px;">
-							  <h2>点击上方按钮，查询自己的订单~</h2>
-						  	  <h3>~\(≧▽≦)/~~\(≧▽≦)/~~\(≧▽≦)/~</h3>
-							</div>
-						<%} %>
-			  </div>
-			</div>
-			
-				 
-			</div>
-			<div class="col-md-4 column">
-				<div class="panel panel-default">
-				  <div class="panel-body">
-				    历史记录
-				  </div>
+				<div class="panel panel-default" id="favourite">
+					<div class="panel-body">
+						<div class="page-header">
+							<h3>我的收藏夹</h3>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 
-<!-- 模态框代码，我就把你放在最下面了 -->
+	<!-- 模态框代码，我就把你放在最下面了 -->
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
@@ -260,18 +239,17 @@
 
 						<div class="form-group">
 							<label class="col-sm-2 control-label">性别</label>&nbsp;&nbsp;&nbsp;
-								<label class="radio-inline"> 
-									<input type="radio" name="sex" id="sex" value="男"
-									<%if ("男".equals(((User) session.getAttribute("currentUser")).getSex())) {
-										out.print(" checked");
-									}%>>男
-								</label> 
-								<label class="radio-inline"> 
-									<input type="radio" name="sex" id="sex" value="女"
-									<%if ("女".equals(((User) session.getAttribute("currentUser")).getSex())) {
-										out.print(" checked");
-									}%>>女
-								</label>
+							<label class="radio-inline"> <input type="radio"
+								name="sex" id="sex" value="男"
+								<%if ("男".equals(((User) session.getAttribute("currentUser")).getSex())) {
+				out.print(" checked");
+			}%>>男
+							</label> <label class="radio-inline"> <input type="radio"
+								name="sex" id="sex" value="女"
+								<%if ("女".equals(((User) session.getAttribute("currentUser")).getSex())) {
+				out.print(" checked");
+			}%>>女
+							</label>
 						</div>
 
 						<div class="form-group">
@@ -312,9 +290,39 @@
 
 </body>
 <script type="text/javascript">
-	$(document).ready(function(){
-		$("button.btn-block").click(function(){
+	$(document).ready(function() {
+		$("button.btn-block").click(function() {
 			$("#updateUserForm").submit();
+		});
+	});
+
+	$(document).ready(function() {
+		$.ajax({
+			url:"alterFavourite",
+			type:"POST",
+			data:{
+				action:"select"
+			}
+		}).done(function(data){
+			var favouriteList = $.parseJSON(data);
+			for(var i = 0; i < favouriteList.length; i++){
+				var node = "	<div class=\"panel panel-default\">"
+									+		"<div class=\"panel-body\">"
+									+			"<div class=\"row clearfix\">"
+									+				"<div class=\"col-md-3 column\">"+"缩略图"+"</div>"
+									+				"<div class=\"col-md-5 column\"><a href=\"foodDetail?foodId="+favouriteList[i].foodId+"\">"+favouriteList[i].foodName+"</a></div>"
+									+				"<div class=\"col-md-2 column\">"+favouriteList[i].foodPrice+"</div>"
+									+				"<div class=\"col-md-2 column\">"
+									+					"<button type=\"button\" class=\"close\" onclick=\"\">"
+									+						"<span aria-hidden=\"true\">&times;</span>"
+									+						"<span class=\"sr-only\">Close</span>"
+									+					"</button>"
+									+				"</div>"
+									+			"</div>"
+									+		"</div>"
+									+	"</div>";
+				$("#favourite").append($(node));
+			}
 		});
 	});
 </script>

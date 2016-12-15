@@ -43,6 +43,14 @@
     <servlet-name>alterCommentServlet</servlet-name>
     <url-pattern>/alterComment</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>alterFavouriteServlet</servlet-name>
+    <servlet-class>com.jojo.web.AlterFavouriteServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>alterFavouriteServlet</servlet-name>
+    <url-pattern>/alterFavourite</url-pattern>
+  </servlet-mapping>
   
   
   <servlet>

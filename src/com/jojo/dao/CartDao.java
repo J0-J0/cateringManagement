@@ -74,8 +74,7 @@ public class CartDao {
 		pstmt.setInt(7, cart.getNum());
 		pstmt.setDouble(8, cart.getSum());
 
-		int row = pstmt.executeUpdate();
-		return row;
+		return pstmt.executeUpdate();
 	}
 	
 	
@@ -139,7 +138,10 @@ public class CartDao {
 	public boolean selectCart(int userId, int foodId) throws SQLException {
 		boolean result = false;
 		String sql = "select cartId from t_cart where userId = ? and foodId = ?";
-		PreparedStatement pstmt = conn.prepareStatement(sql);
+		PreparedStatement pstmt = conn.prepareStatement(sql, 
+				ResultSet.TYPE_FORWARD_ONLY, 
+				ResultSet.CONCUR_READ_ONLY,
+				ResultSet.CLOSE_CURSORS_AT_COMMIT);
 		pstmt.setInt(1, userId);
 		pstmt.setInt(2, foodId);
 		ResultSet rs = pstmt.executeQuery();
@@ -169,7 +171,10 @@ public class CartDao {
 		List<Cart> list = null;
 		
 		String sql = "select * from t_cart where userId = " + userId +" order by merchantId";
-		PreparedStatement pstmt = conn.prepareStatement(sql);
+		PreparedStatement pstmt = conn.prepareStatement(sql, 
+				ResultSet.TYPE_FORWARD_ONLY, 
+				ResultSet.CONCUR_READ_ONLY,
+				ResultSet.CLOSE_CURSORS_AT_COMMIT);
 		ResultSet rs = pstmt.executeQuery();
 
 		while (rs.next()) {

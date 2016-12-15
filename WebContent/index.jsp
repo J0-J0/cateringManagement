@@ -148,19 +148,16 @@ $(document).ready(function(){
 
 			<!-- Wrapper for slides -->
 			<div class="carousel-inner" role="listbox">
-
-				
 			
-<%-- 	
-			<!-- 这里是foreach -->
-			<c:foreach var= "indexFood" items= "${indexFoodList}">
+			<!-- 这里是forEach -->
+			<c:forEach var= "indexFood" items= "${indexFoodList}">
 				<div class="item">
 					<img src="${pageContext.request.contextPath}/${indexFood.pics[0]}"
 						alt="..." style="width: 1600px; height: 500px;">
 					<div class="carousel-caption">${indexFood.description}</div>
 				</div>
-			</c:foreach>
---%>
+			</c:forEach>
+
 				
 				<!-- 滚动页 -->
 				<div class="item active">

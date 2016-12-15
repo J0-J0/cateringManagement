@@ -1,6 +1,7 @@
 package com.jojo.web;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 
 import javax.servlet.ServletException;
@@ -106,12 +107,20 @@ public class AlterCartServlet extends HttpServlet {
 	 * 添加购物车
 	 * @param request
 	 * @param response
+	 * @throws IOException 
 	 */
-	@SuppressWarnings("unused")
-	private void addCart(HttpServletRequest request, HttpServletResponse response) {
-		int merchantId = Integer.parseInt(request.getParameter("merchantId"));
-		String merchantName = request.getParameter("merchantName");
-		int userId = Integer.parseInt(request.getParameter("userId"));
+	private void addCart(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		response.setContentType("text/html;charset=utf-8");
+		PrintWriter out = new PrintWriter(response.getWriter(), true);
+		
+		int userId = 0;
+		if(StringUtil.isEmpty(request.getParameter("userId"))){
+			out.println("添加失败，请检查是否登录！");
+			out.close();
+			return ;
+		}else{
+			userId = Integer.parseInt(request.getParameter("userId"));
+		}
 		int foodId = Integer.parseInt(request.getParameter("foodId"));
 		String tmp = request.getParameter("num");
 		int num = 0;
@@ -136,6 +145,9 @@ public class AlterCartServlet extends HttpServlet {
 				Merchant merchant = merchantDao.selectMerchant(food.getMerchantId());
 				Cart cart = cartDao.createCart(merchant.getMerchantId(), merchant.getMerchantName(), userId, food, num);
 				cartDao.addCart(cart);
+				
+				out.println("添加成功！");
+				out.close();
 				daoFactory.endTransaction();
 			}else{
 				// 预留，暂时不写，已存在商品数量加 1 功能

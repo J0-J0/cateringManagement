@@ -164,9 +164,9 @@
 										<p>剩余数量：${food.num }</p>
 										<p>
 											<a id="${food.foodId}" class="btn btn-primary" role="button"
-												 onclick="cart()">加购物车</a> <a
-												id="${food.foodId}" class="btn btn-default" role="button"
-												style="margin-left: 10px;">放收藏夹</a>
+												 onclick="cart()">加购物车</a>
+											<a id="${food.foodId}" class="btn btn-default" role="button"
+												style="margin-left: 10px;" onclick="favourite()">放收藏夹</a>
 										</p>
 									</div>
 								</div>
@@ -269,6 +269,20 @@
 			alert("添加成功 ！ ");
 		}).fail(function(){
 			alert("抱歉失败了！")
+		});
+	}
+	function favourite(){
+		var foodId = $(window.event.srcElement).attr("id");
+		$.ajax({
+			url: "alterFavourite",
+			type: "POST",
+			data: {
+				action:"add",
+				foodId: foodId,
+				userId: $("#userId").val()
+			}
+		}).done(function(data){
+			alert(data);
 		});
 	}
 </script>

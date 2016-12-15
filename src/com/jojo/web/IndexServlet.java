@@ -2,7 +2,9 @@ package com.jojo.web;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -93,8 +95,16 @@ public class IndexServlet extends HttpServlet{
 		try {
 			daoFactory.beginConnectionScope();
 			daoFactory.beginTransaction();
-			
 			MerchantDao merchantDao = daoFactory.createMerchantDao();
+			FoodDao foodDao = daoFactory.createFoodDao();
+			
+			Random rand = new Random(47);					// 这边会从数据库随机搜索四个食物，搜索依据是随机数种子
+			List<Food> indexFoodList = new ArrayList<Food>();
+			for(int i = 0; i < 4; i++){
+				indexFoodList.add(foodDao.selectFood(rand.nextInt(50)+1));
+			}
+			request.setAttribute("indexFoodList", indexFoodList);
+			
 			List<Merchant> merchantList = merchantDao.selectAllMerchants();
 			request.setAttribute("merchantList", merchantList);
 			

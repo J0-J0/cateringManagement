@@ -134,7 +134,7 @@
 													onclick="minus()" id="<%=cart.getFoodPrice()%>">-</button>
 											</span> 
 											<input type="text" class="form-control"
-												value="<%=cart.getNum()%>">
+												value="<%=cart.getNum()%>" disabled />
 											<span class="input-group-btn">
 												<button class="btn btn-default" type="button"
 													onclick="plus()" id="<%=cart.getFoodPrice()%>">+</button>

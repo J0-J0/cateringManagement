@@ -99,4 +99,11 @@ public class DaoFactory {
 	public OrderDao createOrderDao(){
 		return new OrderDao(conn);
 	}
+	/**
+	 * FavouriteDao工厂方法
+	 * @return
+	 */
+	public FavouriteDao createFavouriteDao() {
+		return new FavouriteDao(conn);
+	}
 }
