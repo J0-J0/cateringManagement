@@ -23,6 +23,67 @@
 	src="${pageContext.request.contextPath }/bootstrap3/js/bootstrap.min.js"></script>
 </head>
 <body>
+
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#"> Brand</a>
+			</div>
+	
+			<div class="collapse navbar-collapse"
+				id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li><a href="${pageContext.request.contextPath }/index">首页</a></li>
+					<li><a href="#">Link</a></li>
+				</ul>
+	
+				<form class="navbar-form navbar-left" role="search" action="index" method="post">
+					<div class="form-group">
+						<input type="text" class="form-control" placeholder="Search" id="keyword" name="keyword">
+						<input type="hidden" value="selectFood" id="action" name="action" />
+					</div>
+					<!-- Single button -->
+					<div class="btn-group">
+						<button type="submit" class="btn btn-default " >
+							搜一搜 
+						</button>
+					</div>
+				</form>
+	
+				<ul class="nav navbar-nav navbar-right"
+					style="margin: auto 80px auto auto;">
+					<li class="dropdown"><a href="#" class="dropdown-toggle"
+						data-toggle="dropdown">个人中心 <span class="caret"></span></a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a
+								href="${pageContext.request.contextPath }/userMain.jsp">我的主页</a></li>
+							<li><a 
+								href="${pageContext.request.contextPath }/cartDetail?userId=${currentUser.userId}">购物车</a></li>
+							<li class="divider"></li>
+							<li><a href="#"onclick="logout()">退出</a></li>
+						</ul></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+<form id="logout" action="userInfo" method="post" style="display: none;">
+<input type="hidden" id="action" name="action" value="logout" />
+</form>
+<script>
+function logout(){
+	if(confirm("确认退出吗？")){
+		$("#logout").submit();
+	}
+}
+</script>
+
+
 	<div class="container">
 		<div class="row clearfix">
 			<div class="col-md-12 column">

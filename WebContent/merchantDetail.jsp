@@ -81,7 +81,7 @@
 									<li><a
 										href="${pageContext.request.contextPath }/cartDetail?userId=${currentUser.userId}">购物车</a></li>
 									<li class="divider"></li>
-									<li><a href="#">退出</a></li>
+									<li><a href="#"onclick="logout()">退出</a></li>
 								</ul></li>
 							<%
 								}
@@ -245,6 +245,17 @@
 		</div>
 	</div>
 </body>
+
+<form id="logout" action="userInfo" method="post" style="display: none;">
+<input type="hidden" id="action" name="action" value="logout" />
+</form>
+<script>
+function logout(){
+	if(confirm("确认退出吗？")){
+		$("#logout").submit();
+	}
+}
+</script>
 <script type="text/javascript">
 	$(document).ready(function() {
 		// 模态框登录按钮设置点击事件

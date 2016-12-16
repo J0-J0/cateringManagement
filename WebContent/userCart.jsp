@@ -74,14 +74,22 @@
 						<li><a href="${pageContext.request.contextPath }/userMain.jsp">我的主页</a></li>
 						<li><a href="${pageContext.request.contextPath }/cartDetail?userId=${currentUser.userId}">购物车</a></li>
 						<li class="divider"></li>
-						<li><a href="#">退出</a></li>
+						<li><a href="#"onclick="logout()">退出</a></li>
 					</ul></li>
-			</ul>
+				</ul>
+			</div>
 		</div>
-		<!-- /.navbar-collapse -->
-	</div>
-	<!-- /.container-fluid --> </nav>
-
+	</nav>
+<form id="logout" action="userInfo" method="post" style="display: none;">
+<input type="hidden" id="action" name="action" value="logout" />
+</form>
+<script>
+function logout(){
+	if(confirm("确认退出吗？")){
+		$("#logout").submit();
+	}
+}
+</script>
 
 
 	<div class="container" style="margin: 80px;">

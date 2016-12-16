@@ -51,12 +51,26 @@ public class UserInfoServlet extends HttpServlet {
 			registerUser(request, response);
 			response.sendRedirect("userMain.jsp");
 			return ;
+			
+		}else if("logout".equals(action)){
+			logout(request, response);
+			return ;
 		}
 	}
 	
 	
 	
-	
+	/**
+	 * 用户退出
+	 * @param request
+	 * @param response
+	 * @throws IOException 
+	 */
+	private void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		request.getSession().invalidate();
+		response.sendRedirect("index");
+	}
+
 	/**
 	 * 用户登录
 	 * @param request
