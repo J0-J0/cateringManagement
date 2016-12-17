@@ -276,8 +276,8 @@ function logout(){
 				merchantName: $("#merchantName").val(),
 				userId: $("#userId").val()
 			}
-		}).done(function(){
-			alert("添加成功 ！ ");
+		}).done(function(data){
+			alert(data);
 		}).fail(function(){
 			alert("抱歉失败了！")
 		});
@@ -294,6 +294,8 @@ function logout(){
 			}
 		}).done(function(data){
 			alert(data);
+		}).fail(function(){
+			alert("抱歉失败了！")
 		});
 	}
 </script>

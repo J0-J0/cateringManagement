@@ -100,7 +100,7 @@ public class FoodDao {
 	 * @throws SQLException
 	 */
 	public int addFoodComment(FoodComment foodComment) throws SQLException {
-		String sql = "insert into t_foodcomment values(null, ?,?,?,?,?,?,?)";
+		String sql = "insert into t_foodcomment values(null, ?,?,?,?,?,?,?,?)";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, foodComment.getComment());
 		pstmt.setInt(2, foodComment.getUserId());
@@ -110,6 +110,7 @@ public class FoodDao {
 		Timestamp ts = new Timestamp(System.currentTimeMillis());
 		pstmt.setTimestamp(6, ts);
 		pstmt.setInt(7, foodComment.getIsPositive());
+		pstmt.setInt(8, foodComment.getOrderId());
 
 		return pstmt.executeUpdate();
 	}
@@ -423,10 +424,10 @@ public class FoodDao {
 			foodComment.setComment(rs.getString("comment"));
 			foodComment.setFoodId(rs.getInt("foodId"));
 			foodComment.setFoodName(rs.getString("foodName"));
-			
 			java.util.Date addTime = new java.util.Date(rs.getTimestamp("addTime").getTime());
 			foodComment.setAddTime(addTime);
-			foodComment.setIsPositive(isPositive);
+			foodComment.setIsPositive(rs.getInt("isPositive"));
+			foodComment.setOrderId(rs.getInt("orderId"));
 			
 			commentList.add(foodComment);
 		}
@@ -434,7 +435,40 @@ public class FoodDao {
 	}
 
 	
-	
+
+
+	/**
+	 * ∫Ø ˝÷ÿ‘ÿ£¨≤È’“foodCommentId
+	 * @param userId
+	 * @param foodId
+	 * @param orderId
+	 * @return
+	 * @throws SQLException 
+	 */
+	public FoodComment selectFoodComment(int userId, int foodId, int orderId) throws SQLException {
+		FoodComment foodComment = null;
+		
+		String sql = "select * from t_foodComment where userId="+userId+" and foodId="+foodId+" and orderId="+orderId;
+		PreparedStatement pstmt = conn.prepareStatement(sql, 
+				ResultSet.TYPE_FORWARD_ONLY, 
+				ResultSet.CONCUR_READ_ONLY,
+				ResultSet.CLOSE_CURSORS_AT_COMMIT);
+		ResultSet rs = pstmt.executeQuery();
+		if(rs.next()){
+			foodComment = new FoodComment();
+			foodComment.setFoodCommentId(rs.getInt("foodCommentId"));
+			foodComment.setUserId(rs.getInt("userId"));
+			foodComment.setUserName(rs.getString("userName"));
+			foodComment.setComment(rs.getString("comment"));
+			foodComment.setFoodId(rs.getInt("foodId"));
+			foodComment.setFoodName(rs.getString("foodName"));
+			java.util.Date addTime = new java.util.Date(rs.getTimestamp("addTime").getTime());
+			foodComment.setAddTime(addTime);
+			foodComment.setIsPositive(rs.getInt("isPositive"));
+			foodComment.setOrderId(rs.getInt("orderId"));
+		}
+		return foodComment;
+	}
 	
 	
 	
@@ -501,4 +535,10 @@ public class FoodDao {
 
 		return pstmt.executeUpdate();
 	}
+
+
+
+
+
+
 }

@@ -28,16 +28,7 @@ public class Order {
 	private String addTime_;
 	private Date ackTime;
 	private String ackTime_;
-	private int commented = 0;
 	private List<OrderFood> foodList = new ArrayList<OrderFood>();
-
-	public int getCommented() {
-		return commented;
-	}
-
-	public void setCommented(int commented) {
-		this.commented = commented;
-	}
 
 	public String getUserTel() {
 		return userTel;

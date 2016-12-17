@@ -54,7 +54,7 @@
 							<div class="col-md-2 column">${food.foodSum }</div>
 							<div class="col-md-2 column">
 								<input type="hidden" id="${userOrder.orderId }" />
-								<button type="button" class="btn btn-warning btn-sm" id="${food.foodId }" onclick="launchModal()">尚未评价</button>
+								<button type="button" class="btn btn-warning btn-sm" id="${food.foodId }" onclick="launchModal()">新增/修改评价</button>
 							</div>
 						</div>
 					</c:forEach>
@@ -141,8 +141,14 @@
 <script type="text/javascript">
 function launchModal(){
 	$("#prepareToDelete").val($(window.event.srcElement).attr("id"));
-	$("#oid").val($(window.event.srcElement).parent().attr("id"))
+	$("#oid").val($(window.event.srcElement).prev().attr("id"))
 	$("#myModal").modal();
+	$("#textarea").load("alterComment",{
+		action:"selectComment",
+		userId:$("#uid").val(),
+		foodId:$("#prepareToDelete").val(),
+		orderId:$("#oid").val()
+	});
 }
 function negative(){
 	$("#isPositive").val(0);  // 给它差评！ 
@@ -160,8 +166,6 @@ function addComment(){
 			isPositive:$("#isPositive").val()
 		}
 	}).done(function(){
-		var buttonId = $("#prepareToDelete").val();
-		$("#"+buttonId).remove();
 		alert("评论成功！");
 	});
 }

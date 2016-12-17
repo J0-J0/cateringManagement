@@ -96,7 +96,7 @@ public class OrderDao {
 	 * @throws SQLException
 	 */
 	public int addOrder(Order order) throws SQLException {
-		String sql = "insert into t_order values(null,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		String sql = "insert into t_order values(null,?,?,?,?,?,?,?,?,?,?,?,?)";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setInt(1, order.getUserId());
 		pstmt.setInt(2, order.getUserIdCard());
@@ -118,7 +118,6 @@ public class OrderDao {
 		}else{
 			pstmt.setTimestamp(12, null);
 		}
-		pstmt.setInt(13, order.getCommented());
 
 		return pstmt.executeUpdate();
 	}
@@ -187,7 +186,6 @@ public class OrderDao {
 				order.setAckTime(ackTime);
 				order.setAckTime_();
 			}
-			order.setCommented(rs.getInt("commented"));
 		}
 		return order;
 	}
@@ -277,7 +275,7 @@ public class OrderDao {
 				o.setUserTel(rs.getString("userTel"));
 				o.setMerchantId(rs.getInt("merchantId"));
 				o.setMerchantName(rs.getString("merchantName"));
-				o.setMerchantTel(rs.getString("merchantrTel"));
+				o.setMerchantTel(rs.getString("merchantTel"));
 				o.setStatus(rs.getInt("status"));
 				o.setSum(rs.getDouble("sum"));
 				o.setWay(rs.getString("way"));
@@ -292,7 +290,6 @@ public class OrderDao {
 					o.setAckTime(ackTime);
 					o.setAckTime_();
 				}
-				o.setCommented(rs.getInt("commented"));
 				o.getFoodList().add(f);
 				list.add(o);					// Ìí¼Ó
 			} else {

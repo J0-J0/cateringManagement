@@ -44,8 +44,8 @@ public class AlterCommentServlet extends HttpServlet {
 			deleteComment(request,response);
 			return ;
 			
-		}else if("update".equals(action)){
-			updateComment(request, response);
+		}else if("selectComment".equals(action)){
+			selectOneComment(request, response);
 			return ;
 			
 		}else if("select".equals(action)){
@@ -57,7 +57,39 @@ public class AlterCommentServlet extends HttpServlet {
 	
 	
 	
-	
+	/**
+	 * 查找单个评论
+	 * @param request
+	 * @param response
+	 * @throws IOException
+	 */
+	private void selectOneComment(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		int userId = Integer.parseInt(request.getParameter("userId"));
+		int foodId = Integer.parseInt(request.getParameter("foodId"));
+		int orderId = Integer.parseInt(request.getParameter("orderId"));
+		DaoFactory daoFactory = new DaoFactory();
+		try {
+			daoFactory.beginConnectionScope();
+			daoFactory.beginTransaction();
+			FoodDao foodDao = daoFactory.createFoodDao();			
+			FoodComment foodComment = foodDao.selectFoodComment(userId, foodId, orderId);
+			response.setContentType("text/html;charset=utf-8");
+			PrintWriter out = new PrintWriter(response.getWriter(), true);
+			if(foodComment == null){
+				out.println("还没有填写评论");
+			}else{
+				out.println(foodComment.getComment());
+			}
+			out.close();
+			daoFactory.endTransaction();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			daoFactory.abortTransaction();
+		}finally{
+			daoFactory.endConnectionScope();
+		}
+	}
+
 	/**
 	 * 用户查询评论，该方法为ajax请求服务
 	 * @param request
@@ -107,37 +139,6 @@ public class AlterCommentServlet extends HttpServlet {
 	}
 
 	/**
-	 * 用户更新评论
-	 * @param request
-	 * @param response
-	 */
-	private void updateComment(HttpServletRequest request, HttpServletResponse response) {
-		String comment = request.getParameter("comment");
-		int foodCommentId = Integer.parseInt(request.getParameter("foodCommentId"));
-		int isPositive = Integer.parseInt(request.getParameter("isPositive"));
-		FoodComment foodComment = new FoodComment();
-		foodComment.setFoodCommentId(foodCommentId);
-		foodComment.setIsPositive(isPositive);
-		foodComment.setComment(comment);
-		
-		DaoFactory daoFactory = new DaoFactory();
-		try {
-			daoFactory.beginConnectionScope();
-			daoFactory.beginTransaction();
-			
-			FoodDao foodDao = daoFactory.createFoodDao();			// 修改评论
-			foodDao.updateFoodComment(foodComment);
-			
-			daoFactory.endTransaction();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			daoFactory.abortTransaction();
-		}finally{
-			daoFactory.endConnectionScope();
-		}
-	}
-
-	/**
 	 * 用户删除评论
 	 * @param request
 	 * @param response
@@ -171,23 +172,34 @@ public class AlterCommentServlet extends HttpServlet {
 		int userId = Integer.parseInt(request.getParameter("userId"));
 		int foodId = Integer.parseInt(request.getParameter("foodId"));
 		int isPositive = Integer.parseInt(request.getParameter("isPositive"));
-		FoodComment foodComment = new FoodComment();
-		foodComment.setFoodId(foodId);
-		foodComment.setUserId(userId);
-		foodComment.setIsPositive(isPositive);
-		foodComment.setComment(comment);
+		int orderId = Integer.parseInt(request.getParameter("orderId"));
+		
 		
 		DaoFactory daoFactory = new DaoFactory();
 		try {
 			daoFactory.beginConnectionScope();
 			daoFactory.beginTransaction();
-			
 			FoodDao foodDao = daoFactory.createFoodDao();			
 			UserDao userDao = daoFactory.createUserDao();
 			
-			foodComment.setFoodName(foodDao.selectFoodName(foodId));// 补最后两条信息
-			foodComment.setUserName(userDao.selectUserName(userId));
-			foodDao.addFoodComment(foodComment);
+			FoodComment foodComment = foodDao.selectFoodComment(userId, foodId, orderId);
+			// 评论不存在，新建
+			if(foodComment == null){
+				foodComment = new FoodComment();
+				foodComment.setFoodId(foodId);
+				foodComment.setUserId(userId);
+				foodComment.setIsPositive(isPositive);
+				foodComment.setComment(comment);
+				foodComment.setOrderId(orderId);
+																								// 补最后两条信息
+				foodComment.setFoodName(foodDao.selectFoodName(foodId));
+				foodComment.setUserName(userDao.selectUserName(userId));
+				foodDao.addFoodComment(foodComment);
+			}else{
+				foodComment.setIsPositive(isPositive);
+				foodComment.setComment(comment);
+				foodDao.updateFoodComment(foodComment);
+			}
 			
 			daoFactory.endTransaction();
 		} catch (SQLException e) {

@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.jojo.dao.DaoFactory;
 import com.jojo.dao.FoodDao;
 import com.jojo.model.Food;
+import com.jojo.util.StringUtil;
 
 /**
  * 大量依赖了request.setAttribute()，总之预感不好，还是要快点上手
@@ -218,6 +219,9 @@ public class AlterFoodServlet extends HttpServlet{
 		double foodPrice = Double.parseDouble(request.getParameter("foodPrice"));
 		String foodType = request.getParameter("foodType");
 		String description = request.getParameter("description");
+		if(StringUtil.isEmpty(description)){
+			description = "该商家毛都没写....";
+		}
 		int num = Integer.parseInt(request.getParameter("num"));
 		int merchantId = Integer.parseInt(request.getParameter("merchantId"));
 		

@@ -18,6 +18,15 @@ public class FoodComment {
 	private String foodName;
 	private Date addTime;
 	private int isPositive;
+	private int orderId;
+
+	public int getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(int orderId) {
+		this.orderId = orderId;
+	}
 
 	public String getUserName() {
 		return userName;
