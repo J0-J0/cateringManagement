@@ -44,7 +44,7 @@ public class FoodDetailServlet extends HttpServlet {
 			historyId = tmp.split(":"); 
 			if(historyId.length > 8){				// 历史记录大于8个就从下往上顶，即删除第一个
 				String regex = ":"+historyId[1];
-				tmp.replace(regex, "");
+				tmp = tmp.replace(regex, "");
 			}
 			history.setValue(tmp+":"+foodId);
 			history.setMaxAge(24*60*60);    // 设置一天

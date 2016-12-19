@@ -55,14 +55,13 @@ $(document).ready(function(){
 								class="icon-bar"></span> <span class="icon-bar"></span> <span
 								class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="#"> Brand</a>
+						<a class="navbar-brand" href="#">Suzhou University</a>
 					</div>
 
 					<div class="collapse navbar-collapse"
 						id="bs-example-navbar-collapse-1">
 						<ul class="nav navbar-nav">
 							<li class="active"><a href="${pageContext.request.contextPath }/index">首页</a></li>
-							<li><a href="#">Link</a></li>
 						</ul>
 
 						<form class="navbar-form navbar-left" role="search" action="index"
@@ -162,9 +161,9 @@ $(document).ready(function(){
 				<!-- 滚动页 -->
 				<div class="item active">
 					<!-- 这里放个欢迎光临好了 -->
-					<img src="${pageContext.request.contextPath}/images/slide.jpg"
+					<img src="${pageContext.request.contextPath}/images/duck.jpg"
 						alt="..." style="width: 1600px; height: 500px;">
-					<div class="carousel-caption">随便写写</div>
+					<div class="carousel-caption">鸭腿饭，来自沙县</div>
 				</div>
 				
 				<div class="item">
@@ -204,7 +203,7 @@ $(document).ready(function(){
 				<div class="col-md-3 column">
 					<div class="thumbnail">
 						<img alt="140x140" style="width: 140px; height: 140px;"
-							src="${pageContext.request.contextPath }/${merchant.pic}"
+							src="${pageContext.request.contextPath }/images/Food.png"
 							class="img-rounded img-center" />
 						<div class="caption">
 							<h2>${merchant.merchantName }</h2>

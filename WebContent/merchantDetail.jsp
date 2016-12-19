@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ page import="com.jojo.model.*, java.util.*" %>    
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core"  prefix="c"%>
+	pageEncoding="UTF-8"%>
+<%@ page import="com.jojo.model.*, java.util.*"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -22,7 +22,7 @@
 <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
 <script
 	src="${pageContext.request.contextPath }/bootstrap3/js/bootstrap.min.js"></script>
-	
+
 
 </head>
 <body>
@@ -30,7 +30,8 @@
 	<div class="container">
 		<div class="row clearfix">
 			<div class="col-md-12 column">
-				<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+				<nav class="navbar navbar-default navbar-fixed-top"
+					role="navigation">
 				<div class="container-fluid">
 					<div class="navbar-header">
 						<button type="button" class="navbar-toggle collapsed"
@@ -46,10 +47,11 @@
 					<div class="collapse navbar-collapse"
 						id="bs-example-navbar-collapse-1">
 						<ul class="nav navbar-nav">
-							<li class="active"><a href="${pageContext.request.contextPath }/index">首页</a></li>
+							<li class="active"><a
+								href="${pageContext.request.contextPath }/index">首页</a></li>
 							<li><a href="#">Link</a></li>
 						</ul>
-						
+
 						<form class="navbar-form navbar-left" role="search" action="index"
 							method="post">
 							<div class="form-group">
@@ -62,9 +64,10 @@
 								<button type="submit" class="btn btn-default ">搜一搜</button>
 							</div>
 						</form>
-						
-						
-						<ul class="nav navbar-nav navbar-right" style="margin: auto 80px auto auto;">
+
+
+						<ul class="nav navbar-nav navbar-right"
+							style="margin: auto 80px auto auto;">
 							<%
 								if (session.getAttribute("currentUser") == null) {
 							%>
@@ -81,7 +84,7 @@
 									<li><a
 										href="${pageContext.request.contextPath }/cartDetail?userId=${currentUser.userId}">购物车</a></li>
 									<li class="divider"></li>
-									<li><a href="#"onclick="logout()">退出</a></li>
+									<li><a href="#" onclick="logout()">退出</a></li>
 								</ul></li>
 							<%
 								}
@@ -101,46 +104,54 @@
 					<button type="button" class="close" data-dismiss="alert">
 						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 					</button>
-					<strong>Warning!</strong>&nbsp;&nbsp;
-					<span> 
-					<%
-					 	if (session.getAttribute("error") != null) {
-					 			out.println((String) session.getAttribute("error"));
-					 		} else {
-					 			out.println("尚未登录！");
-					 		}
-					 %>
+					<strong>Warning!</strong>&nbsp;&nbsp; <span> <%
+ 	if (session.getAttribute("error") != null) {
+ 			out.println((String) session.getAttribute("error"));
+ 		} else {
+ 			out.println("尚未登录！");
+ 		}
+ %>
 					</span>
 				</div>
 			</div>
 		</div>
-		<%} %>
+		<%
+			}
+		%>
 	</div>
 
 
 
-<div class="jumbotron">
-  <h1 style="text-align: center;">${merchantName }</h1>
-  <input type="hidden" id="merchantId" value="${merchantId}" />
-  <input type="hidden" id="merchantName" value="${merchantName}" />
-  <input type="hidden" id="userId" value="${currentUser.userId}" />
-</div>
+	<div class="jumbotron">
+		<div class="container">
+			<h1 style="text-align: center;">${merchantName }</h1>
+			<p>本帮菜，硬味道！</p>
+			<input type="hidden" id="merchantId" value="${merchantId}" /> <input
+				type="hidden" id="merchantName" value="${merchantName}" /> <input
+				type="hidden" id="userId" value="${currentUser.userId}" />
+		</div>
+	</div>
 
 
 	<div class="container">
 		<div class="row clearfix">
-			<div class="col-md-2 column"><!-- 导航栏 -->
-				<ul class="nav nav-pills nav-stacked" role="tablist" style="position:fixed; top=125px;">
+			<div class="col-md-2 column">
+				<!-- 导航栏 -->
+				<ul class="nav nav-pills nav-stacked" role="tablist"
+					style="position: fixed;">
 					<li role="presentation" class="active"><a href="#">类别导航</a></li>
-					<c:forEach var="foodType" items="${foodTypeList }" varStatus="status">
+					<c:forEach var="foodType" items="${foodTypeList }"
+						varStatus="status">
 						<li role="presentation"><a href="# ${status.index}">${foodType[0].foodType}</a></li>
 					</c:forEach>
 				</ul>
 			</div>
-			
-			
-			<div class="col-md-10 column"><!-- 商品列表 -->
-				<c:forEach var="foodType" items="${foodTypeList }" varStatus="status">
+
+
+			<div class="col-md-10 column">
+				<!-- 商品列表 -->
+				<c:forEach var="foodType" items="${foodTypeList }"
+					varStatus="status">
 					<div class="page-header" id=" ${status.index}">
 						<h2>${foodType[0].foodType}</h2>
 					</div>
@@ -164,8 +175,8 @@
 										<p>剩余数量：${food.num }</p>
 										<p>
 											<a id="${food.foodId}" class="btn btn-primary" role="button"
-												 onclick="cart()">加购物车</a>
-											<a id="${food.foodId}" class="btn btn-default" role="button"
+												onclick="cart()">加购物车</a> <a id="${food.foodId}"
+												class="btn btn-default" role="button"
 												style="margin-left: 10px;" onclick="favourite()">放收藏夹</a>
 										</p>
 									</div>
@@ -199,9 +210,10 @@
 					<h4 class="modal-title" id="myModalLabel" align="center">进去吃饭</h4>
 				</div>
 				<div class="modal-body">
-				
+
 					<!-- 模态框表单 -->
-					<form class="form-horizontal" role="form" id="userLoginForm" method="post"
+					<form class="form-horizontal" role="form" id="userLoginForm"
+						method="post"
 						action="${pageContext.request.contextPath }/userInfo">
 						<input type="hidden" id="action" name="action" value="login" />
 						<div class="form-group">
@@ -231,12 +243,13 @@
 					<div class="row">
 
 						<div class="col-md-4">
-							<button type="button" class="btn btn-default"
-								id="login"	 data-dismiss="modal">登录</button>
+							<button type="button" class="btn btn-default" id="login"
+								data-dismiss="modal">登录</button>
 						</div>
 						<div class="col-md-3"></div>
 						<div class="col-md-4">
-							<a href="${pageContext.request.contextPath }/userRegister.jsp" class="btn btn-default">注册</a>
+							<a href="${pageContext.request.contextPath }/userRegister.jsp"
+								class="btn btn-default">注册</a>
 						</div>
 						<div class="col-md-1"></div>
 					</div>
@@ -247,14 +260,14 @@
 </body>
 
 <form id="logout" action="userInfo" method="post" style="display: none;">
-<input type="hidden" id="action" name="action" value="logout" />
+	<input type="hidden" id="action" name="action" value="logout" />
 </form>
 <script>
-function logout(){
-	if(confirm("确认退出吗？")){
-		$("#logout").submit();
+	function logout() {
+		if (confirm("确认退出吗？")) {
+			$("#logout").submit();
+		}
 	}
-}
 </script>
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -264,37 +277,37 @@ function logout(){
 		});
 	});
 
-	function cart(){
+	function cart() {
 		var foodId = $(window.event.srcElement).attr("id");
 		$.ajax({
-			url: "alterCart",
-			type: "POST",
-			data: {
-				action:"add",
-				foodId: foodId,
-				merchantId: $("#merchantId").val(),
-				merchantName: $("#merchantName").val(),
-				userId: $("#userId").val()
+			url : "alterCart",
+			type : "POST",
+			data : {
+				action : "add",
+				foodId : foodId,
+				merchantId : $("#merchantId").val(),
+				merchantName : $("#merchantName").val(),
+				userId : $("#userId").val()
 			}
-		}).done(function(data){
+		}).done(function(data) {
 			alert(data);
-		}).fail(function(){
+		}).fail(function() {
 			alert("抱歉失败了！")
 		});
 	}
-	function favourite(){
+	function favourite() {
 		var foodId = $(window.event.srcElement).attr("id");
 		$.ajax({
-			url: "alterFavourite",
-			type: "POST",
-			data: {
-				action:"add",
-				foodId: foodId,
-				userId: $("#userId").val()
+			url : "alterFavourite",
+			type : "POST",
+			data : {
+				action : "add",
+				foodId : foodId,
+				userId : $("#userId").val()
 			}
-		}).done(function(data){
+		}).done(function(data) {
 			alert(data);
-		}).fail(function(){
+		}).fail(function() {
 			alert("抱歉失败了！")
 		});
 	}

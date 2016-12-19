@@ -258,7 +258,7 @@ public class AlterOrderServlet extends HttpServlet{
 		}
 		
 		String str = request.getParameter("addTime");
-		Date addTime = DateUtil.formatString(str, "dd/MM/yyyy");
+		Date addTime = DateUtil.formatString(str, "MM/dd/yyyy");
 		order.setAddress(address);
 		order.setWay(way);
 		order.setAddTime(addTime);

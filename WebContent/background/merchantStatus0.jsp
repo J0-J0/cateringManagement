@@ -16,9 +16,9 @@
 			</div>
 
 			<%
-				List<Order> deliver = (List<Order>) request.getAttribute("deliver");
+				List<Order> undeliver = (List<Order>) request.getAttribute("undeliver");
 				HashMap<String, Integer> map = new HashMap<String, Integer>();
-				for (Order o : deliver) {
+				for (Order o : undeliver) {
 			%>
 		
 			<div class="panel panel-default"> <!-- 订单的详细信息 -->
@@ -87,9 +87,9 @@
 			</div>
 
 			<%
-				List<Order> undeliver = (List<Order>) request.getAttribute("undeliver");
+				List<Order> deliver = (List<Order>) request.getAttribute("deliver");
 				HashMap<String, Integer> map2 = new HashMap<String, Integer>();
-				for (Order o : undeliver) {
+				for (Order o : deliver) {
 			%>
 		
 			<div class="panel panel-default"> <!-- 订单的详细信息 -->
