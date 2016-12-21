@@ -52,14 +52,13 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#"> Brand</a>
+				<a class="navbar-brand" href="#">Suzhou University</a>
 			</div>
 	
 			<div class="collapse navbar-collapse"
 				id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
 					<li><a href="${pageContext.request.contextPath }/index">首页</a></li>
-					<li><a href="#">Link</a></li>
 				</ul>
 	
 				<form class="navbar-form navbar-left" role="search" action="index" method="post">
@@ -102,7 +101,7 @@ function logout(){
 }
 </script>
 
-	<div class="container">
+	<div class="container" style="margin-top: 80px;">
 		<div class="row clearfix">
 			<div class="col-md-2 column"></div>
 			<div class="col-md-8 column">

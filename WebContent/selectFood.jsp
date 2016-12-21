@@ -33,14 +33,13 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#"> Brand</a>
+				<a class="navbar-brand" href="#">Suzhou University</a>
 			</div>
 	
 			<div class="collapse navbar-collapse"
 				id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
 					<li><a href="${pageContext.request.contextPath }/index">首页</a></li>
-					<li><a href="#">Link</a></li>
 				</ul>
 	
 				<form class="navbar-form navbar-left" role="search" action="index" method="post">
@@ -84,7 +83,7 @@ function logout(){
 </script>
 
 
-	<div class="container">
+	<div class="container" style="margin: 80px;">
 		<div class="row clearfix">
 			<div class="col-md-12 column">
 				<div class="page-header">
@@ -102,7 +101,7 @@ function logout(){
 								<div class="thumbnail">
 									<a
 										href="${pageContext.request.contextPath }/foodDetail?foodId=${food.foodId}&merchantName=${merchantName}">
-										<img data-src="holder.js/300x300" alt="300x300"
+										<img src="images/selectFood.png" alt="300x300"
 										style="height: 200px; width: 200px;">
 									</a>
 									<div class="caption">

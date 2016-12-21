@@ -65,6 +65,10 @@ public class AlterOrderServlet extends HttpServlet{
 		}else if("selectOrderNum".equals(action)){
 			selectOrderNum(request, response);
 			return ;
+			
+		}else if("delete".equals(action)){
+			deleteOrder(request, response);
+			return ;
 		}
 	}
 	
@@ -75,7 +79,30 @@ public class AlterOrderServlet extends HttpServlet{
 	
 	
 	
-	
+	/**
+	 * 删除订单
+	 * @param request
+	 * @param response
+	 * @throws SQLException 
+	 */
+	private void deleteOrder(HttpServletRequest request, HttpServletResponse response){
+		int orderId = Integer.parseInt(request.getParameter("orderId"));
+		DaoFactory daoFactory = new DaoFactory();
+		try {
+			daoFactory.beginConnectionScope();
+			daoFactory.beginTransaction();
+			OrderDao orderDao = daoFactory.createOrderDao();
+			orderDao.delete(orderId);
+			
+			daoFactory.endTransaction();
+		} catch (SQLException e) {
+			daoFactory.abortTransaction();
+			e.printStackTrace();
+		}finally{
+			daoFactory.endConnectionScope();
+		}
+	}
+
 	/**
 	 * 单订单，多食物
 	 * @param request

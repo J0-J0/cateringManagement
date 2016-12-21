@@ -30,6 +30,15 @@
 	}
 %>
 
+<style type="text/css">
+.pictures {
+	float: left;
+	width: 100px;
+	height: 87px;
+	margin: 5px, auto, auto, 10px;
+}
+
+</style>
 </head>
 <body>
 	<!-- 头部导航条 -->
@@ -42,14 +51,13 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#"> Brand</a>
+				<a class="navbar-brand" href="#">Suzhou University</a>
 			</div>
 	
 			<div class="collapse navbar-collapse"
 				id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
 					<li><a href="${pageContext.request.contextPath }/index">首页</a></li>
-					<li><a href="#">Link</a></li>
 				</ul>
 	
 				<form class="navbar-form navbar-left" role="search" action="index" method="post">
@@ -102,12 +110,18 @@ function logout(){
 				<div class="row clearfix">
 					<div id="left" class="col-md-6 column">
 						<div id="top">
-							<img alt="156*124" width="400px" height="260px" src=""
+							<img alt="156*124" width="400px" height="260px" src="images/duck.jpg"
 								id="picture">
 						</div>
 						<div id="bottom" style="margin-top: 5px">
 							<div style="margin-left: 5px" class="pictures">
-								<img alt="150*50" id="" width="98px" height="85px" src="">
+								<img alt="150*50" id="" width="98px" height="85px" src="images/duck.jpg">
+							</div>
+							<div style="margin-left: 5px" class="pictures">
+								<img alt="150*50" id="" width="98px" height="85px" src="images/duck.jpg">
+							</div>
+							<div style="margin-left: 5px" class="pictures">
+								<img alt="150*50" id="" width="98px" height="85px" src="images/duck.jpg">
 							</div>
 						</div>
 					</div>
@@ -181,7 +195,7 @@ function logout(){
 					<div class="panel panel-default">
 					  <div class="panel-body">
 					  	<a href="${pageContext.request.contextPath }/foodDetail?foodId=${food.foodId}">
-					    	<img src="" alt="缩略图" style="margin-left:50px; height:125px; width:125px;"/>
+					    	<img src="images/selectFood.png" alt="缩略图" style="margin-left:50px; height:125px; width:125px;"/>
 					    </a>
 					    <h3>${food.foodName}</h3>
 					    <h3>￥：<small>${food.foodPrice }</small></h3>

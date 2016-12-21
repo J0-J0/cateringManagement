@@ -51,15 +51,17 @@
 				    	<div class="col-md-3 column"><%=f.getFoodName() %></div>
 				    	<div class="col-md-2 column"><%=f.getNum() %></div>
 				    	<div class="col-md-2 column"><%=f.getFoodSum() %></div>
-				    	<div class="col-md-2 column">
-				    		<button type="button" class="btn btn-primary btn-sm" id="<%=o.getOrderId() %>"
-									onclick="takeOrder()">确认并发货</button>
-				    	</div>
 				    </div>
 			  		<%
 			  	}
 			  %>
-			  </div>
+					<div class="row clearfix">
+						<div class="column-md-offset-10 col-md-2">
+							<button type="button" class="btn btn-primary btn-sm"
+								id="<%=o.getOrderId()%>" onclick="takeOrder()">确认并发货</button>
+						</div>
+					</div>
+				</div>
 			</div>
 	<%
 		}
@@ -125,15 +127,17 @@
 				    	<div class="col-md-3 column"><%=f.getFoodName() %></div>
 				    	<div class="col-md-2 column"><%=f.getNum() %></div>
 				    	<div class="col-md-2 column"><%=f.getFoodSum() %></div>
-				    	<div class="col-md-2 column">
-				    		<button type="button" class="btn btn-primary btn-sm" id="<%=o.getOrderId() %>"
-									onclick="takeOrder()">确认并发货</button>
-				    	</div>
 				    </div>
 			  		<%
 			  	}
 			  %>
-			  </div>
+					<div class="row clearfix">
+						<div class="column-md-offset-10 col-md-2">
+							<button type="button" class="btn btn-primary btn-sm"
+								id="<%=o.getOrderId()%>" onclick="takeOrder()">确认并发货</button>
+						</div>
+					</div>
+				</div>
 			</div>
 	<%
 		}

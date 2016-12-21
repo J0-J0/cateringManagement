@@ -41,7 +41,7 @@
 								class="icon-bar"></span> <span class="icon-bar"></span> <span
 								class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="#"> Brand</a>
+						<a class="navbar-brand" href="#">Suzhou University</a>
 					</div>
 
 					<div class="collapse navbar-collapse"
@@ -49,7 +49,6 @@
 						<ul class="nav navbar-nav">
 							<li class="active"><a
 								href="${pageContext.request.contextPath }/index">首页</a></li>
-							<li><a href="#">Link</a></li>
 						</ul>
 
 						<form class="navbar-form navbar-left" role="search" action="index"
@@ -125,7 +124,7 @@
 	<div class="jumbotron">
 		<div class="container">
 			<h1 style="text-align: center;">${merchantName }</h1>
-			<p>本帮菜，硬味道！</p>
+			<p>美好的一天，从粥开始</p>
 			<input type="hidden" id="merchantId" value="${merchantId}" /> <input
 				type="hidden" id="merchantName" value="${merchantName}" /> <input
 				type="hidden" id="userId" value="${currentUser.userId}" />
@@ -161,7 +160,7 @@
 								<div class="thumbnail">
 									<a
 										href="${pageContext.request.contextPath }/foodDetail?foodId=${food.foodId}&merchantName=${merchantName}">
-										<img data-src="holder.js/300x300" alt="300x300"
+										<img src="images/zhou.png" alt="300x300"
 										style="height: 200px; width: 200px;">
 									</a>
 									<div class="caption">

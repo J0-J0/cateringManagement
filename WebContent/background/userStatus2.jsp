@@ -40,7 +40,7 @@
 					<strong>总金额 : </strong>
 					<font>${userOrder.sum }</font>
 				</span>
-				<button type="button" class="close">
+				<button type="button" class="close" id="${userOrder.orderId}" onclick="deleteOrder()">
 					<span aria-hidden="true">&times;</span> <span class="sr-only">Close</span>
 				</button>
 			</div>
@@ -168,6 +168,23 @@ function addComment(){
 	}).done(function(){
 		alert("评论成功！");
 	});
+}
+
+
+function deleteOrder(){
+	if(confirm("确认删除吗？")){
+		$.ajax({
+			url:"alterOrder",
+			typr:"POST",
+			data:{
+				action:"delete",
+				orderId:$(window.event.srcElement).parent().attr("id")
+			}
+		}).done(function(){
+			var order = $(window.event.srcElement).parent().parent().parent();
+			order.remove();
+		});
+	}
 }
 
 

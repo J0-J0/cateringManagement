@@ -94,7 +94,7 @@
 
 			<div class="col-md-9 column">
 
-				<div style="height: 150px;">这里贴张图</div>
+			<!-- 	<div style="height: 150px;">这里贴张图</div> -->
 
 				<div class="row clearfix">
 					<div class="col-md-12 column">

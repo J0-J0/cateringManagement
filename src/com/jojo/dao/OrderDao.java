@@ -149,6 +149,29 @@ public class OrderDao {
 	
 	
 	
+	
+	
+	/**
+	 * 删除订单，orderFood也要一起删啊
+	 * @param orderId
+	 * @return
+	 * @throws SQLException
+	 */
+	public int delete(int orderId) throws SQLException{
+		String sql = "delete from t_order where orderId = "+orderId;
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		return pstmt.executeUpdate();
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 * 根据orderId，查询order
 	 * @param orderId
@@ -165,7 +188,7 @@ public class OrderDao {
 		ResultSet rs = pstmt.executeQuery();
 		if(rs.next()){
 			order = new Order();
-			order.setOrderId(rs.getInt("orderrderId"));
+			order.setOrderId(rs.getInt("orderId"));
 			order.setUserId(rs.getInt("userId"));
 			order.setUserIdCard(rs.getInt("userIdCard"));
 			order.setUserTel(rs.getString("userTel"));
