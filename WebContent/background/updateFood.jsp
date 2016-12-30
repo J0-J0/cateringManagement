@@ -19,15 +19,19 @@
 
 </head>
 <body>
-	<div class="panel panel-default" style="width:80%; margin-left: 100px;" >
- 		<div class="panel-body">
+	<div class="panel panel-default"
+		style="width: 80%; margin-left: 100px;">
+		<div class="panel-body">
+			<div class="page-header">
+				<!-- 页头 -->
+				<h2>基础信息</h2>
+			</div>
 
 			<form class="form-horizontal" role="form" method="post"
 				action="${pageContext.request.contextPath }/alterFood">
 
-				<input id="action" name="action" value="update" style="display: none;" />
-				<input id="foodId" name="foodId"
-					value="${food.foodId }" style="display: none;" />
+				<input id="action" name="action" value="update" type="hidden" /> 
+				<input id="foodId" name="foodId" value="${food.foodId }" type="hidden" />
 
 				<div class="form-group">
 					<label for="foodName" class="col-sm-2 control-label">食物名称</label>
@@ -70,19 +74,32 @@
 				</div>
 
 				<div class="form-group">
-					<label for="foodPic" class="col-sm-2 control-label">上传图片</label>
-					<div class="col-sm-10">
-						<input type="file" id="foodPic" name="foodPic">
-					</div>
-				</div>
-
-				<div class="form-group">
 					<div class="col-sm-12">
 						<button type="submit" class="btn btn-danger btn-lg btn-block">提交</button>
 					</div>
 				</div>
 			</form>
 
+		</div>
+	</div>
+
+	<div class="panel panel-default"
+		style="width: 80%; margin-left: 100px;">
+		<div class="panel-body">
+			<div class="page-header">
+				<!-- 页头 -->
+				<h2>上传图片</h2>
+			</div>
+			<form action="${pageContext.request.contextPath}/image" method="post"
+				enctype="multipart/form-data">
+				<input id="foodId" name="foodId" value="${food.foodId }" type="hidden" />
+				<div class="form-group">
+					<label for="foodPic" class="col-sm-2 control-label">上传图片</label>
+					<div class="col-sm-10">
+						<input type="file" id="foodPic" name="foodPic">
+					</div>
+				</div>
+			</form>
 		</div>
 	</div>
 </body>

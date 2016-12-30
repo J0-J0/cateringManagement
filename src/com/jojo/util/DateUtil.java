@@ -30,7 +30,7 @@ public class DateUtil {
 		return date;
 	}
 	
-	public static String getCurrentDateStr()throws Exception{
+	public static String getCurrentDateStr(){
 		Date date=new Date();
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMddhhmmss");
 		return sdf.format(date);

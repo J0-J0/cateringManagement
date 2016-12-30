@@ -106,6 +106,7 @@
 								</div>
 							</div>
 						<% }else{%>
+						<div style="height:150px;"></div>
 						<div class="jumbotron">
 							<h1>点击左侧按钮，开始您一天的美好工作吧~</h1>
 							<h2>\(^o^)/YES!</h2>

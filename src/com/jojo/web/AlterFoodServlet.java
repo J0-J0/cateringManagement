@@ -73,7 +73,8 @@ public class AlterFoodServlet extends HttpServlet{
 		// 更新食物
 		}else if(action.equals("update")){
 			updateFood(request, response);
-			response.sendRedirect("merchantMain.jsp");
+			request.setAttribute("xxxjsp", "background/updateFood.jsp");
+			request.getRequestDispatcher("merchantMain.jsp").forward(request, response);
 			return;
 		}
 	}
@@ -173,6 +174,7 @@ public class AlterFoodServlet extends HttpServlet{
 			FoodDao foodDao = daoFactory.createFoodDao();
 			foodDao.updateFood(food);
 			
+			request.setAttribute("food", food);
 			daoFactory.endTransaction();
 		} catch (SQLException e) {
 			e.printStackTrace();

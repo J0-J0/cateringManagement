@@ -1,9 +1,5 @@
 package com.jojo.dao;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -71,23 +67,14 @@ public class FoodDao {
 	 * @return
 	 * @throws SQLException
 	 */
-	public int addFoodPic(File pic, Food food) throws SQLException {
-		int row = 0;
+	public int addFoodPic(String pic, int foodId) throws SQLException {
 		String sql = "insert into t_foodpic values(null,?,?)";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
-		try {
 
-			InputStream in = new FileInputStream(pic);
-			pstmt.setBinaryStream(1, in, pic.length());
-			pstmt.setInt(2, food.getFoodId());
-			row = pstmt.executeUpdate();
-
-		} catch (FileNotFoundException e) {
-
-			e.printStackTrace();
-			return -1;
-		}
-		return row;
+		pstmt.setString(1, pic);
+		pstmt.setInt(2, foodId);
+		
+		return pstmt.executeUpdate();
 	}
 
 	/**

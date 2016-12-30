@@ -18,6 +18,7 @@
 	src="${pageContext.request.contextPath }/bootstrap3/js/bootstrap.min.js"></script>
 </head>
 <body>
+<div style="height:150px;"></div>
 	<div class="panel panel-default" style="width:80%; margin-left: 100px;" >
  		<div class="panel-body">
  		
@@ -65,13 +66,6 @@
 				<div class="col-sm-10">
 					<input type="text" class="form-control" id="num" name="num" 
 						value="99999999" >
-				</div>
-			</div>
-			
-			<div class="form-group">
-				<label for="foodPic" class="col-sm-2 control-label">上传图片</label>
-				<div class="col-sm-10">
-					<input type="file" id="foodPic" name="foodPic">
 				</div>
 			</div>
 			
